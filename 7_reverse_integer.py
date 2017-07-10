@@ -1,20 +1,18 @@
-#python 3
-#需要考虑溢出
+# -*- coding: utf-8 -*-
+# python 3
+# 需要考虑溢出
+
+# Description
+#
+# Reverse digits of an integer.
+
+
 class Solution(object):
-    def reverse(self,x):
-        isNegtive = False
-        if x < 0:
-            isNegtive = True
-        x = int(str(x)[::-1])
-        if x > 2 ** 31 or x < -(2 ** 31):
-            return 0
-        if isNegtive:
-            return -x
-        else:
-            return x
-            
-class Solution(object):
-    def reverse(self,n):
+    def reverse(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
         x = 0
         y = n if n > 0 else -n
         while y:
@@ -22,3 +20,9 @@ class Solution(object):
         if x > 2 ** 31 or x < -(2 ** 31):
             return 0
         return x if n > 0 else -x
+
+
+if __name__ == '__main__':
+    print Solution().reverse(123)
+    print Solution().reverse(-123)
+
