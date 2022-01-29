@@ -18,7 +18,7 @@ func addStrings(num1 string, num2 string) string {
 			y = int(num2[j] - '0')
 		}
 		result := x + y + add
-		ans = strconv.Itoa(result%10) + ans
+		ans = strconv.Itoa(result%10) + ans // 直接字符拼接
 		add = result / 10
 	}
 	return ans

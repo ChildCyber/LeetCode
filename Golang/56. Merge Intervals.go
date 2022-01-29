@@ -22,15 +22,15 @@ func merge56(intervals [][]int) [][]int {
 }
 
 func merge561(intervals [][]int) [][]int {
-	// 先从小到大排序
+	// 从小到大排序（重点）
 	sort.Slice(intervals, func(i, j int) bool {
 		return intervals[i][0] < intervals[j][0]
 	})
 	ans := [][]int{}
 	for i := 0; i < len(intervals); i++ {
-		if len(ans) == 0 || ans[len(ans)-1][1] < intervals[i][0] {
+		if len(ans) == 0 || ans[len(ans)-1][1] < intervals[i][0] { // 如果列表为空，或者当前区间与上一区间不重合，直接添加
 			ans = append(ans, intervals[i])
-		} else {
+		} else { // 与上一区间进行合并，更新上一区间的右端点
 			ans[len(ans)-1][1] = max(ans[len(ans)-1][1], intervals[i][1])
 		}
 	}
