@@ -2,45 +2,37 @@ package leetcode
 
 // 岛屿的最大面积
 // https://leetcode-cn.com/problems/max-area-of-island/
-
-var dir695 = [][]int{
-	{-1, 0},
-	{0, 1},
-	{1, 0},
-	{0, -1},
-}
-
+// DFS
 func maxAreaOfIsland695(grid [][]int) int {
-	res := 0 // 岛屿最大面积
-	for i, row := range grid {
-		for j, col := range row {
-			if col == 0 {
-				continue
-			}
-			area := areaOfIsland(grid, i, j) // 岛屿面积
-			if area > res {
-				res = area
+	res := 0
+	for r := 0; r < len(grid); r++ {
+		for c := 0; c < len(grid[0]); c++ {
+			if grid[r][c] == 1 {
+				a := area(grid, r, c)
+				res = max(res, a)
 			}
 		}
 	}
 	return res
 }
 
-func isInGrid(grid [][]int, x, y int) bool {
-	return x >= 0 && x < len(grid) && y >= 0 && y < len(grid[0])
+func isInGrid(grid [][]int, r, c int) bool {
+	return r >= 0 && r < len(grid) && c >= 0 && c < len(grid[0])
 }
 
-func areaOfIsland(grid [][]int, x, y int) int {
-	if !isInGrid(grid, x, y) || grid[x][y] == 0 {
+func area(grid [][]int, r, c int) int {
+	if !isInGrid(grid, r, c) {
 		return 0
 	}
-
-	grid[x][y] = 0           // 标为0
-	total := 1               // 多出来的变量
-	for i := 0; i < 4; i++ { // 四个方向
-		nx := x + dir695[i][0]
-		ny := y + dir695[i][1]
-		total += areaOfIsland(grid, nx, ny) // +=
+	if grid[r][c] != 1 {
+		return 0
 	}
-	return total
+	grid[r][c] = 2
+
+	// 岛屿自身面积加上 上下左右 岛屿的面积
+	return 1 +
+		area(grid, r-1, c) +
+		area(grid, r+1, c) +
+		area(grid, r, c-1) +
+		area(grid, r, c+1)
 }

@@ -27,7 +27,7 @@ func generatePermutation(nums []int, depth int /*递归深度*/, path []int, res
 		return
 	}
 	// 递归，考虑数组中所有的数
-	for i := 0; i < len(nums); i++ {
+	for i := 0; i < len(nums); i++ { // 从下标0开始
 		if !(*used)[i] { // 当前数未被使用
 			(*used)[i] = true                                   // 标记为已使用
 			path = append(path, nums[i])                        // 当前数添加到path

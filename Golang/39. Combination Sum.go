@@ -58,6 +58,7 @@ func combinationSum1(candidates []int, target int) (ans [][]int) {
 		if target-candidates[idx] >= 0 {
 			comb = append(comb, candidates[idx]) // 入
 			dfs(target-candidates[idx], idx)     // 递归
+			// 回溯
 			comb = comb[:len(comb)-1]            // 出
 		}
 	}
