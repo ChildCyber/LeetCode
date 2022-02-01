@@ -16,3 +16,17 @@ func hasCycle(head *ListNode) bool {
 	}
 	return false
 }
+
+// 哈希表
+func hasCycleHash(head *ListNode) bool {
+	// 遍历链表中的每个节点，并将它记录下来；一旦遇到了此前遍历过的节点，就可以判定链表中存在环
+	seen := map[*ListNode]struct{}{}
+	for head != nil {
+		if _, ok := seen[head]; ok {
+			return true
+		}
+		seen[head] = struct{}{}
+		head = head.Next
+	}
+	return false
+}
