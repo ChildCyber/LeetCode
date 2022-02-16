@@ -22,6 +22,8 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
 	// 前序：[ 根节点, [左子树的前序遍历结果], [右子树的前序遍历结果] ]
 	// 中序：[ [左子树的中序遍历结果], 根节点, [右子树的中序遍历结果] ]
 	// 递归地对构造出左子树和右子树，再将这两颗子树接到根节点的左右位置
+	// 根节点 + 左子树的前序遍历结果长度 == 左子树的中序遍历结果长度 + 根节点
+	// 前序遍历的分界线根据中序遍历的 i 来划分
 	root.Left = buildTree(preorder[1:len(inorder[:i])+1], inorder[:i])   // 左子树的所有节点
 	root.Right = buildTree(preorder[len(inorder[:i])+1:], inorder[i+1:]) // 右子树的所有节点
 	return root

@@ -2,7 +2,8 @@ package leetcode
 
 // 反转链表
 // https://leetcode-cn.com/problems/reverse-linked-list/
-// 迭代
+// 迭代，头插法
+// 原地反转，原链表拆分为已反转链表部分和未反转链表部分
 func reverseList(head *ListNode) *ListNode {
 	// 在遍历链表时，将当前节点的 next 指针改为指向前一个节点。由于节点没有引用其前一个节点，因此必须事先存储其前一个节点。在更改引用之前，还需要存储后一个节点。最后返回新的头引用。
 	// https://leetcode-cn.com/problems/reverse-linked-list/solution/fan-zhuan-lian-biao-shuang-zhi-zhen-di-gui-yao-mo-/
@@ -14,18 +15,10 @@ func reverseList(head *ListNode) *ListNode {
 	curr := head
 	for curr != nil {
 		next := curr.Next // tmp变量，记录下一个节点
-		curr.Next = prev  // 局部反转，指针指向前一个节点
+		curr.Next = prev  // 局部反转，向反转链表头部插入节点
 		// prev和curr指针都向后移动一个节点
 		prev = curr
 		curr = next
 	}
 	return prev
-	/*	var behind *ListNode
-	for head != nil { // curr := head
-		next := head.Next
-		head.Next = behind
-		behind = head
-		head = next
-	}
-	return behind*/
 }

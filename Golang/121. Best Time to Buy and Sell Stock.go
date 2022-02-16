@@ -3,7 +3,7 @@ package leetcode
 // 买卖股票的最佳时机
 // https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/
 // 只能买卖一次，在某日买入，在之后的某天卖出；122可以多次买卖
-func maxProfit(prices []int) int { //dp
+func maxProfit(prices []int) int {
 	if len(prices) < 1 {
 		return 0
 	}
