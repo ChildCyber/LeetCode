@@ -42,8 +42,8 @@ func combinationSum1(candidates []int, target int) (ans [][]int) {
 	comb := []int{}
 
 	var dfs func(target, idx int)
-	dfs = func(target, idx int) { // 目标和，candidates数组的第 idx 位
-		if idx == len(candidates) {
+	dfs = func(target, idx int) { // 参数：目标和，candidates数组的第 idx 位
+		if idx == len(candidates) { // 所有数字都已经全部选完
 			return
 		}
 
@@ -52,14 +52,14 @@ func combinationSum1(candidates []int, target int) (ans [][]int) {
 			return
 		}
 
-		// 直接跳过
+		// 直接跳过，不选择当前数
 		dfs(target, idx+1)
 		// 选择当前数
-		if target-candidates[idx] >= 0 {
+		if target-candidates[idx] >= 0 { // 能够选择
 			comb = append(comb, candidates[idx]) // 入
 			dfs(target-candidates[idx], idx)     // 递归
 			// 回溯
-			comb = comb[:len(comb)-1]            // 出
+			comb = comb[:len(comb)-1] // 出
 		}
 	}
 

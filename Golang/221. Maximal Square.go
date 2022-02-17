@@ -46,6 +46,7 @@ func maximalSquareDP(matrix [][]byte) int {
 	// 用 dp(i,j) 表示以 (i,j) 为右下角，且只包含 1 的正方形的边长最大值
 	dp := make([][]int, len(matrix))
 	maxSide := 0 // 最大边长
+	// 填充dp
 	for i := 0; i < len(matrix); i++ {
 		dp[i] = make([]int, len(matrix[i]))
 		for j := 0; j < len(matrix[i]); j++ {
@@ -59,7 +60,7 @@ func maximalSquareDP(matrix [][]byte) int {
 	for i := 1; i < len(matrix); i++ { // 从1开始
 		for j := 1; j < len(matrix[i]); j++ { // 从1开始
 			if dp[i][j] == 1 { // 该位置的值是 1，则 dp(i,j) 的值由其上方、左方和左上方的三个相邻位置的 dp 值决定
-				// 当前位置的元素值等于三个相邻位置的元素中的最小值加 1
+				// 当前位置(i,j)的元素值等于三个相邻位置的元素中的最小值加 1
 				dp[i][j] = min(min(dp[i-1][j], dp[i][j-1]), dp[i-1][j-1]) + 1
 				if dp[i][j] > maxSide {
 					maxSide = dp[i][j]

@@ -17,10 +17,10 @@ func mergeKLists(lists []*ListNode) *ListNode {
 	left := mergeKLists(lists[:num])
 	right := mergeKLists(lists[num:])
 	// 合并两条升序链表
-	return mergeTwoLists1(left, right)
+	return mergeTwoLists23(left, right)
 }
 
-func mergeTwoLists1(l1 *ListNode, l2 *ListNode) *ListNode {
+func mergeTwoLists23(l1 *ListNode, l2 *ListNode) *ListNode {
 	if l1 == nil {
 		return l2
 	}
@@ -28,9 +28,9 @@ func mergeTwoLists1(l1 *ListNode, l2 *ListNode) *ListNode {
 		return l1
 	}
 	if l1.Val < l2.Val {
-		l1.Next = mergeTwoLists1(l1.Next, l2)
+		l1.Next = mergeTwoLists23(l1.Next, l2)
 		return l1
 	}
-	l2.Next = mergeTwoLists1(l1, l2.Next)
+	l2.Next = mergeTwoLists23(l1, l2.Next)
 	return l2
 }
