@@ -1,6 +1,6 @@
 package leetcode
 
-// 最大子序和
+// 最大子数组和
 // https://leetcode-cn.com/problems/maximum-subarray/
 // 动态规划
 func maxSubArray(nums []int) int {
@@ -21,7 +21,7 @@ func maxSubArray(nums []int) int {
 		} else {
 			dp[i] = nums[i]
 		}
-		res = max(res, dp[i]) // 最大子序和
+		res = max(res, dp[i]) // 最大子数组和
 	}
 	return res
 }

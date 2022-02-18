@@ -1,20 +1,20 @@
 package leetcode
 
 // 环形链表 II
-// https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii
+// https://leetcode-cn.com/problems/linked-list-cycle-ii/
 // 快慢指针
-// 第 141 题的加强版。在判断是否有环的基础上,还需要输出环的第一个点
+// 第 141 题的加强版。在判断是否有环的基础上，还需要输出环的第一个点
 func detectCycle(head *ListNode) *ListNode {
 	slow, fast := head, head
 	for fast != nil {
 		slow = slow.Next      // 慢
-		if fast.Next == nil { // 尽头
+		if fast.Next == nil { // 链表尽头
 			return nil
 		}
 		fast = fast.Next.Next // 快
-		if fast == slow {
-			p := head
-			for p != slow {
+		if fast == slow {     // 快慢指针相遇
+			p := head       // 快指针回到链表的头部
+			for p != slow { // 两指针同时向前走
 				p = p.Next
 				slow = slow.Next
 			}

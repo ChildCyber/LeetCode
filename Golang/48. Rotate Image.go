@@ -22,7 +22,7 @@ func rotateInPlace(matrix [][]int) {
 func rotateFlip(matrix [][]int) {
 	n := len(matrix)
 	// 水平翻转，枚举矩阵上半部分的元素，和下半部分的元素进行交换
-	for i := 0; i < n/2; i++ { // 整行替换
+	for i := 0; i < n/2; i++ {
 		matrix[i], matrix[n-1-i] = matrix[n-1-i], matrix[i]
 	}
 	// 主对角线翻转，枚举对角线左侧的元素，和右侧的元素进行交换
