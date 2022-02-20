@@ -9,12 +9,11 @@ func deleteDuplicates82(head *ListNode) *ListNode {
 	}
 
 	dummy := &ListNode{0, head}
-
 	cur := dummy
-	for cur.Next != nil && cur.Next.Next != nil { //
-		if cur.Next.Val == cur.Next.Next.Val { // 当前 cur.next 与 cur.next.next 对应的元素相同，那么我们就需要将 cur.next 以及所有后面拥有相同元素值的链表节点全部删除
+	for cur.Next != nil && cur.Next.Next != nil {
+		if cur.Next.Val == cur.Next.Next.Val { // 当前 cur.next 与 cur.next.next 对应的元素相同，需要将 cur.next 以及所有后面拥有相同元素值的链表节点全部删除
 			x := cur.Next.Val
-			for cur.Next != nil && cur.Next.Val == x { // 删除重复元素
+			for cur.Next != nil && cur.Next.Val == x { // 删除连续出现的重复元素
 				cur.Next = cur.Next.Next
 			}
 		} else { // 当前 cur.next 与 cur.next.next 对应的元素不相同，那么说明链表中只有一个元素值为 cur.next 的节点

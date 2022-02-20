@@ -35,9 +35,8 @@ func pathSum(root *TreeNode, targetSum int) (ans [][]int) {
 
 		dfs(node.Left, leftNum)
 		dfs(node.Right, leftNum)
-		path = path[:len(path)-1] // 出队
+		path = path[:len(path)-1] // 回溯，出队
 	}
 	dfs(root, targetSum)
-
 	return
 }

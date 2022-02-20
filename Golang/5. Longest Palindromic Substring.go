@@ -2,6 +2,37 @@ package leetcode
 
 // 最长回文子串
 // https://leetcode-cn.com/problems/longest-palindromic-substring/
+// 暴力
+// 穷举出所有子字符串；从字符串首字符比较到末尾，记录最长回文长度
+func longestPalindromeForce(s string) string {
+	n := len(s)
+	if n < 2 {
+		return s
+	}
+
+	begin, maxLen := 0, 1
+	for i := 0; i < n-1; i++ {
+		for j := i + 1; j < n; j++ { // 子字符串
+			if j-i+1 > maxLen && isPalindrome5(s, i, j) { // i~j为回文串且长度超过当前记录最大长度
+				maxLen = j - i + 1
+				begin = i
+			}
+		}
+	}
+	return s[begin : begin+maxLen]
+}
+
+func isPalindrome5(s string, i, j int) bool {
+	for i < j {
+		if s[i] != s[j] {
+			return false
+		}
+		i++
+		j--
+	}
+	return true
+}
+
 // 动态规划
 func longestPalindrome(s string) string { // 返回子串
 	res, dp := "", make([][]bool, len(s))
@@ -28,35 +59,4 @@ func longestPalindrome(s string) string { // 返回子串
 		}
 	}
 	return res
-}
-
-// 暴力
-// 穷举出所有子字符串；从字符串首字符比较到末尾，记录最长回文长度
-func longestPalindrome1(s string) string {
-	n := len(s)
-	if n < 2 {
-		return s
-	}
-
-	begin, maxLen := 0, 1
-	for i := 0; i < n-1; i++ {
-		for j := i + 1; j < n; j++ { // 子字符串
-			if j-i+1 > maxLen && isPalindrome5(s, i, j) { // i~j为回文串且长度超过当前记录最大长度
-				maxLen = j - i + 1
-				begin = i
-			}
-		}
-	}
-	return s[begin : begin+maxLen]
-}
-
-func isPalindrome5(s string, i, j int) bool {
-	for i < j {
-		if s[i] != s[j] {
-			return false
-		}
-		i++
-		j--
-	}
-	return false
 }
