@@ -41,5 +41,5 @@ func mergeTwoListsRec(l1 *ListNode, l2 *ListNode) *ListNode {
 			break
 		}
 	}
-	return head.Next // 巧妙
+	return head.Next
 }

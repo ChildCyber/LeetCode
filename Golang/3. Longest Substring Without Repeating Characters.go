@@ -55,3 +55,21 @@ func lengthOfLongestSubstring1(s string) int {
 	}
 	return res
 }
+
+func lengthOfLongestSubstring2(s string) int {
+	if len(s) == 0 {
+		return 0
+	}
+
+	var bitSet [256]int
+	index, ans := 0, 0
+	for i := 0; i < len(s); i++ { // 遍历字符串
+		if bitSet[s[i]] != 0 {
+			index = max(i, bitSet[s[i]])
+		}
+		// 将左指针i的位置变为 第一次重复 的字符的下一个
+		bitSet[s[i]] = i + 1
+		ans = max(ans, index-i+1)
+	}
+	return ans
+}
