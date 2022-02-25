@@ -4,7 +4,8 @@ import "sort"
 
 // 三数之和
 // https://leetcode-cn.com/problems/3sum/
-// 暴力解法，三重循环，分别找出三个元素再判断和是否为0
+// 暴力
+// 三重循环，分别找出三个元素再判断和是否为0
 
 // 排序 + 双指针
 func threeSum(nums []int) [][]int {
@@ -52,7 +53,7 @@ func threeSum(nums []int) [][]int {
 func threeSum1(nums []int) [][]int {
 	n := len(nums)
 	ans := make([][]int, 0)
-	sort.Ints(nums) // 排序（重点）
+	sort.Ints(nums) // 排序
 
 	// 枚举 a
 	for first := 0; first < n; first++ { // 注意：从0开始

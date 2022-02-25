@@ -53,7 +53,6 @@ func findPeakElementPa(nums []int) int {
 
 // 二分，迭代爬坡
 // 从一个位置开始，不断地向高处走，那么最终一定可以到达一个峰值位置。
-
 func findPeakElement(nums []int) int {
 	low, high := 0, len(nums)-1
 	for low < high { // low < high
