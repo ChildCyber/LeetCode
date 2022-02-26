@@ -2,7 +2,7 @@ package leetcode
 
 // 反转链表 II
 // https://leetcode-cn.com/problems/reverse-linked-list-ii/
-// 头插法：在需要反转的区间里，每遍历到一个节点，让这个新节点来到反转部分的起始位置
+// 一次遍历头插法：在需要反转的区间里，每遍历到一个节点，让这个新节点来到反转部分的起始位置
 func reverseBetween(head *ListNode, left, right int) *ListNode {
 	// https://leetcode-cn.com/problems/reverse-linked-list-ii/solution/fan-zhuan-lian-biao-ii-by-leetcode-solut-teyq/
 	// 使用三个指针变量 pre、cur、next 来记录反转的过程中需要的变量：
@@ -29,3 +29,5 @@ func reverseBetween(head *ListNode, left, right int) *ListNode {
 	}
 	return dummyNode.Next
 }
+
+// 反转 left 到 right 部分后，再拼接起来
