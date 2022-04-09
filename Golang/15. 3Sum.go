@@ -6,8 +6,31 @@ import "sort"
 // https://leetcode-cn.com/problems/3sum/
 // 暴力
 // 三重循环，分别找出三个元素再判断和是否为0
+func threeSumForce(nums []int) [][]int {
+	sort.Ints(nums) // 排序，要求不可以包含重复的三元组
+	ans := make([][]int, 0)
+	n := len(nums)
+	for first := 0; first < n; first++ {
+		if first > 0 && nums[first] == nums[first-1] {
+			continue
+		}
+		for second := first + 1; second < n; second++ {
+			if second > first+1 && nums[second] == nums[second-1] {
+				continue
+			}
+			for third := second + 1; third < n; third++ {
+				if nums[first]+nums[second]+nums[third] == 0 {
+					ans = append(ans, []int{nums[first], nums[second], nums[third]})
+				}
+			}
+		}
+	}
+	return ans
+}
 
 // 排序 + 双指针
+// 时间复杂度：O(N^2)，其中 N 是数组 nums 的长度
+// 空间复杂度：O(logN)
 func threeSum(nums []int) [][]int {
 	// 排序，减少重复
 	sort.Ints(nums)
@@ -73,7 +96,7 @@ func threeSum1(nums []int) [][]int {
 				continue
 			}
 
-			// 需要保证 b 的指针在 c 的指针的左侧
+			// 不断左移 c，需要保证 b 的指针在 c 的指针的左侧
 			for second < third && nums[second]+nums[third] > target {
 				third--
 			}

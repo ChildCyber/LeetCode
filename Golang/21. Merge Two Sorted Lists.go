@@ -3,7 +3,7 @@ package leetcode
 // 合并两个有序链表
 // https://leetcode-cn.com/problems/merge-two-sorted-lists/
 // 递归
-func mergeTwoLists(l1, l2 *ListNode) *ListNode {
+func mergeTwoListsRec(l1, l2 *ListNode) *ListNode {
 	if l1 == nil {
 		return l2
 	}
@@ -12,15 +12,15 @@ func mergeTwoLists(l1, l2 *ListNode) *ListNode {
 	}
 
 	if l1.Val < l2.Val {
-		l1.Next = mergeTwoLists(l1.Next, l2)
+		l1.Next = mergeTwoListsRec(l1.Next, l2)
 		return l1
 	}
-	l2.Next = mergeTwoLists(l1, l2.Next)
+	l2.Next = mergeTwoListsRec(l1, l2.Next)
 	return l2
 }
 
 // 迭代
-func mergeTwoListsRec(l1 *ListNode, l2 *ListNode) *ListNode {
+func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 	head := &ListNode{} // 额外的头节点，比较容易地返回合并后的链表
 	cur := head         // 变换cur节点的Next指针
 	for l1 != nil || l2 != nil {
