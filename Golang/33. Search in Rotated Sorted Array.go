@@ -64,13 +64,13 @@ func search33_1(nums []int, target int) int {
 		// 在常规二分查找的时候查看当前 mid 为分割位置分割出来的两个部分 [l, mid] 和 [mid + 1, r] 哪个部分是有序的
 		// 并根据有序的那个部分确定该如何改变二分查找的上下界
 		if nums[low] <= nums[mid] { // [low, mid - 1]为升序区间
-			if nums[low] <= target && target < nums[mid] {
+			if nums[low] <= target && target < nums[mid] { // 根据target判断
 				high = mid - 1 // 在 [low, mid - 1] 中寻找
 			} else {
 				low = mid + 1 // 在 [mid + 1, high] 中寻找
 			}
 		} else { // [mid, high]为升序区间
-			if nums[mid] < target && target <= nums[high] {
+			if nums[mid] < target && target <= nums[high] { // 根据target判断
 				low = mid + 1 // 在 [mid + 1, high] 中寻找
 			} else {
 				high = mid - 1 // 在 [l, mid - 1] 中寻找
