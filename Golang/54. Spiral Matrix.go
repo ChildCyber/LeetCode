@@ -38,7 +38,7 @@ func spiralOrder(matrix [][]int) []int {
 // 按层模拟
 // 将矩阵看成若干层，首先输出最外层的元素，其次输出次外层的元素，直到输出最内层的元素
 func spiralOrder1(matrix [][]int) []int {
-	// 提前算出一共多少个元素,一圈一圈地遍历矩阵,停止条件就是遍历了所有元素(count == sum)
+	// 提前算出一共多少个元素，一圈一圈地遍历矩阵，停止条件就是遍历了所有元素(count == sum)
 	if len(matrix) == 0 || len(matrix[0]) == 0 {
 		return []int{}
 	}
@@ -48,9 +48,13 @@ func spiralOrder1(matrix [][]int) []int {
 		index         = 0
 		// top、left、right、bottom 分别是剩余区域的上、左、右、下的下标
 		left, right, top, bottom = 0, columns - 1, 0, rows - 1
+		// 上 (top, left)...(top, right)
+		// 右 (top+1, right)...(bottom, right)
+		// 下 (bottom, right-1)...(bottom, left+1)
+		// 左 (bottom, left)...(top+1, left)
 	)
-
-	for left <= right && top <= bottom { // 可以相遇
+	// 按圈遍历矩阵
+	for left <= right && top <= bottom { // 只剩一行或一列时
 		for column := left; column <= right; column++ { // 从左到右遍历上侧元素，依次为 (top,left) 到 (top,right)，right作为边界，以列作为索引
 			order[index] = matrix[top][column]
 			index++
@@ -59,7 +63,7 @@ func spiralOrder1(matrix [][]int) []int {
 			order[index] = matrix[row][right]
 			index++
 		}
-		if left < right && top < bottom { // 相遇
+		if left < right && top < bottom { // 只剩一行或一列时不执行
 			for column := right - 1; column > left; column-- { // 从右到左，left作为边界（不可以等于），以列作为索引
 				order[index] = matrix[bottom][column]
 				index++
@@ -69,7 +73,7 @@ func spiralOrder1(matrix [][]int) []int {
 				index++
 			}
 		}
-		// 进入到下一层
+		// 最外圈结束，进入到里一圈
 		left++
 		right--
 		top++
