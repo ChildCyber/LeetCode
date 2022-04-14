@@ -7,6 +7,8 @@ import "math"
 // 连续子数组
 
 // 暴力法
+// 时间复杂度：O(n^2)
+// 空间复杂度：O(1)
 func minSubArrayLen(s int, nums []int) int {
 	n := len(nums)
 	if n == 0 {
@@ -31,6 +33,9 @@ func minSubArrayLen(s int, nums []int) int {
 }
 
 // 滑动窗口
+// 时间复杂度：O(n)
+// 空间复杂度：O(1)
+// 在滑动窗口 [i,j]之间不断往后移动,如果总和小于 s,就扩大右边界 j,不断加入右边的值,直到 sum > s,再缩小 i 的左边界,不断缩小直到 sum < s,这时候右边界又可以往右移动。以此类推。
 func minSubArrayLen1(s int, nums []int) int {
 	// 思路：每一轮迭代，将 nums[end]加到 sum，
 	// 如果 sum≥s，则更新子数组的最小长度（此时子数组的长度是end−start+1），

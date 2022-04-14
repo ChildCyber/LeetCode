@@ -15,6 +15,7 @@ import (
 继续执行 partition 操作;如果这个元素的下标比 K 大，那么就在左边的区间继续执行 partition 操作;
 如果相等就直接输出这个下标对应的数组元素即可。
 */
+// 实现快排，取第K个元素
 func findKthLargest(nums []int, k int) int {
 	rand.Seed(time.Now().UnixNano())
 	return quickSelect(nums, 0, len(nums)-1, len(nums)-k)
@@ -49,7 +50,7 @@ func partition(arr []int, left, right int) int {
 	return i + 1
 }
 
-// 直接排序，取K
+// 标准库直接排序，取第K个元素
 func findKthLargest1(nums []int, k int) int {
 	sort.Ints(nums)
 	return nums[len(nums)-k]
