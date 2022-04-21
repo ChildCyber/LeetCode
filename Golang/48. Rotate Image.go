@@ -26,8 +26,8 @@ func rotateFlip(matrix [][]int) {
 		matrix[i], matrix[n-1-i] = matrix[n-1-i], matrix[i]
 	}
 	// 主对角线翻转，枚举对角线左侧的元素，和右侧的元素进行交换
-	for i := 0; i < n; i++ { // [0,n)
-		for j := 0; j < i; j++ { // [0,i)
+	for i := 0; i < n; i++ {
+		for j := 0; j < i; j++ { // 以(i,j)为右下角，对该矩形的底和右边进行翻转
 			matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 		}
 	}
