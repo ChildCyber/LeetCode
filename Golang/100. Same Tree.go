@@ -10,8 +10,8 @@ func isSameTree(p *TreeNode, q *TreeNode) bool {
 		if p.Val != q.Val { // 值不同
 			return false
 		}
-		return isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right) // 左右子树是否相同
-	} else {
+		return isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right) // 递归判断左右子树是否相同
+	} else { // 有一个空
 		return false
 	}
 }
