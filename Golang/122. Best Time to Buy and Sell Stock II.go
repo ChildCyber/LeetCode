@@ -4,11 +4,12 @@ package leetcode
 // https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/
 // 不止买卖一次，可以买卖多次，但买卖不能在同一天内操作
 
-// 贪心：最大收益来源就是每次跌了就买入，涨到顶峰的时候就抛出
+// 贪心
+// 最大收益来源就是每次跌了就买入，涨到顶峰的时候就抛出
 func maxProfit122(prices []int) int {
 	profit := 0
-	for i := 0; i < len(prices)-1; i++ { // 小于len(prices)-1，[0:len(prices)-2]
-		if prices[i+1] > prices[i] { // 只要有涨峰就开始计算赚的钱，连续涨可以用两两相减累加来计算，两两相减累加，相当于涨到波峰的最大值减去谷底的值
+	for i := 0; i < len(prices)-1; i++ { // 范围[0:len(prices)-2]
+		if prices[i+1] > prices[i] { // 只要有涨峰就开始计算赚的钱，连续涨可以用两两相减累加来计算，相当于涨到波峰的最大值减去谷底的值
 			profit += prices[i+1] - prices[i]
 		}
 	}

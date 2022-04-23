@@ -3,6 +3,20 @@ package leetcode
 // 买卖股票的最佳时机
 // https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/
 // 只能买卖一次，在某日买入，在之后的某天卖出；122可以多次买卖
+// 暴力
+func maxProfitForce(prices []int) int {
+	maxProfit := 0
+	for i := 0; i < len(prices); i++ {
+		for j := i + 1; j < len(prices); j++ {
+			profit := prices[j] - prices[i]
+			if profit > maxProfit {
+				maxProfit = profit
+			}
+		}
+	}
+	return maxProfit
+}
+
 // 一次遍历
 // 在历史最低点买入
 func maxProfit(prices []int) int {
@@ -16,20 +30,6 @@ func maxProfit(prices []int) int {
 		}
 		if prices[i] < min {
 			min = prices[i]
-		}
-	}
-	return maxProfit
-}
-
-// 暴力
-func maxProfitForce(prices []int) int {
-	maxProfit := 0
-	for i := 0; i < len(prices); i++ {
-		for j := i + 1; j < len(prices); j++ {
-			profit := prices[j] - prices[i]
-			if profit > maxProfit {
-				maxProfit = profit
-			}
 		}
 	}
 	return maxProfit
