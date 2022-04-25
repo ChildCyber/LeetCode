@@ -10,7 +10,7 @@ import (
 // 数组可能包含多个峰值，在这种情况下，返回 任何一个峰值 所在位置即可
 // 时间复杂度为 O(log n)
 
-// 寻找最大值，数组 nums 中最大值两侧的元素一定严格小于最大值本身。因此，最大值所在的位置就是一个可行的峰值位置。
+// 寻找最大值，数组 nums 中最大值两侧的元素一定严格小于最大值本身。因此，最大值所在的位置就是一个可行的峰值位置
 // 时间复杂度 O(n)
 func findPeakElementN(nums []int) (idx int) {
 	for i, v := range nums {
@@ -52,7 +52,8 @@ func findPeakElementPa(nums []int) int {
 }
 
 // 二分，迭代爬坡
-// 从一个位置开始，不断地向高处走，那么最终一定可以到达一个峰值位置。
+// 从一个位置开始，不断地向高处走，那么最终一定可以到达一个峰值位置
+// 时间复杂度 O(log n)
 func findPeakElement(nums []int) int {
 	low, high := 0, len(nums)-1
 	for low < high { // low < high
