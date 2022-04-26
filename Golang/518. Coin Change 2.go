@@ -2,8 +2,10 @@ package leetcode
 
 // 零钱兑换 II
 // https://leetcode-cn.com/problems/coin-change-2/
+// 返回可以凑成总金额的硬币组合数
+
 // 动态规划
-func change(amount int, coins []int) int { // 返回可以凑成总金额的硬币组合数
+func change(amount int, coins []int) int {
 	// 状态转移方程： dp[i] += dp[i-coin]，coin 为当前枚举的 coin
 	// 用 dp[x] 表示金额之和等于 x 的硬币组合数，目标是求 dp[amount]
 	dp := make([]int, amount+1)
@@ -14,5 +16,10 @@ func change(amount int, coins []int) int { // 返回可以凑成总金额的硬�
 			dp[i] += dp[i-coin]
 		}
 	}
+	//for i := 0; i < len(coins); i++ {
+	//	for j := coins[i]; j <= amount; j++ {
+	//		dp[j] += dp[j-coins[i]]
+	//	}
+	//}
 	return dp[amount]
 }

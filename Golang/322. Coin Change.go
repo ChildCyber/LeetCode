@@ -4,6 +4,8 @@ import "math"
 
 // 零钱兑换
 // https://leetcode-cn.com/problems/coin-change/
+// 返回最少的硬币数
+
 // 递归
 func coinChangeRec(coins []int, amount int) int {
 	if len(coins) == 0 {
@@ -32,7 +34,7 @@ func coinChangeRec(coins []int, amount int) int {
 }
 
 // 记忆化搜索
-func coinChange1(coins []int, amount int) int {
+func coinChangeMemo(coins []int, amount int) int {
 	if len(coins) == 0 {
 		return -1
 	}
@@ -92,15 +94,15 @@ func coinChange2(coins []int, amount int) int {
 	for i := 1; i < n; i++ { // 硬币
 		for j := 1; j < amount+1; j++ { // 金额
 			coin := coins[i-1]
-			// 如果硬币面值大于amount，或者是当前amount不能由上一个j - coin得到，则从上一个状态转移
+			// 如果硬币面值大于amount，或者是当前amount不能由上一个 j-coin 得到，则从上一个状态转移
 			if coin > j || dp[i][j-coin] == -1 {
 				dp[i][j] = dp[i-1][j]
 			} else {
-				// 如果dp[i - 1][j] != -1说明上一个状态可以凑成amount
+				// 如果dp[i-1][j] != -1说明上一个状态可以凑成amount
 				if dp[i-1][j] != -1 {
 					dp[i][j] = min(dp[i][j-coin]+1, dp[i-1][j])
 				} else {
-					// 否则，只能通过dp[i][j - coin]加上当前的coin得到amount总和
+					// 否则，只能通过dp[i][j-coin]加上当前的coin得到amount总和
 					dp[i][j] = dp[i][j-coin] + 1
 				}
 			}
@@ -110,26 +112,27 @@ func coinChange2(coins []int, amount int) int {
 }
 
 // 动态规划
-// 自下而上
-func coinChange(coins []int, amount int) int { // 凑成总金额所需的最少的硬币个数
+// 自下而上，一维DP
+func coinChange(coins []int, amount int) int { // 返回凑成总金额所需的最少的硬币个数
 	// https://leetcode-cn.com/problems/coin-change/solution/322-ling-qian-dui-huan-by-leetcode-solution/
-	// 定义 dp(i) 为组成金额 i 所需最少的硬币数量
+	// dp[i] 为组成金额 i 所需最少的硬币数量
 	dp := make([]int, amount+1) // dp数组，长度为amount+1
+
 	// 初始化dp
-	dp[0] = 0                      // 当 i==0 时无法用硬币组成，为 0
+	dp[0] = 0                      // 金额为0无法找零
 	for i := 1; i < len(dp); i++ { // 从下标1开始
-		dp[i] = amount + 1 // amount+1是因为后面用的是min?
+		dp[i] = amount + 1 // 用于最后判断是否能找零
 	}
 
-	for i := 1; i < amount; i++ { // 从1开始
-		for j := 0; j < len(coins); j++ { // 枚举硬币的面值，这个for是关键
-			if coins[j] <= i { // 硬币面值小于金额
-				// 该硬币的面值 + dp[i-coins[j]]的和小于等于amount
-				dp[i] = min(dp[i], dp[i-coins[j]]+1) // 要硬币数量最少，所以 dp[i] 为前面能转移过来的状态的最小值加上枚举的硬币数量 1
+	for i := 1; i < amount; i++ { // 从1开始，当前的金额amount
+		for j := 0; j < len(coins); j++ { // 当前硬币的面值
+			if coins[j] <= i { // 可以使用当前的硬币进行找零
+				dp[i] = min(dp[i], dp[i-coins[j]]+1) // 要硬币的数量最少，所以 dp[i] 为前面能转移过来的状态的最小值加上枚举的硬币数量 1
 			}
 		}
 	}
-	if dp[amount] > amount { // 重点
+
+	if dp[amount] > amount { // 无法找零
 		return -1
 	}
 	return dp[amount]
