@@ -65,9 +65,9 @@ func lengthOfLISForce(nums []int) int {
 // 暴力
 // 通过回溯获取数组的所有子序列，再对这些子串再依次判定是否为「严格上升」
 func lengthOfLISBacktrace(nums []int) int {
-	// dfs 遍历不知是否会超时 O(N*2^n) 超时了GG
+	// dfs O(N*2^n)
 	stack := make([]int, 0, 16)
-	res := 0
+	ans := 0
 
 	var dfs func(nums []int, index int)
 	dfs = func(nums []int, index int) {
@@ -82,7 +82,7 @@ func lengthOfLISBacktrace(nums []int) int {
 			//不要
 			stack = stack[:len(stack)-1]
 		}
-		res = max(res, len(stack))
+		ans = max(ans, len(stack))
 	}
 
 	for i := 0; i < len(nums); i++ {
@@ -90,5 +90,5 @@ func lengthOfLISBacktrace(nums []int) int {
 		dfs(nums, i+1)
 		stack = stack[:len(stack)-1]
 	}
-	return res
+	return ans
 }

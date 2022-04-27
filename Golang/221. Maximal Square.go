@@ -13,8 +13,7 @@ func maximalSquare(matrix [][]byte) int {
 	// 遍历矩阵中的每个元素，每次遇到 1，则将该元素作为正方形的左上角
 	for i := 0; i < rows; i++ {
 		for j := 0; j < columns; j++ {
-			if matrix[i][j] == '1' { // 遇到一个 1，作为正方形的左上角
-				// 计算可能的最大正方形边长
+			if matrix[i][j] == '1' { // 遇到一个 1，以(i,j)为正方形的左上角计算最大正方形边长
 				maxSide = max(maxSide, 1)
 				curMaxSide := min(rows-i, columns-j) // 根据左上角所在的行和列计算可能的最大正方形的边长，matrix[i][j]
 				for k := 1; k < curMaxSide; k++ {
