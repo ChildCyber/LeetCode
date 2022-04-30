@@ -4,7 +4,7 @@ import "math"
 
 // 零钱兑换
 // https://leetcode-cn.com/problems/coin-change/
-// 返回最少的硬币数
+// 返回凑成总金额所需的最少的硬币个数
 
 // 递归
 func coinChangeRec(coins []int, amount int) int {
@@ -113,7 +113,7 @@ func coinChange2(coins []int, amount int) int {
 
 // 动态规划
 // 自下而上，一维DP
-func coinChange(coins []int, amount int) int { // 返回凑成总金额所需的最少的硬币个数
+func coinChange(coins []int, amount int) int {
 	// https://leetcode-cn.com/problems/coin-change/solution/322-ling-qian-dui-huan-by-leetcode-solution/
 	// dp[i] 为组成金额 i 所需最少的硬币数量
 	dp := make([]int, amount+1) // dp数组，长度为amount+1
@@ -124,7 +124,7 @@ func coinChange(coins []int, amount int) int { // 返回凑成总金额所需的
 		dp[i] = amount + 1 // 用于最后判断是否能找零
 	}
 
-	for i := 1; i < amount; i++ { // 从1开始，当前的金额amount
+	for i := 1; i <= amount; i++ { // 从1开始，当前的金额amount
 		for j := 0; j < len(coins); j++ { // 当前硬币的面值
 			if coins[j] <= i { // 可以使用当前的硬币进行找零
 				dp[i] = min(dp[i], dp[i-coins[j]]+1) // 要硬币的数量最少，所以 dp[i] 为前面能转移过来的状态的最小值加上枚举的硬币数量 1
