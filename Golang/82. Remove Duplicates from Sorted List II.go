@@ -23,3 +23,49 @@ func deleteDuplicates82(head *ListNode) *ListNode {
 
 	return dummy.Next
 }
+
+// 递归
+func deleteDuplicates82Rec(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+
+	if head.Val != head.Next.Val {
+		head.Next = deleteDuplicates82Rec(head.Next)
+	} else { // 出现重复元素
+		move := head.Next // 标记需要移除的元素
+		for move != nil && head.Val == move.Val {
+			move = move.Next
+		}
+		return deleteDuplicates82Rec(move)
+	}
+
+	return head
+}
+
+// 计数+两次遍历
+func deleteDuplicates82Two(head *ListNode) *ListNode {
+	if head == nil {
+		return nil
+	}
+
+	dummy := &ListNode{0, head}
+
+	cur := head
+	counter := make(map[int]int)
+	for cur != nil {
+		counter[cur.Val]++
+		cur = cur.Next
+	}
+
+	cur = dummy
+	for cur != nil && cur.Next != nil {
+		if counter[cur.Next.Val] != 1 {
+			cur.Next = cur.Next.Next
+		} else {
+			cur = cur.Next
+		}
+	}
+
+	return dummy.Next
+}
