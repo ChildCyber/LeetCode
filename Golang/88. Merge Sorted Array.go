@@ -15,15 +15,15 @@ func merge(nums1 []int, m int, nums2 []int, n int) { // 非递减顺序 排列�
 	sorted := make([]int, 0, m+m)
 	p1, p2 := 0, 0
 	for {
-		if p1 == m { // nums1遍历完
+		if p1 == m { // nums1遍历完，nums2追加
 			sorted = append(sorted, nums2[p2:]...)
 			break
 		}
-		if p2 == n { // nums2遍历完
+		if p2 == n { // nums2遍历完，nums1追加
 			sorted = append(sorted, nums1[p1:]...)
 			break
 		}
-		// 未遍历完，向后移动
+		// 都未遍历完，指针向后移动
 		if nums1[p1] < nums2[p2] {
 			sorted = append(sorted, nums1[p1])
 			p1++
@@ -32,7 +32,7 @@ func merge(nums1 []int, m int, nums2 []int, n int) { // 非递减顺序 排列�
 			p2++
 		}
 	}
-	copy(nums1, sorted)
+	copy(nums1, sorted) // sorted 合并后存储在数组 nums1 中
 }
 
 // 逆向双指针
