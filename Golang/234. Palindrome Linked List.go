@@ -19,8 +19,29 @@ func isPalindromeL(head *ListNode) bool {
 	return true
 }
 
+// 递归
+func isPalindromeRec(head *ListNode) bool {
+	frontPointer := head
+
+	var recursivelyCheck func(*ListNode) bool
+	recursivelyCheck = func(curNode *ListNode) bool {
+		if curNode != nil {
+			if !recursivelyCheck(curNode.Next) {
+				return false
+			}
+			if curNode.Val != frontPointer.Val {
+				return false
+			}
+			frontPointer = frontPointer.Next
+		}
+		return true
+	}
+	return recursivelyCheck(head)
+}
+
+// 快慢指针
+// 找到中间结点，反转中间节点后面到结尾的所有节点。判断头节点开始的节点和中间节点往后开始的节点是否相等
 func isPalindromeLL(head *ListNode) bool {
-	// 思路：找到中间结点，反转中间节点后面到结尾的所有节点。判断头节点开始的节点和中间节点往后开始的节点是否相等
 	if head == nil || head.Next == nil {
 		return true
 	}
