@@ -48,3 +48,10 @@ type TreeNode struct {
 	Left  *TreeNode
 	Right *TreeNode
 }
+
+func isLowerLetter(v byte) bool {
+	if v >= 'a' && v <= 'z' {
+		return true
+	}
+	return false
+}
