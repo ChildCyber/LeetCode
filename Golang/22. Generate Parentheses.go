@@ -20,10 +20,10 @@ func findGenerateParenthesis(lindex, rindex int, str string, ans *[]string) {
 		return
 	}
 	// 如果左括号数量不大于 n，可以放一个左括号。如果右括号数量小于左括号的数量，可以放一个右括号。
-	if lindex > 0 {
+	if lindex > 0 { // 优先加左括号，可以保证括号的匹配
 		findGenerateParenthesis(lindex-1, rindex, str+"(", ans)
 	}
-	if rindex > 0 && lindex < rindex {
+	if rindex > 0 && lindex < rindex { // 优先加左括号
 		findGenerateParenthesis(lindex, rindex-1, str+")", ans)
 	}
 }
@@ -36,7 +36,7 @@ func generateParenthesisForce(n int) []string {
 		return []string{}
 	}
 	ans := []string{}
-	generateAll22("", 0, &ans)
+	generateAll22("", 2*n, &ans)
 	return ans
 }
 
@@ -50,10 +50,10 @@ func generateAll22(current string, pos int, ans *[]string) {
 	} else { // 递归生成序列
 		// 假设当前字符填入左括号或右括号
 		current += "("
-		generateAll22(current, pos+1, ans)
-		current = current[:len(current)-1]
+		generateAll22(current, pos, ans)
+		current = current[:len(current)-1] // 回溯，选择右括号
 		current += ")"
-		generateAll22(current, pos+1, ans)
+		generateAll22(current, pos, ans)
 	}
 }
 
