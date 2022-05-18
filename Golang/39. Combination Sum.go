@@ -39,7 +39,7 @@ func findCombinationSum(nums []int, target, index int, c []int, res *[][]int) {
 }
 
 func combinationSum1(candidates []int, target int) (ans [][]int) {
-	comb := []int{}
+	path := []int{}
 
 	var dfs func(target, idx int)
 	dfs = func(target, idx int) { // 参数：目标和，candidates数组的第 idx 位
@@ -48,7 +48,7 @@ func combinationSum1(candidates []int, target int) (ans [][]int) {
 		}
 
 		if target == 0 {
-			ans = append(ans, append([]int(nil), comb...))
+			ans = append(ans, append([]int(nil), path...))
 			return
 		}
 
@@ -56,10 +56,10 @@ func combinationSum1(candidates []int, target int) (ans [][]int) {
 		dfs(target, idx+1)
 		// 选择当前数
 		if target-candidates[idx] >= 0 { // 能够选择
-			comb = append(comb, candidates[idx]) // 入
+			path = append(path, candidates[idx]) // 入
 			dfs(target-candidates[idx], idx)     // 递归
 			// 回溯
-			comb = comb[:len(comb)-1] // 出
+			path = path[:len(path)-1] // 出
 		}
 	}
 
