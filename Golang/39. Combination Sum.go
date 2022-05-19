@@ -33,11 +33,12 @@ func findCombinationSum(nums []int, target, index int, c []int, res *[][]int) {
 			break
 		}
 		c = append(c, nums[i])
-		findCombinationSum(nums, target-nums[i], i, c, res) // 注意这里迭代的时候 index 依旧不变,因为一个元素可以取多次
+		findCombinationSum(nums, target-nums[i], i, c, res) // 注意这里迭代的时候 index 依旧不变，因为一个元素可以取多次
 		c = c[:len(c)-1]
 	}
 }
 
+// 回溯，不含剪枝
 func combinationSum1(candidates []int, target int) (ans [][]int) {
 	path := []int{}
 

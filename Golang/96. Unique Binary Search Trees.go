@@ -2,8 +2,10 @@ package leetcode
 
 // 不同的二叉搜索树
 // https://leetcode-cn.com/problems/unique-binary-search-trees/
+
+// 动态规划
+// 给定一个有序序列1⋯n，可以遍历每个数字 i，将该数字作为树根，将1⋯(i−1)序列作为左子树，将(i+1)⋯n序列作为右子树
 func numTreesDP(n int) int {
-	// dp
 	dp := make([]int, n+1)
 	dp[0], dp[1] = 1, 1
 	for i := 2; i <= n; i++ {
@@ -14,10 +16,11 @@ func numTreesDP(n int) int {
 	return dp[n]
 }
 
+// 数学
 func numTrees(n int) int {
-	res := 1
+	ans := 1
 	for i := 0; i < n; i++ {
-		res = res * 2 * (2*i + 1) / (i + 2)
+		ans = ans * 2 * (2*i + 1) / (i + 2)
 	}
-	return res
+	return ans
 }

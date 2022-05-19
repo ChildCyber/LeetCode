@@ -18,9 +18,10 @@ func exist(board [][]byte, word string) bool {
 		visited[i] = make([]bool, len(board[0]))
 	}
 
+	// 遍历board
 	for i, v := range board { // 行
 		for j := range v { // 列
-			// 对每一个位置 (i,j) 都进行检查：只要有一处返回 true，就说明网格中能够找到相应的单词，否则说明不能找到
+			// 对board中的每一个位置 (i,j) 都进行检查：只要有一处返回 true，就说明网格中能够找到相应的单词，否则说明不能找到
 			if searchWord(board, visited, word, 0, i, j) {
 				return true
 			}
@@ -30,11 +31,13 @@ func exist(board [][]byte, word string) bool {
 }
 
 func isInBoard(board [][]byte, x, y int) bool { // 判断是否越界
-	return x >= 0 && x < len(board) && y >= 0 && y < len(board[0])
+	return 0 <= x && x < len(board) && 0 <= y && y < len(board[0])
 }
 
-// 判断以 (i,j) 位置出发，能否搜索到单词 word[k..]，其中 word[k..] 表示字符串 word 从第 k 个字符开始的后缀子串
+// 判断以 (i,j) 位置为起点出发，能否搜索到单词 word[index..]，其中 word[index..] 表示字符串 word 从第 index 个字符开始的后缀子串
 func searchWord(board [][]byte, visited [][]bool, word string, index, x, y int) bool {
+	// index：表示搜索到字符串的下标
+	// x,y：表示board中的坐标
 	if index == len(word)-1 { // 已经搜索到字符串的末尾
 		return board[x][y] == word[index] // 判断最后一个字符是否相等
 	}
@@ -42,10 +45,11 @@ func searchWord(board [][]byte, visited [][]bool, word string, index, x, y int) 
 	if board[x][y] == word[index] { // 剪枝：当前字符匹配
 		visited[x][y] = true // 标记为已访问
 		//defer func() { visited[x][y] = false }()
-		for i := 0; i < 4; i++ { // 朝四个方向搜索
+		for i := 0; i < 4; i++ { // 朝四个方向搜索，下一个字符
 			nx := x + dir[i][0]
 			ny := y + dir[i][1]
-			if isInBoard(board, nx, ny) && !visited[nx][ny] && searchWord(board, visited, word, index+1, nx, ny) { // 未越界，未访问，且能搜索到单词 word[index+1..]
+			// 未越界，未访问，且能搜索到单词 word[index+1..]，搜索下一个字符
+			if isInBoard(board, nx, ny) && !visited[nx][ny] && searchWord(board, visited, word, index+1, nx, ny) {
 				return true
 			}
 		}
