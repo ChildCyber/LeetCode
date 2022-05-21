@@ -2,13 +2,17 @@ package leetcode
 
 // 只出现一次的数字
 // https://leetcode-cn.com/problems/single-number/
+
+// 异或
+// 时间复杂度：O(n)
+// 空间复杂度：O(1)
 func singleNumber(nums []int) int {
-	// 异或，对数组中所有数字进行异或，最后剩下的数字就是只出现依次的数字
-	result := 0
+	// 对数组中所有数字进行异或，最后剩下的数字就是只出现依次的数字
+	ans := 0
 	for i := 0; i < len(nums); i++ {
-		result ^= nums[i]
+		ans ^= nums[i]
 	}
-	return result
+	return ans
 }
 
 // 空间复杂度O(n)

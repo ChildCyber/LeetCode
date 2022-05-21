@@ -29,12 +29,11 @@ func sort148(head, tail *ListNode) *ListNode { // 递归
 	// 2. 对两个子链表分别排序。
 	// 3. 将两个排序后的子链表合并，得到完整的排序后的链表。
 
-	// 递归的终止条件是链表的节点个数小于或等于 1
-	// 当链表为空或者链表只包含 1 个节点时，不需要对链表进行拆分和排序。
+	// 递归的终止条件是链表的节点个数小于或等于 1，当链表为空或者链表只包含 1 个节点时，不需要对链表进行拆分和排序。
 	if head == nil {
 		return head
 	}
-	if head.Next == tail {
+	if head.Next == tail { // 把tail看作nil
 		head.Next = nil
 		return head
 	}
@@ -43,7 +42,7 @@ func sort148(head, tail *ListNode) *ListNode { // 递归
 	for fast != tail {
 		slow = slow.Next
 		fast = fast.Next
-		if fast != tail {
+		if fast != tail { // 快指针走两步
 			fast = fast.Next
 		}
 	}

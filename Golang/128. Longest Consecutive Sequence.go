@@ -15,7 +15,7 @@ func longestConsecutive(nums []int) int {
 	// 枚举数组中的每个数 x，以其为起点，不断尝试匹配 x+1,x+2,⋯x+1, x+2, ⋯ 是否存在
 	// 假设最长匹配到了 x+y，那么以 x 为起点的最长连续序列即为 x,x+1,x+2,⋯,x+y，其长度为 y+1，不断枚举并更新答案即可
 	for num := range numSet { // 遍历numSet，num为map中的key
-		// 跳过逻辑
+		// 跳过逻辑，如果num不是连续序列的起点，会重复尝试匹配，不存在num-1则证明num为连续序列的起点
 		if !numSet[num-1] { // 枚举的数 num 在数组中一定不存在前驱数 num−1，每次在哈希表中检查是否存在 num−1 即能判断是否需要跳过了
 			currentNum := num
 			currentStreak := 1
