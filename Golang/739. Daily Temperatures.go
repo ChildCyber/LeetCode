@@ -4,9 +4,10 @@ package leetcode
 // https://leetcode-cn.com/problems/daily-temperatures
 // 暴力
 func dailyTemperatures(temperatures []int) []int {
-	ans, j := make([]int, len(temperatures)), 0
-	for i := 0; i < len(temperatures); i++ {
-		for j = i + 1; j < len(temperatures); j++ {
+	length := len(temperatures)
+	ans := make([]int, length)    // 最后一个元素为0
+	for i := 0; i < length; i++ { // 对每个元素temperatures[i]都向后扫描
+		for j := i + 1; j < length; j++ { // 在temperatures[i+1:]中逐个扫描
 			if temperatures[j] > temperatures[i] { // 找到第一个更大的元素
 				ans[i] = j - i
 				break
