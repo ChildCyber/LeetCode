@@ -24,6 +24,23 @@ func detectCycle(head *ListNode) *ListNode {
 	return nil
 }
 
+func detectCycle142(head *ListNode) *ListNode {
+	slow, fast := head, head
+	for slow != nil && fast != nil && fast.Next != nil {
+		slow = slow.Next
+		fast = fast.Next.Next
+		if slow == fast {
+			p := head
+			for p != slow {
+				p = p.Next
+				slow = slow.Next
+			}
+			return p
+		}
+	}
+	return nil
+}
+
 // 哈希表
 func detectCycleHash(head *ListNode) *ListNode {
 	// 遍历链表中的每个节点，并将它记录下来；一旦遇到了此前遍历过的节点，就可以判定链表中存在环

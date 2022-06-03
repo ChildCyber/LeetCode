@@ -64,6 +64,37 @@ func longestPalindrome(s string) string { // 返回子串
 	return ans
 }
 
+func longestPalindromeDP(s string) string { // 返回子串
+	length := len(s)
+	if length < 2 {
+		return s
+	}
+
+	ans, dp := "", make([][]bool, length)
+	for i := 0; i < length; i++ {
+		dp[i] = make([]bool, length) // dp[i][j] 表示 s[i..j] 是否是回文串
+	}
+
+	// 递推开始
+	// 先枚举子串长度
+	for l := 2; l <= length; l++ {
+		// 枚举左边界，左边界的上限设置可以宽松一些
+		for i := 0; i < length; i++ {
+			j := l + i - 1
+			// 如果右边界越界，就可以退出当前循环
+			if j >= length {
+				break
+			}
+
+			dp[i][j] = (s[i] == s[j]) && ((j-i < 3) || dp[i+1][j-1])
+			if dp[i][j] && (ans == "" || j-i+1 > len(ans)) { // 子串为空或当前子串长度大于最大子串长度，更新当前最大子串长度
+				ans = s[i : j+1]
+			}
+		}
+	}
+	return ans
+}
+
 // 中心扩散法
 // 时间复杂度 O(n^2),空间复杂度 O(1)
 
