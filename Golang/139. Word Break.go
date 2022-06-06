@@ -16,7 +16,7 @@ func wordBreakForce(s string, wordDict []string) bool {
 	}
 
 	for i := 1; i <= n; i++ {
-		if wordDictSet[s[:i]] {
+		if wordDictSet[s[:i]] { // 子字符串s[0:i]匹配，递归比配剩下的子字符串s[i:n]
 			if wordBreakForce(s[i:n], wordDict) { // 递归判断s[i:n]
 				return true
 			}
@@ -39,9 +39,9 @@ func wordBreak(s string, wordDict []string) bool {
 	dp[0] = true                   // 空字符可以被表示
 	for i := 1; i <= len(s); i++ { // 遍历字符串的所有子串
 		for j := 0; j < i; j++ { // 得到字符串s[j:i]
-			if dp[j] && wordDictSet[s[j:i]] {
-				dp[i] = true // s的前i位是否可以用wordDict中的单词表示
-				break
+			if dp[j] && wordDictSet[s[j:i]] { // s[0:j]可以被匹配且s[j:i]在列表中，s[0:i]可以被匹配
+				dp[i] = true // s的前i位可以用wordDict中的单词表示
+				break        // 只匹配最长的子字符串，0<=j<i
 			}
 		}
 	}
