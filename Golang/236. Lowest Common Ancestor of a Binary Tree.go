@@ -17,12 +17,15 @@ package leetcode
 // 此时left,right代表的含义就是子树上层层向上返回的最近公共祖先，最开始的调用层拿到这个结果后直接返回不空的那一个，即是答案。
 func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 	// 递归边界
-	if root == nil || root == p || root == q { // root为p,q中的一个
+	// p=root，且 q 在 root 的左或右子树中
+	// q=root，且 p 在 root 的左或右子树中
+	if root == nil || root == p || root == q {
 		return root
 	}
 
+	// 通过递归对二叉树进行先序遍历，当遇到节点 p 或 q 时返回
 	// 分解为求左子树的子问题和右子树的子问题，注意是后序遍历
-	// 子问题：左右子树分别包括p,q
+	// 子问题：左右子树是否分别包含p,q
 	left := lowestCommonAncestor(root.Left, p, q)
 	right := lowestCommonAncestor(root.Right, p, q)
 	// 左右子树都有则返回root
