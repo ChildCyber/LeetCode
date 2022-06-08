@@ -12,7 +12,7 @@ func diameterOfBinaryTree(root *TreeNode) int {
 	ans := 0 // 最大直径
 
 	var depth func(*TreeNode) int
-	depth = func(node *TreeNode) int {
+	depth = func(node *TreeNode) int { // 返回该节点为根的子树的深度
 		if node == nil {
 			return 0
 		}
