@@ -41,9 +41,10 @@ func countSubstringsForce(s string) int {
 func countSubstrings(s string) int {
 	n := len(s)
 	ans := 0
+	// 从左往右扫描字符串，以每个字符做轴用中心扩散法，依次遍历计数回文子串
 	for i := 0; i < 2*n-1; i++ {
 		l, r := i/2, i/2+i%2 // 重点
-		for l >= 0 && r < n && s[l] == s[r] {
+		for 0 <= l && r < n && s[l] == s[r] {
 			l--
 			r++
 			ans++
