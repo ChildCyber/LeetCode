@@ -21,8 +21,10 @@ func subarraySumForce(nums []int, k int) int {
 }
 
 // 枚举
+// 时间复杂度：O(n^2)
+// 空间复杂度：O(1)
 func subarraySum(nums []int, k int) int {
-	// 固定了起点，即先固定左边界，然后枚举右边界
+	// 固定起点，即先固定左边界，然后枚举右边界
 	count := 0                                   // 记录和为k的子数组个数
 	for start := 0; start < len(nums); start++ { // 遍历nums，考虑每个位置以start作为子数组结尾的情况
 		sum := 0                                   // 记录当前子数组的和
@@ -37,8 +39,10 @@ func subarraySum(nums []int, k int) int {
 }
 
 // 前缀和+哈希表优化
+// 时间复杂度：O(n)
+// 空间复杂度：O(n)
 func subarraySum1(nums []int, k int) int {
-	count, pre := 0, 0
+	count, pre := 0, 0 // 统计，前缀和（前面数字相加之和）
 	// key：前缀和
 	// value：key 对应的前缀和的个数
 	preSumFreq := map[int]int{}
