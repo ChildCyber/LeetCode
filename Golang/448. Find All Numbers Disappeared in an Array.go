@@ -7,7 +7,7 @@ package leetcode
 func findDisappearedNumbers(nums []int) []int {
 	ans := []int{}
 	for _, v := range nums { // 1～n的位置表示1～n个笼子，如果出现过，相应的鸽笼就会被占掉，将数值置为负数表示被占
-		if v < 0 { // 下标变为正数
+		if v < 0 { // 当前遍历到的元素作为下标，下标需要为正数
 			v = -v
 		}
 		if nums[v-1] > 0 {
