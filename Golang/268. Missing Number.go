@@ -4,6 +4,8 @@ import "sort"
 
 // 丢失的数字
 // https://leetcode.cn/problems/missing-number/
+// 只有一个数字丢失，返回丢失的数字
+
 // 异或
 func missingNumber(nums []int) int {
 	xor, i := 0, 0

@@ -42,13 +42,14 @@ func maxSubArray(nums []int) int {
 }
 
 // 模拟
+// 不用建立dp数组，直接用sum变量来记录dp[i−1]的答案
 func maxSubArrayAnalog(nums []int) int {
 	if len(nums) == 1 {
 		return nums[0]
 	}
 
 	// 1. 如果之前的和<0，则重新计算
-	// 2. 如果之前的和>=0，则计入cur_sum结果中
+	// 2. 如果之前的和>=0，则计入sum结果中
 	// 3. 更新最大值
 	ans, sum := nums[0], 0
 	for i := 0; i < len(nums); i++ {
