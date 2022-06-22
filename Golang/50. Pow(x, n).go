@@ -2,8 +2,9 @@ package leetcode
 
 // Pow(x, n)
 // https://leetcode-cn.com/problems/powx-n
+
 // 快速幂 + 递归
-func myPow(x float64, n int) float64 {
+func myPowRec(x float64, n int) float64 {
 	// 指数n为正数
 	if n >= 0 {
 		return quickMul(x, n)
@@ -26,7 +27,16 @@ func quickMul(x float64, n int) float64 {
 	return y * y * x
 }
 
-// 迭代
+// 快速幂 + 迭代
+func myPow(x float64, n int) float64 {
+	// 指数n为正数
+	if n >= 0 {
+		return quickMul1(x, n)
+	}
+	// 指数n为负数
+	return 1.0 / quickMul1(x, -n)
+}
+
 func quickMul1(x float64, N int) float64 {
 	ans := 1.0
 	// 贡献的初始值为 x
