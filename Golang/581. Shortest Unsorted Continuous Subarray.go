@@ -7,6 +7,7 @@ import (
 
 // 最短无序连续子数组
 // https://leetcode.cn/problems/shortest-unsorted-continuous-subarray/
+// 找出符 最短 子数组，并输出它的长度
 
 // 排序
 // 将给定的数组 nums 表示为三段子数组拼接的形式，分别记作 numsA​，numsB​，numsC
@@ -36,26 +37,31 @@ func findUnsortedSubarraySort(nums []int) int {
 // 一次遍历
 func findUnsortedSubarray(nums []int) int {
 	n := len(nums)
-	// 假设 numsB 在 nums 中对应区间为 [left,right]
+	// 把整个数组分成三段处理
+	// 假设 numsB 在 nums 中对应区间为 [left,right]，不确保有序
+	// numsA 在 nums 中对应区间为 [0:left]；numsC 在 nums 中对应区间为 [right:]，都满足升序要求
 	left, right := -1, -1
 	// 从大到小枚举 i，用一个变量 minn 记录，left 左侧即为 numsA 能取得的最大范围
-	// 从大到小枚举 i，用一个变量 maxn 记录，right 右侧即为 numsC 能取得的最大范围
+	// 从小到大枚举 i，用一个变量 maxn 记录，right 右侧即为 numsC 能取得的最大范围
 	minn, maxn := math.MaxInt64, math.MinInt64
 
 	for i, num := range nums {
-		if maxn > num {
-			right = i
-		} else {
+		// 如果当前值的前面还有更大的值，不满足升序，当前值应该被排序
+		if maxn > num { // 从头到尾遍历数组，从小到大枚举i，当前值小于历史最大值，在进入right之前，遍历到的nums[i]都是小于maxn的
+			right = i // right就是遍历中最后一个小于maxn元素的位置
+		} else { // 当前最大值
 			maxn = num
 		}
 
-		if minn < nums[n-i-1] {
-			left = n - i - 1
-		} else {
+		// 如果当前值的后面还有更小的值，不满足升序，当前值应该被排序
+		if minn < nums[n-i-1] { // 从尾到头遍历数组，从大到大枚举i，当前值大于历史最小值，在进入left之前，那么遍历到的nums[i]也都是大于minn的
+			left = n - i - 1 // left就是遍历中最后一个大于minn元素的位置
+		} else { // 当前最小值
 			minn = nums[n-i-1]
 		}
 	}
 
+	// 特别判断nums有序，此时numsB的长度为0
 	if right == -1 {
 		return 0
 	}
