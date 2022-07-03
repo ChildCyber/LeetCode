@@ -2,17 +2,20 @@ package leetcode
 
 // 反转链表 II
 // https://leetcode-cn.com/problems/reverse-linked-list-ii/
+
 // 一次遍历，头插法
 // 在需要反转的区间里，每遍历到一个节点，让这个新节点来到反转部分的起始位置
+// 时间复杂度：O(N)
+// 空间复杂度：O(1)
 func reverseBetween(head *ListNode, left, right int) *ListNode {
 	// https://leetcode-cn.com/problems/reverse-linked-list-ii/solution/fan-zhuan-lian-biao-ii-by-leetcode-solut-teyq/
 	// 使用三个指针变量 pre、cur、next 来记录反转的过程中需要的变量：
-	//    cur：指向待反转区域的第一个节点 left
-	//    next：永远指向 cur 的下一个节点，循环过程中，cur 变化以后 next 会变化
-	//    pre：永远指向待反转区域的第一个节点 left 的前一个节点，在循环过程中不变
+	//   cur：指向待反转区域的第一个节点 left
+	//   next：指向 cur 的下一个节点，循环过程中，cur 变化后 next 会变化
+	//   pre：指向待反转区域的第一个节点 left 的前一个节点，在循环过程中不变
 	dummyNode := &ListNode{Next: head}
 	pre := dummyNode
-	for i := 0; i < left-1; i++ { // 遍历到left前一个节点
+	for i := 0; i < left-1; i++ { // 从虚拟头节点 pre 走 left-1 步，来到 left 节点的前一个节点
 		pre = pre.Next
 	}
 
@@ -28,36 +31,27 @@ func reverseBetween(head *ListNode, left, right int) *ListNode {
 		next.Next = pre.Next
 		pre.Next = next
 	}
+
 	return dummyNode.Next
 }
 
-// 反转 left 到 right 部分后，再拼接起来
-func reverseLinkedList(head *ListNode) {
-	var pre *ListNode
-	cur := head
-	for cur != nil {
-		next := cur.Next
-		cur.Next = pre
-		pre = cur
-		cur = next
-	}
-}
-
+// 穿针引线
+// 时间复杂度：O(N)
+// 空间复杂度：O(1)
 func reverseBetween1(head *ListNode, left, right int) *ListNode {
 	// pre：待反转链表的首个节点的前一个节点
 	// curr：待反转链表的最后节点的下一个节点
 	// leftNode：待反转链表的首个节点
 	// rightNode：待反转链表的最后节点
-	dummyNode := &ListNode{}
-	dummyNode.Next = head
-
+	dummyNode := &ListNode{Next: head}
 	pre := dummyNode
-	// 第 1 步：从虚拟头节点走 left - 1 步，来到 left 节点的前一个节点
+
+	// 第 1 步：从虚拟头节点 pre 走 left-1 步，来到 left 节点的前一个节点
 	for i := 0; i < left-1; i++ {
 		pre = pre.Next
 	}
 
-	// 第 2 步：从 pre 再走 right - left + 1 步，来到 right 节点
+	// 第 2 步：从 pre 走 right-left+1 步，来到 right 节点
 	rightNode := pre
 	for i := 0; i < right-left+1; i++ {
 		rightNode = rightNode.Next
@@ -74,8 +68,20 @@ func reverseBetween1(head *ListNode, left, right int) *ListNode {
 	// 第 4 步：同第 206，反转链表的子区间
 	reverseLinkedList(leftNode)
 
-	// 第 5 步：接回到原来的链表中
+	// 第 5 步：接回到原来的链表中，经过反转left变为right，right变为left
 	pre.Next = rightNode
 	leftNode.Next = curr
 	return dummyNode.Next
+}
+
+// 反转 left 到 right 部分
+func reverseLinkedList(head *ListNode) {
+	var prev *ListNode
+	curr := head
+	for curr != nil {
+		next := curr.Next
+		curr.Next = prev
+		prev = curr
+		curr = next
+	}
 }

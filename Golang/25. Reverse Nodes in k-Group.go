@@ -42,6 +42,7 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 				return hair.Next
 			}
 		}
+
 		nex := tail.Next                   // 反转后需要重新连接的下个节点
 		head, tail = myReverse(head, tail) // 反转，反转head到tail部分的链表
 		// 把子链表重新接回原链表，反转后与原先的链表都已断开
@@ -54,15 +55,16 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 	return hair.Next
 }
 
+// 反转链表
 func myReverse(head, tail *ListNode) (*ListNode, *ListNode) {
 	prev := tail.Next  // 添加dummy节点，等同于 var prev *ListNode
 	curr := head       // 从头开始
-	for prev != tail { // 206，这里循环条件不一样，因为tail.Next非空！
+	for prev != tail { // tail.Next可能非空！
 		next := curr.Next
 		// 调换位置
 		curr.Next = prev
 		prev = curr
 		curr = next
 	}
-	return tail, head // 注意顺序
+	return tail, head // 注意顺序，反转链表后首尾互换
 }
