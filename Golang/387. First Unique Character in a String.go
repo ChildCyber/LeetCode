@@ -4,7 +4,7 @@ package leetcode
 // https://leetcode.cn/problems/first-unique-character-in-a-string/
 // 找到它的第一个不重复的字符，并返回它的索引
 
-// 哈希表
+// 哈希表存储出现次数
 func firstUniqChar(s string) int {
 	// 对字符串进行两次遍历
 	result := make([]int, 26)

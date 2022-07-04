@@ -11,6 +11,6 @@ func sortedArrayToBST(nums []int) *TreeNode {
 	return &TreeNode{
 		Val:   nums[len(nums)/2], // 选取中间元素作为根节点，始终向下取整
 		Left:  sortedArrayToBST(nums[:len(nums)/2]),
-		Right: sortedArrayToBST(nums[len(nums)/2+1:]),
+		Right: sortedArrayToBST(nums[len(nums)/2+1:]), // nums[len(nums)/2]作为根节点，右子树需要从nums[len(nums)/2+1]开始
 	}
 }

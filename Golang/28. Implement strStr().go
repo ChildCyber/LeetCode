@@ -21,7 +21,7 @@ func strStr(haystack, needle string) int {
 		if haystack[i:i+n] == needle {
 			return i
 		}
-
 	}
+
 	return -1
 }
