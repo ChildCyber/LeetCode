@@ -38,14 +38,15 @@ func divide(dividend, divisor int) int {
 	}
 
 	// 根据除法定义，不停减去除数
+	// 翻倍步长快速逼近，每次步长加倍
 	for dividend >= divisor {
 		i := 1
 		tmp := divisor
 		for dividend >= tmp {
 			dividend -= tmp
 			ans += i
-			i = i << 1
-			tmp = tmp << 1
+			i <<= 1
+			tmp <<= 1
 		}
 	}
 
