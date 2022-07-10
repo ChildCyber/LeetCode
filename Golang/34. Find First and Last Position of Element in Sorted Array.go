@@ -9,7 +9,8 @@ func searchRange(nums []int, target int) []int {
 	return []int{searchFirstEqualElement(nums, target), searchLastEqualElement(nums, target)}
 }
 
-// 二分查找第一个与 target 相等的元素，时间复杂度 O(log n)
+// 二分查找第一个与 target 相等的元素
+// 时间复杂度 O(log n)
 func searchFirstEqualElement(nums []int, target int) int {
 	low, high := 0, len(nums)-1
 	for low <= high {
@@ -29,7 +30,8 @@ func searchFirstEqualElement(nums []int, target int) int {
 	return -1
 }
 
-// 二分查找最后一个与 target 相等的元素，时间复杂度 O(log n)
+// 二分查找最后一个与 target 相等的元素
+// 时间复杂度 O(log n)
 func searchLastEqualElement(nums []int, target int) int {
 	low, high := 0, len(nums)-1
 	for low <= high {
@@ -51,10 +53,11 @@ func searchLastEqualElement(nums []int, target int) int {
 
 // 二分
 func searchRange1(nums []int, target int) []int {
-	leftmost := sort.SearchInts(nums, target)
+	leftmost := sort.SearchInts(nums, target) // 第一个
 	if leftmost == len(nums) || nums[leftmost] != target {
 		return []int{-1, -1}
 	}
-	rightmost := sort.SearchInts(nums, target+1) - 1 // -1
+
+	rightmost := sort.SearchInts(nums, target+1) - 1 // 最后一个
 	return []int{leftmost, rightmost}
 }
