@@ -13,11 +13,10 @@ func numSquares(n int) int {
 	// i表示当前数字，j*j 表示平方数
 	dp := make([]int, n+1)
 	for i := 1; i <= n; i++ { // 从小到大地枚举i来计算dp[i]
-		minn := math.MaxInt32
-		for j := 1; j*j <= i; j++ {
-			minn = min(minn, dp[i-j*j])
+		dp[i] = i                   // 最坏的情况，i全由1相加
+		for j := 1; j*j <= i; j++ { // i的范围在0～√i之间
+			dp[i] = min(dp[i], dp[i-j*j]+1) // dp[i-j*j]+1表示减去一个完全平方数j的完全平方后的数量加1就等于dp[i]
 		}
-		dp[i] = minn + 1
 	}
 
 	return dp[n]
