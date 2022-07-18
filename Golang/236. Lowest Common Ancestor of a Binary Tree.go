@@ -3,6 +3,8 @@ package leetcode
 // 二叉树的最近公共祖先
 // https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/
 // 递归
+// 时间复杂度：O(n)
+// 空间复杂度：O(n)
 // • 最近公共祖先的情况：
 // ○ 树形一：root为p,q中的一个，这时公共祖先为root
 // ○ 树形二：p,q分别在root的左右子树上（p在左子树，q在右子树；还是p在右子树，q在左子树的情况都统一放在一起考虑）这时满足p,q的最近公共祖先的结点也只有root本身
@@ -41,6 +43,8 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 }
 
 // 存储父节点
+// 时间复杂度：O(n)
+// 空间复杂度：O(n)
 func lowestCommonAncestor1(root, p, q *TreeNode) *TreeNode {
 	parent := map[int]*TreeNode{}
 	visited := map[int]bool{}
