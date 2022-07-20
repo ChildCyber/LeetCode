@@ -2,11 +2,14 @@ package leetcode
 
 // 移除元素
 // https://leetcode-cn.com/problems/remove-element/
-// 类似283
-func removeElement(nums []int, val int) int { // 双指针
+// 类似283、26
+
+// 双指针
+func removeElement(nums []int, val int) int {
 	if len(nums) == 0 {
 		return 0
 	}
+
 	left := 0
 	for right := 0; right < len(nums); right++ {
 		if nums[right] != val {

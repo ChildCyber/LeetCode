@@ -19,6 +19,8 @@ func missingNumber(nums []int) int {
 
 // 数学
 // 高斯公式
+// 时间复杂度：O(n)
+// 空间复杂度：O(1)
 func missingNumberMath(nums []int) int {
 	n := len(nums)
 	total := n * (n + 1) / 2
