@@ -6,20 +6,20 @@ package leetcode
 
 // 迭代
 func swapPairs(head *ListNode) *ListNode {
-	dummyHead := &ListNode{Next: head}
-	temp := dummyHead // 表示当前到达的节点
-	for temp.Next != nil && temp.Next.Next != nil {
-		// 每次交换 temp 后面的两个节点
+	dummy := &ListNode{Next: head}                  // 哑节点，避免处理头节点交换的特殊情况
+	temp := dummy                                   // 表示当前到达的节点
+	for temp.Next != nil && temp.Next.Next != nil { // 都不为空，即还有一对节点可以交换
+		// 获取要交换的两个节点
 		node1 := temp.Next
 		node2 := temp.Next.Next
-		// 交换节点位置，从头到尾，node1和node2位置互换，temp的next指针指向node2
+		// 交换节点位置
 		temp.Next = node2
 		node1.Next = node2.Next
 		node2.Next = node1
-		// 重点，下次迭代时会用到，移动两个指针，到下次需要交换的节点的前一个位置
-		temp = node1 // temp移动到node1
+		// 移动temp指针到下一对的前一个位置
+		temp = node1
 	}
-	return dummyHead.Next
+	return dummy.Next
 }
 
 // 递归

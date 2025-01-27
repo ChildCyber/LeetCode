@@ -41,45 +41,37 @@ func isPalindromeRec(head *ListNode) bool {
 
 // 快慢指针
 // 找到中间结点，反转中间节点后面到结尾的所有节点。判断头节点开始的节点和中间节点往后开始的节点是否相等
-func isPalindromeLL(head *ListNode) bool {
+func isPalindromeFastSlowP(head *ListNode) bool {
 	if head == nil || head.Next == nil {
 		return true
 	}
 
-	res := true
-	// 寻找中间节点
-	p1 := head // 快慢指针，p1为中间节点
-	p2 := head
-	for p2.Next != nil && p2.Next.Next != nil {
-		p1 = p1.Next
-		p2 = p2.Next.Next
+	// 1. 使用快慢指针找到链表中点
+	slow, fast := head, head
+	for fast != nil && fast.Next != nil {
+		slow = slow.Next
+		fast = fast.Next.Next
 	}
 
-	// 反转链表后半部分
-	preMiddle := p1
-	preCurrent := p1.Next
-	for preCurrent.Next != nil {
-		current := preCurrent.Next
-		preCurrent.Next = current.Next
-		current.Next = preMiddle.Next
-		preMiddle.Next = current
+	// 2. 反转后半部分链表
+	var prev *ListNode
+	current := slow
+	for current != nil {
+		next := current.Next
+		current.Next = prev
+		prev = current
+		current = next
 	}
-	// 扫描表，判断是否回文
-	p1 = head
-	p2 = preMiddle.Next
-	for p1 != preMiddle {
-		if p1.Val == p2.Val {
-			p1 = p1.Next
-			p2 = p2.Next
-		} else {
-			res = false
-			break
-		}
-	}
-	if p1 == preMiddle {
-		if p2 != nil && p1.Val != p2.Val {
+
+	// 3. 比较前半部分和反转后的后半部分
+	firstHalf, secondHalf := head, prev
+	for secondHalf != nil {
+		if firstHalf.Val != secondHalf.Val {
 			return false
 		}
+		firstHalf = firstHalf.Next
+		secondHalf = secondHalf.Next
 	}
-	return res
+
+	return true
 }

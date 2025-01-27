@@ -6,10 +6,10 @@ package leetcode
 // 暴力
 func maxSubArrayForce(nums []int) int {
 	n := len(nums)
-	ans := nums[0]
+	ans := nums[0] // 处理数组中所有元素都为负数的情况
 	for i := 0; i < n; i++ {
 		sum := 0
-		for j := i; j < n; j++ { // [i:j]区间的子数组
+		for j := i; j < n; j++ { // [i:j]区间的子数组；j=i是为了避免子数组只包含一个元素的情况
 			sum += nums[j]
 			ans = max(sum, ans)
 		}
@@ -42,26 +42,35 @@ func maxSubArray(nums []int) int {
 }
 
 // 模拟
-// 不用建立dp数组，直接用sum变量来记录dp[i−1]的答案
+// kandane算法：以每个位置为结尾的最大子数组和，要么是当前元素本身，要么是当前元素加上以 *前一个位置为结尾* 的最大子数组和
 func maxSubArrayAnalog(nums []int) int {
 	if len(nums) == 1 {
 		return nums[0]
 	}
 
-	// 1. 如果之前的和<0，则重新计算
-	// 2. 如果之前的和>=0，则计入sum结果中
+	// 想象成一个"贪心"的过程，逐个考虑数组中的元素：
+	// 1. 如果之前的子数组和是负数，那么抛弃之前的子数组，从当前元素重新开始会更有利
+	// 2. 如果之前的子数组和是正数，那么加上当前元素可能会使和更大
 	// 3. 更新最大值
-	ans, sum := nums[0], 0
+	globalMax, curMax := nums[0], 0
 	for i := 0; i < len(nums); i++ {
-		sum += nums[i]
-		if sum > ans {
-			ans = sum
+		curMax += nums[i]
+		if curMax > globalMax {
+			globalMax = curMax
 		}
-		if sum < 0 {
-			sum = 0
+		if curMax < 0 { // 贪心:局部最优
+			curMax = 0
 		}
 	}
-	return ans
+	return globalMax
 }
 
 // 分治
+// 将数组分为左右两半
+// 最大子数组和可能出现在：
+// 左半部分
+// 右半部分
+// 跨越中间的部分
+// 递归求解左半部分和右半部分的最大子数组和
+// 计算跨越中间的最大子数组和（需要从中间向左右扩展）
+// 取三者中的最大值

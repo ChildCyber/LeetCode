@@ -10,3 +10,29 @@ func isSymetric(root *TreeNode) bool {
 	// 判断左右子树是否对称
 	return isSameTree(invertTree(root.Left) /*翻转左子树*/, root.Right) // leetcode 226, 100
 }
+
+func isSymmetric1(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	return isMirror(root.Left, root.Right)
+}
+
+// 辅助函数，判断两棵树是否镜像对称
+func isMirror(left, right *TreeNode) bool {
+	// 如果两个节点都为空，则对称
+	if left == nil && right == nil {
+		return true
+	}
+	// 如果只有一个节点为空，则不对称
+	if left == nil || right == nil {
+		return false
+	}
+	// 如果节点值不相等，则不对称
+	if left.Val != right.Val {
+		return false
+	}
+	// 递归检查左子树的左节点和右子树的右节点是否对称，
+	// 以及左子树的右节点和右子树的左节点是否对称
+	return isMirror(left.Left, right.Right) && isMirror(left.Right, right.Left)
+}

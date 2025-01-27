@@ -9,10 +9,10 @@ import (
 // 数组中的第K个最大元素
 // https://leetcode-cn.com/problems/kth-largest-element-in-an-array/
 /*
-在快排的 partition 操作中，每次 partition 操作结束都会返回一个点，这个标定点的下标和最终排序之
-后有序数组中这个元素所在的下标是一致的。利用这个特性，我们可以不断的划分数组区间，最终找到
-第 K 大的元素。执行一次 partition 操作以后，如果这个元素的下标比 K 小，那么接着就在后边的区间
-继续执行 partition 操作;如果这个元素的下标比 K 大，那么就在左边的区间继续执行 partition 操作;
+在快排的 partition 操作中，每次 partition 操作结束都会返回一个点，这个标定点的下标和最终排序之后有序数组中这个元素所在的下标是一致的。
+利用这个特性，可以不断的划分数组区间，最终找到第 K 大的元素。
+执行一次 partition 操作以后，如果这个元素的下标比 K 小，那么接着就在后边的区间继续执行 partition 操作;
+如果这个元素的下标比 K 大，那么就在左边的区间继续执行 partition 操作;
 如果相等就直接输出这个下标对应的数组元素即可。
 */
 // 实现快排，取第K个元素
@@ -34,10 +34,10 @@ func quickSelect(arr []int, left, right, index int) int {
 func randomPartition(arr []int, left, right int) int {
 	i := rand.Int()
 	arr[i], arr[right] = arr[right], arr[i]
-	return partition(arr, left, right)
+	return partition215(arr, left, right)
 }
 
-func partition(arr []int, left, right int) int {
+func partition215(arr []int, left, right int) int {
 	x := arr[right]
 	i := left - 1
 	for j := left; j < right; j++ {
@@ -50,7 +50,7 @@ func partition(arr []int, left, right int) int {
 	return i + 1
 }
 
-// 标准库直接排序，取第K个元素
+// 标准库排序，取第K个元素
 func findKthLargest1(nums []int, k int) int {
 	sort.Ints(nums)
 	return nums[len(nums)-k]

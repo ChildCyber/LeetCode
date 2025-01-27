@@ -12,3 +12,17 @@ func climbStairs(n int) int {
 	}
 	return dp[n]
 }
+
+// 只保留前两个值
+func climbStairs1(n int) int {
+	if n <= 2 {
+		return n
+	}
+
+	a, b := 1, 2
+	for i := 3; i <= n; i++ {
+		a, b = b, a+b
+	}
+
+	return b
+}

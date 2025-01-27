@@ -1,7 +1,5 @@
 package leetcode
 
-import "fmt"
-
 // 相交链表
 // https://leetcode-cn.com/problems/intersection-of-two-linked-lists/
 // 双指针
@@ -27,7 +25,6 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 		} else {
 			b = b.Next
 		}
-		fmt.Printf("a = %v b = %v\n", a, b)
 	}
 	return a
 }

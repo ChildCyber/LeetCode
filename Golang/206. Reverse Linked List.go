@@ -53,8 +53,30 @@ func reverseListStack(head *ListNode) *ListNode {
 		head = head.Next
 	}
 
+	/**
+	if len(stack) > 0 {
+		newHead := stack[len(stack)-1] // 保存栈顶节点作为新链表的头
+		current = newHead
+		stack = stack[:len(stack)-1] // 弹出栈顶
+
+		// 继续弹出并连接节点
+		for len(stack) > 0 {
+			currentNode := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			current.Next = currentNode
+			current = currentNode
+		}
+
+		// 重要：将最后一个节点的Next设置为nil，避免循环引用
+		current.Next = nil
+
+		return newHead
+	}
+	return nil
+	**/
+
 	dummy := &ListNode{}
-	newHead := dummy
+	newHead := dummy // 头节点为空节点
 	for len(stack) > 0 {
 		cur := stack[len(stack)-1]
 		cur.Next = nil // 防止节点间循环引用

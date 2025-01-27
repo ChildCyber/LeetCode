@@ -29,9 +29,9 @@ func detectCycle142(head *ListNode) *ListNode {
 	for slow != nil && fast != nil && fast.Next != nil {
 		slow = slow.Next
 		fast = fast.Next.Next
-		if slow == fast {
-			p := head
-			for p != slow {
+		if slow == fast { // 快慢指针相遇
+			p := head       // 快指针回到链表的头部
+			for p != slow { // 两指针同时向前走
 				p = p.Next
 				slow = slow.Next
 			}

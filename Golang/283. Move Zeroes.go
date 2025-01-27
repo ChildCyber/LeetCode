@@ -3,17 +3,39 @@ package leetcode
 // 移动零
 // https://leetcode-cn.com/problems/move-zeroes/
 
-// 双指针
-// 左指针指向当前已经处理好的序列的尾部，右指针指向待处理序列的头部
-// 右指针不断向右移动，每次右指针指向非零数，则将左右指针对应的数交换，同时左指针右移
-// 左指针左边均为非零数；右指针左边直到左指针处均为零
-func moveZeroes1(nums []int) {
-	left, right, n := 0, 0, len(nums)
-	for right < n {
-		if nums[right] != 0 {
-			nums[left], nums[right] = nums[right], nums[left]
-			left++
+// 冒泡
+func moveZeroesBubble(nums []int) {
+	for i := 0; i < len(nums); i++ {
+		swapped := false // 标记本轮是否发生了交换
+		for j := 0; j < len(nums)-i-1; j++ {
+			if nums[j] == 0 && nums[j+1] != 0 {
+				nums[j], nums[j+1] = nums[j+1], nums[j]
+				swapped = true // 发生了交换
+			}
 		}
-		right++
+		// 如果本轮没有发生交换，说明所有零已经移动到了末尾，可以提前终止
+		if !swapped {
+			break
+		}
+	}
+}
+
+// 快慢指针
+func moveZeroes1(nums []int) {
+	// 快指针：遍历整个数组，寻找非零元素
+	// 慢指针：标记下一个非零元素应该放置的位置
+	slow, fast, n := 0, 0, len(nums)
+	// 快指针遍历整个数组：
+	for fast < n {
+		// 如果快指针指向的元素不为零：
+		if nums[fast] != 0 {
+			// 将快指针指向的元素与慢指针指向的元素交换
+			nums[slow], nums[fast] = nums[fast], nums[slow]
+			// 慢指针向前移动一位
+			slow++
+		}
+		// 如果快指针指向的元素为零：
+		// 不做任何操作，继续移动快指针
+		fast++
 	}
 }

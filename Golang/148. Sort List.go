@@ -2,55 +2,117 @@ package leetcode
 
 // 排序链表
 // https://leetcode-cn.com/problems/sort-list/
-// 自顶向下归并排序
+
+// 合并两个有序链表
 func merge148(head1, head2 *ListNode) *ListNode { // 合并两个排序后的子链表
-	dummyHead := &ListNode{}
-	temp, temp1, temp2 := dummyHead, head1, head2
+	dummy := &ListNode{}
+	current, temp1, temp2 := dummy, head1, head2
 	for temp1 != nil && temp2 != nil {
 		if temp1.Val <= temp2.Val {
-			temp.Next = temp1
+			current.Next = temp1
 			temp1 = temp1.Next
 		} else {
-			temp.Next = temp2
+			current.Next = temp2
 			temp2 = temp2.Next
 		}
-		temp = temp.Next
+		current = current.Next
 	}
 	if temp1 != nil {
-		temp.Next = temp1
+		current.Next = temp1
 	} else if temp2 != nil {
-		temp.Next = temp2
+		current.Next = temp2
 	}
-	return dummyHead.Next
+	return dummy.Next
 }
 
-func sort148(head, tail *ListNode) *ListNode { // 递归
-	// 1. 找到链表的中点，以中点为分界，将链表拆分成两个子链表。寻找链表的中点可以使用快慢指针的做法，快指针每次移动 2 步，慢指针每次移动 1 步，当快指针到达链表末尾时，慢指针指向的链表节点即为链表的中点。
-	// 2. 对两个子链表分别排序。
-	// 3. 将两个排序后的子链表合并，得到完整的排序后的链表。
-
-	// 递归的终止条件是链表的节点个数小于或等于 1，当链表为空或者链表只包含 1 个节点时，不需要对链表进行拆分和排序。
-	if head == nil {
-		return head
-	}
-	if head.Next == tail { // 把tail看作nil
-		head.Next = nil
-		return head
-	}
-
-	slow, fast := head, head
-	for fast != tail {
+// 使用快慢指针找到链表中点
+func findMiddle(head *ListNode) *ListNode {
+	slow, fast := head, head.Next
+	for fast != nil && fast.Next != nil {
 		slow = slow.Next
-		fast = fast.Next
-		if fast != tail { // 快指针走两步
-			fast = fast.Next
+		fast = fast.Next.Next
+	}
+	return slow
+}
+
+// 自顶向下归并排序
+// 递归
+// 时间复杂度：O(n log n)
+// 空间复杂度：O(log n)
+func sortListTopDown(head *ListNode) *ListNode {
+	// 基线条件：空链表或单节点链表已经有序
+	if head == nil || head.Next == nil {
+		return head
+	}
+
+	// 找到链表中点
+	mid := findMiddle(head)
+
+	// 分割链表
+	rightHead := mid.Next
+	mid.Next = nil // 切断链表
+
+	// 递归排序左右两部分
+	left := sortListTopDown(head)
+	right := sortListTopDown(rightHead)
+
+	// 合并两个有序链表
+	return merge148(left, right)
+}
+
+// 自底向上归并排序
+// 迭代
+// 时间复杂度：O(n log n)
+// 空间复杂度：O(1)
+func sortListBottomUp(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+
+	// 获取链表长度
+	length := 0
+	for node := head; node != nil; node = node.Next {
+		length++
+	}
+
+	dummy := &ListNode{Next: head}
+	// 子链表大小从1开始，每次翻倍
+	for subLen := 1; subLen < length; subLen *= 2 {
+		prev, curr := dummy, dummy.Next
+		for curr != nil {
+			// 获取第一个子链表（长度为subLen）
+			left := curr
+			for i := 1; i < subLen && curr.Next != nil; i++ {
+				curr = curr.Next
+			}
+
+			// 获取第二个子链表（长度为subLen）
+			right := curr.Next
+			curr.Next = nil // 切断第一个子链表
+			curr = right
+			for i := 1; i < subLen && curr != nil && curr.Next != nil; i++ {
+				curr = curr.Next
+			}
+
+			// 保存剩余部分
+			var next *ListNode
+			if curr != nil {
+				next = curr.Next
+				curr.Next = nil // 切断第二个子链表
+			}
+
+			// 合并两个子链表
+			merged := merge148(left, right)
+			prev.Next = merged
+			// 移动到合并后链表的末尾
+			for prev.Next != nil {
+				prev = prev.Next
+			}
+
+			// 推进到下一组子链表
+			curr = next
 		}
 	}
 
-	mid := slow
-	return merge148(sort148(head, mid), sort148(mid, tail))
-}
-
-func sortList(head *ListNode) *ListNode {
-	return sort148(head, nil)
+	return dummy.Next
 }

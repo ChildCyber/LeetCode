@@ -3,26 +3,27 @@ package leetcode
 // 删除链表的倒数第N个结点
 // https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/
 // 快慢指针
-func removeNthFromEnd1(head *ListNode, n int) *ListNode {
+func removeNthFromEndFastSlow(head *ListNode, n int) *ListNode {
 	// https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/solution/dong-hua-tu-jie-leetcode-di-19-hao-wen-ti-shan-chu/
-	dummy := &ListNode{Next: head}
-	first, second := head, dummy
+	dummy := &ListNode{Next: head} // 哑节点，处理删除 头节点 的特殊情况
+	fast, slow := head, dummy
 	for i := 0; i < n; i++ { // 先走n次
-		first = first.Next
+		fast = fast.Next
 	}
-	for ; first != nil; first = first.Next {
-		second = second.Next
+	for ; fast != nil; fast = fast.Next { // 快慢指针同时有移动
+		slow = slow.Next
 	}
-	second.Next = second.Next.Next // 删除倒数第N个结点
+	slow.Next = slow.Next.Next // 删除倒数第n个结点
 	return dummy.Next
 }
 
-// 计算链表长度
+// 先计算链表长度再删除
 func removeNthFromEnd(head *ListNode, n int) *ListNode {
 	length := 0
 	cur := head
-	for ; head != nil; head = head.Next {
+	for cur != nil {
 		length++
+		cur = cur.Next
 	}
 
 	dummy := &ListNode{0, head}

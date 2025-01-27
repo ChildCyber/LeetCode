@@ -6,7 +6,7 @@ package leetcode
 func hasCycle(head *ListNode) bool {
 	// 从同一起点出发
 	fast, slow := head, head
-	for slow != nil && fast != nil && fast.Next != nil { // 头节点不为空或只有一个节点
+	for fast != nil && fast.Next != nil { // 头节点不为空或只有一个节点
 		fast = fast.Next.Next // 移动指针
 		slow = slow.Next
 		if fast == slow {

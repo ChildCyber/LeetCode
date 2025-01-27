@@ -9,11 +9,12 @@ func inorderTraversal(root *TreeNode) []int {
 	return result
 }
 
-func inorder(root *TreeNode, output *[]int) {
-	if root != nil {
-		inorder(root.Left, output)
-		*output = append(*output, root.Val)
-		inorder(root.Right, output)
+// 避免每次递归都会创建新的切片，导致多次分配内存
+func inorder(node *TreeNode, output *[]int) {
+	if node != nil {
+		inorder(node.Left, output)
+		*output = append(*output, node.Val)
+		inorder(node.Right, output)
 	}
 }
 

@@ -20,26 +20,28 @@ func mergeTwoListsRec(l1, l2 *ListNode) *ListNode {
 }
 
 // 迭代
-func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
-	head := &ListNode{} // 额外的头节点，比较容易地返回合并后的链表
-	cur := head         // 变换cur节点的Next指针
-	for l1 != nil || l2 != nil {
-		if l1 != nil && l2 != nil { // 都非空
-			if l1.Val < l2.Val { // 比较大小
-				cur.Next = l1
-				l1 = l1.Next
-			} else {
-				cur.Next = l2
-				l2 = l2.Next
-			}
-			cur = cur.Next // cur指针向后走
-		} else if l1 != nil { // l1非空，l2空
-			cur.Next = l1
-			break
-		} else { // l2非空，l1空
-			cur.Next = l2
-			break
+func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
+	dummy := &ListNode{} // 哑节点，比较容易地返回合并后的链表
+	head := dummy
+
+	for list1 != nil && list2 != nil { // 都非空
+		// 比较大小
+		if list1.Val < list2.Val {
+			head.Next = list1
+			list1 = list1.Next
+		} else {
+			head.Next = list2
+			list2 = list2.Next
 		}
+		head = head.Next
 	}
-	return head.Next
+
+	// 处理剩余的链表部分
+	if list1 != nil {
+		head.Next = list1
+	} else {
+		head.Next = list2
+	}
+
+	return dummy.Next
 }

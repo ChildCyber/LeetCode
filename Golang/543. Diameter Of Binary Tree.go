@@ -9,8 +9,9 @@ package leetcode
 // 而任意一条路径均可以被看作由某个节点为起点，从其左儿子和右儿子向下遍历的路径拼接得到。
 // 找出二叉树中最长的最短路径（求出长度即可）
 func diameterOfBinaryTree(root *TreeNode) int {
-	ans := 0 // 最大直径
+	maxDiameter := 0 // 最大直径
 
+	// 定义辅助函数计算节点高度并更新直径
 	var depth func(*TreeNode) int
 	depth = func(node *TreeNode) int { // 返回该节点为根的子树的深度
 		if node == nil {
@@ -19,10 +20,10 @@ func diameterOfBinaryTree(root *TreeNode) int {
 		// 递归得到左右子树高度
 		left := depth(node.Left)
 		right := depth(node.Right)
-		ans = max(left+right, ans)  // 记录目前的最大直径，最大直径=左子树高度+右子树高度
-		return max(left, right) + 1 // 返回以当前节点为根的二叉树的最大深度
+		maxDiameter = max(left+right, maxDiameter) // 记录目前的最大直径，最大直径=左子树高度+右子树高度
+		return max(left, right) + 1                // 返回以当前节点为根的二叉树的最大深度
 	}
 
-	depth(root)
-	return ans
+	depth(root) // 从根节点开始递归
+	return maxDiameter
 }
