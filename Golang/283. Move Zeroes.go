@@ -21,11 +21,11 @@ func moveZeroesBubble(nums []int) {
 }
 
 // 快慢指针
-func moveZeroes1(nums []int) {
+func moveZeroes(nums []int) {
 	// 快指针：遍历整个数组，寻找非零元素
 	// 慢指针：标记下一个非零元素应该放置的位置
 	slow, fast, n := 0, 0, len(nums)
-	// 快指针遍历整个数组：
+	// 快指针遍历整个数组
 	for fast < n {
 		// 如果快指针指向的元素不为零：
 		if nums[fast] != 0 {
@@ -34,8 +34,7 @@ func moveZeroes1(nums []int) {
 			// 慢指针向前移动一位
 			slow++
 		}
-		// 如果快指针指向的元素为零：
-		// 不做任何操作，继续移动快指针
+		// 如果快指针指向的元素为零：不做任何操作，继续移动快指针
 		fast++
 	}
 }

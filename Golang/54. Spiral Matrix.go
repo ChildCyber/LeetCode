@@ -38,46 +38,45 @@ func spiralOrder(matrix [][]int) []int {
 // 按层模拟
 // 将矩阵看成若干层，首先输出最外层的元素，其次输出次外层的元素，直到输出最内层的元素
 func spiralOrder1(matrix [][]int) []int {
-	// 提前算出一共多少个元素，一圈一圈地遍历矩阵，停止条件就是遍历了所有元素(count == sum)
-	if len(matrix) == 0 || len(matrix[0]) == 0 {
+	if len(matrix) == 0 || len(matrix[0]) == 0 { // 如果 matrix 为空，直接访问 matrix[0] 会 panic
 		return []int{}
 	}
-	var (
-		rows, columns = len(matrix), len(matrix[0])
-		order         = make([]int, rows*columns)
-		index         = 0
-		// top、left、right、bottom 分别是剩余区域的上、左、右、下的下标
-		left, right, top, bottom = 0, columns - 1, 0, rows - 1
-		// 上 (top, left)...(top, right)
-		// 右 (top+1, right)...(bottom, right)
-		// 下 (bottom, right-1)...(bottom, left+1)
-		// 左 (bottom, left)...(top+1, left)
-	)
-	// 按圈遍历矩阵
-	for left <= right && top <= bottom { // 只剩一行或一列时
-		for column := left; column <= right; column++ { // 从左到右遍历上侧元素，依次为 (top,left) 到 (top,right)，right作为边界，以列作为索引
-			order[index] = matrix[top][column]
-			index++
+
+	rows, columns := len(matrix), len(matrix[0])
+	order := make([]int, 0, rows*columns)
+	// 定义四个边界
+	left, right, top, bottom := 0, columns-1, 0, rows-1
+
+	for left <= right && top <= bottom { // 只要有一个边界条件不满足，就意味着整个矩阵已经遍历完毕
+		// 从左到右遍历上边界
+		for col := left; col <= right; col++ {
+			order = append(order, matrix[top][col])
 		}
-		for row := top + 1; row <= bottom; row++ { // 从上到下遍历右侧元素，依次为 (top+1,right) 到 (bottom,right)，bottom作为边界，以行作为索引
-			order[index] = matrix[row][right]
-			index++
+		top++ // 上边界下移
+
+		// 从上到下遍历右边界
+		for row := top; row <= bottom; row++ {
+			order = append(order, matrix[row][right])
 		}
-		if left < right && top < bottom { // 只剩一行或一列时不执行
-			for column := right - 1; column > left; column-- { // 从右到左，left作为边界（不可以等于），以列作为索引
-				order[index] = matrix[bottom][column]
-				index++
+		right-- // 右边界左移
+
+		// 检查是否还有行需要处理
+		if top <= bottom {
+			// 从右到左遍历下边界
+			for col := right; col >= left; col-- {
+				order = append(order, matrix[bottom][col])
 			}
-			for row := bottom; row > top; row-- { // 从下到上，top作为边界（不可以等于），以行作为索引
-				order[index] = matrix[row][left]
-				index++
-			}
+			bottom-- // 下边界上移
 		}
-		// 最外圈结束，进入到里一圈
-		left++
-		right--
-		top++
-		bottom--
+
+		// 检查是否还有列需要处理
+		if left <= right {
+			// 从下到上遍历左边界
+			for row := bottom; row >= top; row-- {
+				order = append(order, matrix[row][left])
+			}
+			left++ // 左边界右移
+		}
 	}
 	return order
 }

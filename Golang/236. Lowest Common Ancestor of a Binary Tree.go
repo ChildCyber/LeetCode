@@ -25,21 +25,21 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 		return root
 	}
 
-	// 通过递归对二叉树进行先序遍历，当遇到节点 p 或 q 时返回
-	// 分解为求左子树的子问题和右子树的子问题，注意是后序遍历
+	// 递归查找左右子树
 	// 子问题：左右子树是否分别包含p,q
 	left := lowestCommonAncestor(root.Left, p, q)
 	right := lowestCommonAncestor(root.Right, p, q)
-	// 左右子树都有则返回root
+
+	// 情况1：p和q分别在左右子树，当前节点是LCA
 	if left != nil && right != nil {
 		return root
 	}
 
 	// 如果左右子树中有一个子问题没得到结果，则返回得到结果的子问题
 	if left == nil {
-		return right
+		return right // 情况2：p和q都在右子树
 	}
-	return left
+	return left // 情况3：p和q都在左子树
 }
 
 // 存储父节点
@@ -63,12 +63,15 @@ func lowestCommonAncestor1(root, p, q *TreeNode) *TreeNode {
 			dfs(r.Right)
 		}
 	}
+	// 从根节点开始遍历，同时用或哈希表记录每个节点的父节点，直到找到p和q
 	dfs(root)
 
+	// 从p节点开始，向上回溯到根节点，记录路径上的所有节点
 	for p != nil {
 		visited[p.Val] = true
 		p = parent[p.Val]
 	}
+	// 从q节点开始向上回溯，检查每个节点是否在p的路径集合中，第一个在p路径中出现的节点就是LCA
 	for q != nil {
 		if visited[q.Val] {
 			return q

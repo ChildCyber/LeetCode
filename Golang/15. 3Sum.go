@@ -6,7 +6,7 @@ import "sort"
 // https://leetcode-cn.com/problems/3sum/
 // 暴力
 // 三重循环，分别找出三个元素再判断和是否为0
-func threeSumForce(nums []int) [][]int {
+func threeSumBrute(nums []int) [][]int {
 	sort.Ints(nums) // 排序，要求不可以包含重复的三元组
 	ans := make([][]int, 0)
 	n := len(nums)
@@ -28,84 +28,73 @@ func threeSumForce(nums []int) [][]int {
 	return ans
 }
 
-// 排序 + 双指针
+// 排序+双指针
 // 时间复杂度：O(N^2)，其中 N 是数组 nums 的长度
 // 空间复杂度：O(logN)
 func threeSum(nums []int) [][]int {
+	/**
+	步骤：
+	1. 排序
+	重复的数字会挨在一起，便于跳过重复；可以按顺序处理，不会漏掉也不会重复
+	2. 固定一个数（最外层循环），把三数问题转化为两数问题
+	遍历数组，把每个数当作"第一个数"，然后在它后面的数字中找另外两个数
+	3. 在剩余部分使用双指针找另外两个数
+	双指针技巧：
+	左指针从剩余部分开头开始
+	右指针从剩余部分末尾开始
+	根据当前和与目标值的比较移动指针
+	具体移动规则：
+	当前和 < 目标值：左指针右移（增加和）
+	当前和 > 目标值：右指针左移（减少和）
+	当前和 = 目标值：找到一组解，同时移动两个指针
+	4. 跳过重复（避免重复组合）
+	跳过时机：
+	固定第一个数时：如果当前数和前一个数相同，跳过
+	找到一组解后：跳过左指针和右指针指向的重复数字
+	**/
+
 	// 排序，减少重复
 	sort.Ints(nums)
-	// 双指针
-	// 第二重循环和第三重循环实际上是并列的关系
-	// 保持第二重循环不变，而将第三重循环变成一个从数组最右端开始向左移动的指针
-	result, start, end, index, addNum, length := make([][]int, 0), 0, 0, 0, 0, len(nums)
-	// 第一重循环
-	for index = 1; index < length-1; index++ { // 注意：从1开始
-		start, end = 0, length-1
-		// 只有和上一次枚举的元素不相同，才会进行枚举
-		if index > 1 && nums[index] == nums[index-1] {
-			start = index - 1
-		}
 
-		for start < index && end > index {
-			// 第三重循环「跳到」下一个不相同的元素
-			if start > 0 && nums[start] == nums[start-1] {
-				start++
-				continue
-			}
-			if end < length-1 && nums[end] == nums[end+1] {
-				end--
-				continue
-			}
-
-			// 相加和
-			addNum = nums[start] + nums[end] + nums[index]
-			if addNum == 0 {
-				result = append(result, []int{nums[start], nums[index], nums[end]})
-				start++
-				end--
-			} else if addNum > 0 { // 右指针左移
-				end--
-			} else { // 左指针右移
-				start++
-			}
-		}
-	}
-	return result
-}
-
-func threeSum1(nums []int) [][]int {
-	n := len(nums)
 	ans := make([][]int, 0)
-	sort.Ints(nums) // 排序
-
-	// 枚举 a
-	for first := 0; first < n; first++ { // 注意：从0开始
-		// 需要和上一次枚举的数不相同
-		if first > 0 && nums[first] == nums[first-1] { // 为了防止数组越界，需要跳过下标为0的情况
+	length := len(nums)
+	// 外层循环，固定第一个数
+	for i := 0; i < length-2; i++ { // 第一个数至少需要留出两个位置给另外两个数，如果 i 达到 length-2，那么它后面只剩下一个位置（length-1），无法形成三个数的组合
+		// 跳过重复的固定数（避免重复三元组）
+		if i > 0 && nums[i] == nums[i-1] { // 跳过i==0情况
 			continue
 		}
 
-		// 确定了第一个元素a，剩下的就是two sum
-		// c 对应的指针初始指向数组的最右端
-		third := n - 1
-		target := -1 * nums[first] // 三数相加和为0
-		// 枚举 b
-		for second := first + 1; second < n; second++ { // 从first右边开始
-			// 需要和上一次枚举的数不相同
-			if second > first+1 && nums[second] == nums[second-1] {
-				continue
-			}
-
-			// 不断左移 c，需要保证 b 的指针在 c 的指针的左侧
-			for second < third && nums[second]+nums[third] > target {
-				third--
-			}
-			// 如果指针重合，随着 b 后续的增加就不会有满足 a+b+c=0 并且 b<c 的 c 了，可以退出循环
-			if second == third {
-				break
-			}
-			if nums[second]+nums[third] == target {
-				ans = append(ans, []int{nums[first], nums[second], nums[third]})
+		left, right := i+1, length-1 // 初始化双指针
+		target := -nums[i]           // 需要找到两数之和等于-target
+		for left < right {
+			sum := nums[left] + nums[right]
+			if sum == target {
+				// 找到一组解
+				ans = append(ans, []int{nums[i], nums[left], nums[right]})
+				// 移动指针并跳过重复
+				left++
+				right--
+				for left < right && nums[left] == nums[left-1] {
+					left++
+				}
+				for left < right && nums[right] == nums[right+1] {
+					right--
+				}
+			} else if sum < target {
+				// 和太小，左指针右移
+				left++
+				// 跳过重复的左指针元素（可选优化）
+				for left < right && nums[left] == nums[left-1] {
+					left++
+				}
+			} else {
+				// 和太大，右指针左移
+				right--
+				// 跳过重复的右指针元素（可选优化）
+				for left < right && nums[right] == nums[right+1] {
+					right--
+				}
 			}
 		}
 	}

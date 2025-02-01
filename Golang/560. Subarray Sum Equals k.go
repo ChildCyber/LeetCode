@@ -44,17 +44,35 @@ func subarraySumForce1(nums []int, k int) int {
 // 时间复杂度：O(n)
 // 空间复杂度：O(n)
 func subarraySum(nums []int, k int) int {
-	count, pre := 0, 0          // 统计，前缀和（前面数字相加之和）
-	preSumFreq := map[int]int{} // key为前缀和，value为对应的前缀和出现的次数
-	preSumFreq[0] = 1           // 对于下标为 0 的元素，前缀和为 0，个数为 1
+	/*
+		问题转换：子数组和问题 → 两数之差问题
+		前缀和数组：第i个元素表示从数组开头到第i个元素（包括第i个元素）的和
+		子数组[i, j]的和 = prefix[j] - prefix[i-1]（前缀和[j] 表示从开始到j的所有元素和，前缀和[i] 表示从开始到i-1的所有元素和）
+		要找的是 prefix[j] - prefix[i-1] = k，等价于 prefix[i-1] = prefix[j] - k
+		这意味着：对于每个位置j，需要找在j之前有多少个位置i，使得prefix[i] = prefix[j] - k
+	*/
+
+	count := 0                      // 和为 k 的子数组数量
+	currentSum := 0                 // 存储遍历过程中的 当前 前缀和
+	prefixSumCount := map[int]int{} // 记录每个前缀和出现的次数，{前缀和: 出现次数}
+	prefixSumCount[0] = 1           // 子数组[0,j]的和 = prefix[j] - prefix[-1]，但prefix[-1]不存在，约定prefix[-1] = 0，所以子数组[0,j]的和 = prefix[j] - 0 = prefix[j]；这样可以方便地处理那些从数组第一个元素开始就满足条件的子数组
+	// 遍历数组中的每一个数字
 	for i := 0; i < len(nums); i++ {
-		pre += nums[i]
-		// 先获得前缀和为 pre-k 的个数，有则加到计数变量里
-		if _, ok := preSumFreq[pre-k]; ok {
-			count += preSumFreq[pre-k]
+		// 更新当前的 前缀和
+		currentSum += nums[i]
+
+		// 要寻找的目标是 oldSum = currentSum - k
+		// 如果在之前的位置，存在一个前缀和等于 oldSum，
+		// 那么从那个位置之后到当前位置的子数组的和就等于 k。
+		need := currentSum - k
+
+		// 在哈希表中查找 need 出现过多少次，并累加到 count 中
+		if times, ok := prefixSumCount[need]; ok {
+			count += times
 		}
-		// 然后维护 preSumFreq 的定义
-		preSumFreq[pre] += 1
+
+		// 将当前的前缀和存入哈希表中，并更新其出现次数
+		prefixSumCount[currentSum] += 1
 	}
 	return count
 }

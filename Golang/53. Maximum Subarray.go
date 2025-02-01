@@ -65,6 +65,41 @@ func maxSubArrayAnalog(nums []int) int {
 	return globalMax
 }
 
+// 前缀和
+func maxSubArrayPrefixSum(nums []int) int {
+	/*
+		1. 计算前缀和数组
+		2. 遍历数组，维护一个min_prefix变量，记录历史最小前缀和
+		3. 对于每个位置，计算当前前缀和 - min_prefix，更新最大值
+		要最大化这个差值需要：
+		最大化prefix[j]（当前前缀和）
+		最小化prefix[i-1]（历史最小前缀和）
+	*/
+	if len(nums) == 0 {
+		return 0
+	}
+
+	prefixSum := 0
+	minPrefix := 0 // 前缀和的最小值，初始为0（空数组的前缀和）
+	maxSum := nums[0]
+
+	for i := 0; i < len(nums); i++ {
+		prefixSum += nums[i]
+
+		// 更新最大子数组和：当前前缀和 - 历史最小前缀和
+		if prefixSum-minPrefix > maxSum {
+			maxSum = prefixSum - minPrefix
+		}
+
+		// 更新历史最小前缀和
+		if prefixSum < minPrefix {
+			minPrefix = prefixSum
+		}
+	}
+
+	return maxSum
+}
+
 // 分治
 // 将数组分为左右两半
 // 最大子数组和可能出现在：

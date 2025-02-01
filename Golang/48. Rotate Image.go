@@ -2,6 +2,21 @@ package leetcode
 
 // 旋转图像
 // https://leetcode-cn.com/problems/rotate-image
+// 辅助数组
+func rotateCopy(matrix [][]int) {
+	n := len(matrix)
+	tmp := make([][]int, n)
+	for i := range tmp {
+		tmp[i] = make([]int, n)
+	}
+	for i, row := range matrix {
+		for j, v := range row {
+			tmp[j][n-1-i] = v
+		}
+	}
+	copy(matrix, tmp) // 拷贝 tmp 矩阵每行的引用
+}
+
 // 原地旋转，将图像顺时针旋转 90 度
 func rotateInPlace(matrix [][]int) {
 	// 第 i 行 -> 第 n-1-i 列
@@ -14,6 +29,22 @@ func rotateInPlace(matrix [][]int) {
 			// 首尾相接，元素旋转
 			matrix[i][j], matrix[n-j-1][i], matrix[n-i-1][n-j-1], matrix[j][n-i-1] =
 				matrix[n-j-1][i], matrix[n-i-1][n-j-1], matrix[j][n-i-1], matrix[i][j]
+		}
+	}
+}
+
+// 分层旋转
+func rotateInPlaceLayer(matrix [][]int) {
+	// 对于 n×n 矩阵，矩阵中的元素 matrix[row][col]，在旋转后新位置为 matrix[col][n−row−1]
+	// 第 i 行 -> 第 n-1-i 列； 第 j 列 -> 第 j 行
+	n := len(matrix)
+	for i := 0; i < n/2; i++ { // 当前处理的层数（从外到内）
+		for j := i; j < n-i-1; j++ { // 在当前层中要处理的元素位置：从左上角到右上角
+			temp := matrix[i][j]
+			matrix[i][j] = matrix[n-j-1][i]
+			matrix[n-j-1][i] = matrix[n-i-1][n-j-1]
+			matrix[n-i-1][n-j-1] = matrix[j][n-i-1]
+			matrix[j][n-i-1] = temp
 		}
 	}
 }

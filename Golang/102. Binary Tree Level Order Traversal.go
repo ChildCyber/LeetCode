@@ -35,4 +35,24 @@ func levelOrder(root *TreeNode) [][]int { // 返回一个二维数组
 	return res
 }
 
-// DFS
+// DFS递归
+func levelOrderDFS(root *TreeNode) [][]int {
+	ans := make([][]int, 0)
+	var traverse func(*TreeNode, int, [][]int)
+	traverse = func(node *TreeNode, level int, res [][]int) {
+		if node == nil {
+			return
+		}
+		if len(ans) <= level {
+			ans = append(ans, []int{})
+		}
+		// 将当前节点的值添加到对应层的列表中
+		ans[level] = append(ans[level], node.Val)
+		// 递归遍历左右子树，层数+1
+		traverse(node.Left, level+1, ans)
+		traverse(node.Right, level+1, ans)
+	}
+	// 递归遍历
+	traverse(root, 0, ans)
+	return ans
+}

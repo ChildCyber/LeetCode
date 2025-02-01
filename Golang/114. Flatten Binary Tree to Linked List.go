@@ -2,7 +2,7 @@ package leetcode
 
 // 二叉树展开为链表
 // https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list
-// 先序遍历-递归
+// 先序遍历-非原地
 func flatten(root *TreeNode) {
 	list := preorderTraversal(root)
 	for i := 1; i < len(list); i++ { // 铺开二叉树
@@ -12,7 +12,7 @@ func flatten(root *TreeNode) {
 }
 
 func preorderTraversal(root *TreeNode) []*TreeNode {
-	list := []*TreeNode{}
+	list := make([]*TreeNode, 0)
 	// 先序遍历
 	if root != nil {
 		list = append(list, root)
@@ -22,7 +22,7 @@ func preorderTraversal(root *TreeNode) []*TreeNode {
 	return list
 }
 
-// 递归
+// 递归-原地
 func flattenRec(root *TreeNode) {
 	if root == nil {
 		return

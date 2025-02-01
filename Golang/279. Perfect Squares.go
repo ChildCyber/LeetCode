@@ -7,10 +7,13 @@ import "math"
 // 完全平方数是一个整数，其值等于另一个整数的平方
 
 // 动态规划
+// 看作是一个"硬币找零"问题的变种
 func numSquares(n int) int {
-	// dp[i]表示最少需要多少个数的平方来表示整数i
-	// 状态转移方程：dp[i] = MIN(dp[i], dp[i - j * j] + 1)
+	// 定义状态：dp[i]表示组成 i 所需的最少平方数
+	// 状态转移：对于每个 i，尝试所有可能的平方数 j²
+	// 状态转移方程：dp[i] = min(dp[i], dp[i - j * j] + 1)
 	// i表示当前数字，j*j 表示平方数
+	// 意思是要组成数字 i，可以先组成数字 i - j²，然后加上一个 j² 平方数
 	dp := make([]int, n+1)
 	for i := 1; i <= n; i++ { // 从小到大地枚举i来计算dp[i]
 		dp[i] = i                   // 最坏的情况，i全由1相加
@@ -22,13 +25,46 @@ func numSquares(n int) int {
 	return dp[n]
 }
 
-// 数学
+// 动态规划优化
+func numSquares1(n int) int {
+	dp := make([]int, n+1)
+
+	// 初始化：最坏情况是用i个1相加
+	for i := range dp {
+		dp[i] = i
+	}
+	dp[0] = 0
+
+	// 计算所有完全平方数
+	maxSquare := int(math.Sqrt(float64(n)))
+	squares := make([]int, maxSquare)
+	for i := 1; i <= maxSquare; i++ {
+		squares[i-1] = i * i
+	}
+
+	// 填充DP表
+	for i := 1; i <= n; i++ {
+		for _, square := range squares {
+			if square > i {
+				break // 平方数太大，跳过
+			}
+			// 状态转移
+			dp[i] = min(dp[i], dp[i-square]+1)
+		}
+	}
+
+	return dp[n]
+}
+
+// 数学-拉格朗日四平方定理
+// 任何正整数都可以表示为不超过4个整数的平方和。也就是说答案只可能是1, 2, 3或4。
 // 判断是否为完全平方数
 func isPerfectSquare(x int) bool {
 	y := int(math.Sqrt(float64(x)))
 	return y*y == x
 }
 
+// 勒让德三平方定理：一个数可以表示为三个平方数之和，当且仅当它不能表示为 4^a(8b+7) 的形式
 // 判断是否能表示为 4^k*(8m+7)
 func checkAnswer4(x int) bool {
 	for x%4 == 0 {
@@ -38,12 +74,15 @@ func checkAnswer4(x int) bool {
 }
 
 func numSquaresMath(n int) int {
+	// 检查是否是完全平方数
 	if isPerfectSquare(n) {
 		return 1
 	}
+	// 检查是否满足勒让德条件
 	if checkAnswer4(n) {
 		return 4
 	}
+	// 检查是否可以表示为两个平方数之和
 	for i := 1; i*i <= n; i++ {
 		j := n - i*i
 		if isPerfectSquare(j) {

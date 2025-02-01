@@ -16,31 +16,31 @@ func searchMatrix(matrix [][]int, target int) bool {
 	return false
 }
 
-// 二分查找
-func searchMatrix2BS(matrix [][]int, target int) bool {
-	if len(matrix) == 0 {
+// 对每行进行二分查找
+func searchMatrixBS(matrix [][]int, target int) bool {
+	if len(matrix) == 0 || len(matrix[0]) == 0 {
 		return false
 	}
 
 	for _, row := range matrix {
-		low, high := 0, len(matrix[0])
+		low, high := 0, len(matrix[0])-1
 		for low <= high {
-			mid := low + (low+high)>>1
-			if row[mid] > target {
-				high = mid - 1
-			} else if row[mid] < target {
-				low = mid + 1
-			} else {
+			mid := low + (high-low)/2
+			if row[mid] == target {
 				return true
+			} else if row[mid] > target {
+				high = mid - 1
+			} else {
+				low = mid + 1
 			}
 		}
 	}
 	return false
 }
 
-// Z 字形查找
-func searchMatrix2(matrix [][]int, target int) bool {
-	if len(matrix) == 0 {
+// Z 字形查找（二分变种）
+func searchMatrixZ(matrix [][]int, target int) bool {
+	if len(matrix) == 0 || len(matrix[0]) == 0 {
 		return false
 	}
 

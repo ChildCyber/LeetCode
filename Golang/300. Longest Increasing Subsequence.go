@@ -6,7 +6,7 @@ package leetcode
 // 暴力
 // 通过回溯获取数组的所有子序列，再对这些子串再依次判定是否为「严格上升」
 func lengthOfLISBacktrace(nums []int) int {
-	// dfs O(N*2^n)
+	// dfs437 O(N*2^n)
 	stack := make([]int, 0, 16)
 	ans := 0
 
@@ -36,21 +36,29 @@ func lengthOfLISBacktrace(nums []int) int {
 
 // 动态规划
 // 时间复杂度：O(n^2)
-// 空间复杂度：O)=(n)
+// 空间复杂度：O(n)
 func lengthOfLIS(nums []int) int {
-	// dp[i] 代表 [0,i] 范围内,选择数字 nums[i] 为结尾可以获得的最⻓上升子序列的⻓度。
-	// 状态转移方程为 dp[i] = max(dp[j]) + 1 ,其中 j < i && nums[j] > nums[i] ,取所有满足条件的最大值。
-	dp, ans := make([]int, len(nums)+1), 0 // 多了个dp[0]，长度需要加1
-	dp[0] = 0                              // 不选数字，最⻓上升子序列的⻓度为0
-	for i := 1; i <= len(nums); i++ {      // 需要两个for
-		for j := 1; j < i; j++ { // j<i
-			// nums[i]严格大于在它位置之前的某个数，那么 nums[i]就可以接在这个数后面形成一个更长的上升子序列
-			// 找出i之前最大的dp[j]
-			if nums[j-1] < nums[i-1] {
-				dp[i] = max(dp[i], dp[j])
+	if len(nums) == 0 {
+		return 0
+	}
+
+	// 状态定义：dp[i] 表示以 nums[i] 这个元素结尾的最长递增子序列的长度（包含第 i 个元素作为结尾的最长子序列长度）
+	// 状态转移方程：dp[i] = max(dp[i], dp[j]+1)，对于所有 j < i && nums[j] < nums[i]
+	dp, ans := make([]int, len(nums)), 1
+
+	// 初始化dp数组，每个位置至少长度为1（自身）
+	for i := range dp {
+		dp[i] = 1
+	}
+
+	// 动态规划计算每个位置的最长递增子序列长度
+	for i := 1; i < len(nums); i++ {
+		for j := 0; j < i; j++ {
+			// 如果nums[j] < nums[i]，说明可以将nums[i]接在nums[j]后面
+			if nums[j] < nums[i] {
+				dp[i] = max(dp[i], dp[j]+1)
 			}
 		}
-		dp[i] = dp[i] + 1     // dp[1]=1
 		ans = max(ans, dp[i]) // 记录最长上升子序列的长度
 	}
 	return ans
@@ -95,4 +103,40 @@ func lengthOfLISForce(nums []int) int {
 		ans = max(ans, dfs(i, nums[i]))
 	}
 	return ans
+}
+
+// 贪心+二分查找
+func lengthOfLISBS(nums []int) int {
+	// 维护一个数组 tails，其中 tails[i] 表示长度为 i+1 的所有递增子序列中，最小的末尾元素值
+	if len(nums) == 0 {
+		return 0
+	}
+
+	tails := make([]int, 0)
+
+	// 遍历原数组中的每个元素：
+	//   如果当前元素大于 tails 的最后一个元素，直接添加到末尾
+	//   否则，在 tails 中找到第一个大于等于当前元素的位置，用当前元素替换它
+	for _, num := range nums {
+		// 二分查找插入位置
+		left, right := 0, len(tails)
+		for left < right {
+			mid := left + (right-left)/2
+			if tails[mid] < num {
+				left = mid + 1
+			} else {
+				right = mid
+			}
+		}
+
+		// 如果找到的位置等于tails长度，说明num比所有元素都大
+		if left == len(tails) {
+			tails = append(tails, num)
+		} else {
+			// 否则替换该位置的元素
+			tails[left] = num
+		}
+	}
+
+	return len(tails) // tails的长度就是最长递增子序列的长度
 }
