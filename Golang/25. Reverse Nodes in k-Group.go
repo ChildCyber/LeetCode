@@ -4,7 +4,8 @@ package leetcode
 // https://leetcode-cn.com/problems/reverse-nodes-in-k-group/
 
 // 递归
-func reverseGroup(head *ListNode, k int) *ListNode {
+func reverseKGroupRecursive(head *ListNode, k int) *ListNode {
+	// 检查剩余长度是否 >= k
 	node := head
 	for i := 0; i < k; i++ {
 		if node == nil {
@@ -12,11 +13,15 @@ func reverseGroup(head *ListNode, k int) *ListNode {
 		}
 		node = node.Next
 	}
+
+	// 翻转前 k 个
 	newHead := reverse25(head, node)
-	head.Next = reverseGroup(node, k)
+	// head 变成尾，接上递归处理的后续
+	head.Next = reverseKGroupRecursive(node, k)
 	return newHead
 }
 
+// 翻转 [head, tail)，返回新的头
 func reverse25(head *ListNode, tail *ListNode) *ListNode {
 	prev := tail
 	for head != tail {
@@ -28,7 +33,7 @@ func reverse25(head *ListNode, tail *ListNode) *ListNode {
 	return prev
 }
 
-// 模拟
+// 模拟迭代法（双指针+原地翻转）
 func reverseKGroup(head *ListNode, k int) *ListNode {
 	// 链表分为 已翻转部分+待翻转部分+未翻转部分
 	// head：反转部分的链表的头部，永远在pre的后一个节点上
@@ -48,22 +53,22 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 			}
 		}
 
-		nex := tail.Next                   // 记录反转后需要重新连接的下个节点
-		head, tail = myReverse(head, tail) // 反转head到tail部分的链表
+		next := tail.Next                              // 记录反转后需要重新连接的下个节点
+		newHead, newTail := reverseSegment(head, tail) // 反转head到tail部分的链表
 		// 把子链表重新接回原链表
-		pre.Next = head
-		tail.Next = nex // 可省略
+		pre.Next = newHead
+		newTail.Next = next // 可省略
 
 		// pre和head向后移动k次
-		pre = tail       // 指向本次反转链表部分尾部
-		head = tail.Next // 下次反转链表部分头部
+		pre = newTail // 指向本次反转链表部分尾部
+		head = next   // 下次反转链表部分头部
 	}
 
 	return dummy.Next
 }
 
 // 原地反转链表，将原链表拆分为 已反转链表 部分和 未反转链表 部分
-func myReverse(head, tail *ListNode) (*ListNode, *ListNode) {
+func reverseSegment(head, tail *ListNode) (*ListNode, *ListNode) {
 	prev := tail.Next // 避免再连接tail的下一个节点
 	curr := head
 	for prev != tail { // tail的指向一直不变，当prev==tail时跳出循环
@@ -75,4 +80,33 @@ func myReverse(head, tail *ListNode) (*ListNode, *ListNode) {
 		curr = next
 	}
 	return tail, head // 反转链表后，首尾节点互换
+}
+
+// 栈
+func reverseKGroupStack(head *ListNode, k int) *ListNode {
+	dummy := &ListNode{Next: head}
+	pre := dummy
+
+	for head != nil {
+		stack := []*ListNode{}
+		tmp := head
+		// 收集 k 个节点
+		for i := 0; i < k && tmp != nil; i++ {
+			stack = append(stack, tmp)
+			tmp = tmp.Next
+		}
+		if len(stack) < k {
+			pre.Next = head
+			break
+		}
+		// 出栈翻转
+		for i := k - 1; i >= 0; i-- {
+			pre.Next = stack[i]
+			pre = pre.Next
+		}
+		// 接回链表
+		pre.Next = tmp
+		head = tmp
+	}
+	return dummy.Next
 }

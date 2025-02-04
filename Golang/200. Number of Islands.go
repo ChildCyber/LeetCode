@@ -2,15 +2,34 @@ package leetcode
 
 // 岛屿数量
 // https://leetcode-cn.com/problems/number-of-islands/
+
 // DFS
 // 思路：扫描整个二维网格。如果一个位置为 1，则以其为起始节点开始进行深度优先搜索。在深度优先搜索的过程中，每个搜索到的 1 都会被重新标记为 0。最终岛屿的数量就是进行深度优先搜索的次数。
-func maxAreaOfIsland(gird [][]int) int {
+func numIslands(grid [][]byte) int {
+	if len(grid) == 0 || len(grid[0]) == 0 {
+		return 0
+	}
+
+	var dfs func(int, int)
+	dfs = func(i, j int) {
+		// 判断坐标(i,j)是否在网格中
+		if !(0 <= i && i < len(grid) && 0 <= j && j < len(grid[0])) || grid[i][j] != '1' {
+			return
+		}
+		grid[i][j] = '2' // 感染，标记为已访问
+		// 遍历上下左右
+		dfs(i-1, j)
+		dfs(i+1, j)
+		dfs(i, j-1)
+		dfs(i, j+1)
+	}
+
 	islandNum := 0
 	// 遍历数组中的每个元素
-	for i := 0; i < len(gird); i++ { // 行
-		for j := 0; j < len(gird[0]); j++ { // 列
-			if gird[i][j] == 1 { // 位置为1，以其为起始节点开始进行深度优先搜索
-				dfs(gird, i, j)
+	for i := 0; i < len(grid); i++ { // 行
+		for j := 0; j < len(grid[0]); j++ { // 列
+			if grid[i][j] == '1' { // 位置为1，以其为起始节点开始进行深度优先搜索
+				dfs(i, j)
 				islandNum++ // 岛屿数量加一
 			}
 		}
@@ -18,26 +37,8 @@ func maxAreaOfIsland(gird [][]int) int {
 	return islandNum
 }
 
-func dfs(grid [][]int, i, j int) {
-	if !inArea(grid, i, j) {
-		return
-	}
-	grid[i][j] = 2 // 感染，标记为已访问
-	// 遍历上下左右
-	dfs(grid, i-1, j)
-	dfs(grid, i+1, j)
-	dfs(grid, i, j-1)
-	dfs(grid, i, j+1)
-}
-
-// 判断坐标(i,j)是否在网格中
-func inArea(grid [][]int, i, j int) bool {
-	return 0 <= i && i < len(grid) && 0 <= j && j < len(grid[0]) && grid[i][j] == 1 // 判断是否越界，grid[i][j] == 1是重点
-}
-
-// BFS
 // 思路：扫描数组，如果一个节点包含1，则以其为根节点启动广度优先搜索。将其放入队列中，并将值设为0以标记为访问过该节点。迭代地搜索队列中的每一个节点，直到队列为空
-func maxAreaOfIslandBFS(grid [][]int) int {
+func numIslandsBFS(grid [][]int) int {
 	if len(grid) == 0 {
 		return 0
 	}
@@ -78,19 +79,3 @@ func maxAreaOfIslandBFS(grid [][]int) int {
 }
 
 // UnionFind
-
-func dfs1(grid [][]int, i, j int) {
-	grid[i][j] = 0
-	if 0 <= i-1 && i-1 < len(grid) && 0 <= j && j < len(grid[0]) && grid[i-1][j] == 1 {
-		dfs1(grid, i-1, j)
-	}
-	if 0 <= i+1 && i+1 < len(grid) && 0 <= j && j < len(grid[0]) && grid[i+1][j] == 1 {
-		dfs1(grid, i+1, j)
-	}
-	if 0 <= i && i < len(grid) && 0 <= j-1 && j-1 < len(grid[0]) && grid[i][j-1] == 1 {
-		dfs1(grid, i, j-1)
-	}
-	if 0 <= i && i < len(grid) && 0 <= j+1 && j+1 < len(grid[0]) && grid[i][j+1] == 1 {
-		dfs1(grid, i, j+1)
-	}
-}

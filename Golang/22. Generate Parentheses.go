@@ -2,36 +2,66 @@ package leetcode
 
 // 括号生成
 // https://leetcode-cn.com/problems/generate-parentheses/
-// 回溯
+// 回溯-使用字节切片（显式回溯）
 func generateParenthesis(n int) []string {
-	if n == 0 {
-		return []string{}
+	ans := make([]string, 0)
+	path := make([]byte, 0, 2*n) // 预分配容量，避免频繁扩容
+
+	var dfs func(left, right int)
+	dfs = func(left, right int) {
+		// 左右括号都用完，保存结果
+		if left == 0 && right == 0 {
+			ans = append(ans, string(path))
+			return
+		}
+
+		// 还能放左括号
+		if left > 0 {
+			path = append(path, '(')
+			dfs(left-1, right)
+			path = path[:len(path)-1] // 回溯
+		}
+
+		// 还能放右括号（右比左多时）
+		if right > left {
+			path = append(path, ')')
+			dfs(left, right-1)
+			path = path[:len(path)-1] // 回溯
+		}
 	}
-	ans := []string{}
-	findGenerateParenthesis(n, n, "", &ans) // 从n开始，不是从0开始
+
+	dfs(n, n)
 	return ans
 }
 
-func findGenerateParenthesis(lindex, rindex int, str string, ans *[]string) {
-	// 不需要判断括号是否匹配。在 DFS 回溯的过程中，会让 ( 和 ) 成对的匹配上
-	// 只在序列仍然保持有效时才添加，通过跟踪到目前为止放置的左括号和右括号的数目来做到这一点
-	if lindex == 0 && rindex == 0 {
-		*ans = append(*ans, str)
-		return
+// 回溯-使用字符串（隐式回溯，不需要恢复状态）
+func generateParenthesis1(n int) []string {
+	ans := make([]string, 0)
+
+	var dfs func(int, int, string)
+	dfs = func(left, right int, path string) {
+		if left == 0 && right == 0 {
+			ans = append(ans, path)
+			return
+		}
+
+		if left > 0 {
+			dfs(left-1, right, path+"(")
+		}
+		if right > left {
+			dfs(left, right-1, path+")")
+		}
 	}
-	// 如果左括号数量不大于 n，可以放一个左括号。如果右括号数量小于左括号的数量，可以放一个右括号。
-	if lindex > 0 { // 优先加左括号，可以保证括号的匹配
-		findGenerateParenthesis(lindex-1, rindex, str+"(", ans)
-	}
-	if rindex > 0 && lindex < rindex { // 优先加左括号
-		findGenerateParenthesis(lindex, rindex-1, str+")", ans)
-	}
+
+	dfs(n, n, "")
+	return ans
 }
 
-// 暴力 + 递归
+// 暴力+递归
+// 时间复杂度：O(2^2n)
+// 空间复杂度：O(n)
 // 生成所有序列，然后检查每一个序列是否有效
-// 时间复杂度O(2^2n)，空间复杂度O(n)
-func generateParenthesisForce(n int) []string {
+func generateParenthesisBrute(n int) []string {
 	if n == 0 {
 		return []string{}
 	}

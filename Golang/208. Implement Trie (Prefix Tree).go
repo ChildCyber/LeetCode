@@ -4,65 +4,59 @@ package leetcode
 // https://leetcode-cn.com/problems/implement-trie-prefix-tree/
 // 应用场景：自动补全、拼写检查
 
-// 一棵有根树，其每个节点包含以下字段：
-//  指向子节点的指针数组children。对于本题而言，数组长度为26，即小写英文字母的数量。此时children[0]对应小写字母a，…，children[25]应小写字母z。
-//  布尔字段 isWord，表示该节点是否为字符串的结尾。
+// Trie 前缀树结构
 type Trie struct {
-	isWord   bool
-	children map[rune]*Trie
+	root *TrieNode
 }
 
+// Constructor208 初始化前缀树
 func Constructor208() Trie {
-	return Trie{
-		isWord:   false,
-		children: make(map[rune]*Trie),
-	}
+	return Trie{root: &TrieNode{}}
 }
 
-func (this *Trie) Insert(word string) {
-	// 从字典树的根开始，插入字符串。对于当前字符对应的子节点，有两种情况：
-	// 1. 子节点存在。沿着指针移动到子节点，继续处理下一个字符。
-	// 2. 子节点不存在。创建一个新的子节点，记录在 children数组的对应位置上，然后沿着指针移动到子节点，继续搜索下一个字符。
-	// 重复以上步骤，直到处理字符串的最后一个字符，然后将当前节点标记为字符串的结尾。
-	parent := this
-	for _, ch := range word { // 遍历插入字符串
-		if child, ok := parent.children[ch]; ok { // 子节点存在
-			parent = child
-		} else { // 子节点不存在
-			newChild := &Trie{
-				children: make(map[rune]*Trie),
-			}
-			parent.children[ch] = newChild
-			parent = newChild
-		}
-	}
-	parent.isWord = true
+// TrieNode 表示前缀树的一个节点
+type TrieNode struct {
+	children [26]*TrieNode // 只考虑小写字母 a-z
+	isEnd    bool
 }
 
-func (this *Trie) Search(word string) bool {
-	// 从字典树的根开始，查找前缀。对于当前字符对应的子节点，有两种情况：
-	// 1. 子节点存在。沿着指针移动到子节点，继续搜索下一个字符。
-	// 2. 子节点不存在。说明字典树中不包含该前缀，返回空指针。
-	// 重复以上步骤，直到返回空指针或搜索完前缀的最后一个字符。
-	parent := this
-	for _, ch := range word { // 遍历插入字符串
-		if child, ok := parent.children[ch]; ok { // 子节点存在
-			parent = child
-			continue
+// Insert 插入一个单词
+func (t *Trie) Insert(word string) {
+	// 从根节点开始，按字母逐个向下走，如果路径不存在就新建节点
+	node := t.root
+	// 遍历单词的每个字符
+	for _, ch := range word {
+		idx := ch - 'a'
+		// 为每个字符创建对应的子节点（如果不存在）
+		if node.children[idx] == nil {
+			node.children[idx] = &TrieNode{}
 		}
-		return false // 子节点不存在
+		node = node.children[idx]
 	}
-	return parent.isWord // 完全匹配word，当前节点是否为word的最后一个字符
+	// 在单词结尾标记
+	node.isEnd = true
 }
 
-func (this *Trie) StartsWith(prefix string) bool {
-	parent := this
-	for _, ch := range prefix {
-		if child, ok := parent.children[ch]; ok {
-			parent = child
-			continue
+// Search 精确匹配一个单词
+func (t *Trie) Search(word string) bool {
+	node := t.findNode(word)
+	return node != nil && node.isEnd
+}
+
+// StartsWith 判断是否存在以 prefix 开头的单词
+func (t *Trie) StartsWith(prefix string) bool {
+	return t.findNode(prefix) != nil
+}
+
+// findNode 内部工具：沿着字符串走，返回最后的节点或 nil
+func (t *Trie) findNode(s string) *TrieNode {
+	node := t.root
+	for _, ch := range s {
+		idx := ch - 'a'
+		if node.children[idx] == nil {
+			return nil
 		}
-		return false
+		node = node.children[idx]
 	}
-	return true
+	return node
 }

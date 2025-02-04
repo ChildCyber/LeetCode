@@ -4,41 +4,46 @@ import "sort"
 
 // 组合总和
 // https://leetcode-cn.com/problems/combination-sum/
+
 // 回溯
 func combinationSum(candidates []int, target int) [][]int {
-	if len(candidates) == 0 {
-		return [][]int{}
+	// 先排序，方便剪枝
+	sort.Ints(candidates)
+
+	var res [][]int
+	var path []int
+
+	var dfs func(start, sum int)
+	dfs = func(start, sum int) {
+		// 如果刚好等于 target，保存一份
+		if sum == target {
+			tmp := make([]int, len(path))
+			copy(tmp, path)
+			res = append(res, tmp)
+			return
+		}
+		// 如果超过 target，直接返回
+		if sum > target {
+			return
+		}
+
+		for i := start; i < len(candidates); i++ {
+			// 剪枝：如果当前数 + sum > target，后面更大就不用看了
+			if sum+candidates[i] > target {
+				break
+			}
+			path = append(path, candidates[i])
+			// 这里传 i 而不是 i+1，因为数字可重复使用
+			dfs(i, sum+candidates[i])
+			path = path[:len(path)-1] // 撤销选择
+		}
 	}
 
-	c, res := []int{}, [][]int{}
-	sort.Ints(candidates) // 排序
-	// target:目标和
-	// index:candidates数组的第 idx 位
-	// c:当前组合的数的数组
-	findCombinationSum(candidates, target, 0, c, &res)
+	dfs(0, 0)
 	return res
 }
 
-func findCombinationSum(nums []int, target, index int, c []int, res *[][]int) {
-	if target <= 0 { // 先判断目标和
-		if target == 0 {
-			b := make([]int, len(c))
-			copy(b, c)
-			*res = append(*res, b)
-		}
-		return
-	}
-	for i := index; i < len(nums); i++ {
-		if nums[i] > target { // 这里可以剪枝优化
-			break
-		}
-		c = append(c, nums[i])
-		findCombinationSum(nums, target-nums[i], i, c, res) // 注意这里迭代的时候 index 依旧不变，因为一个元素可以取多次
-		c = c[:len(c)-1]
-	}
-}
-
-// 回溯，不含剪枝
+// 回溯-不含剪枝
 func combinationSum1(candidates []int, target int) (ans [][]int) {
 	path := []int{}
 
@@ -57,10 +62,10 @@ func combinationSum1(candidates []int, target int) (ans [][]int) {
 		dfs(target, idx+1)
 		// 选择当前数
 		if target-candidates[idx] >= 0 { // 能够选择
-			path = append(path, candidates[idx]) // 入
-			dfs(target-candidates[idx], idx)     // 递归
+			path = append(path, candidates[idx])
+			dfs(target-candidates[idx], idx)
 			// 回溯
-			path = path[:len(path)-1] // 出
+			path = path[:len(path)-1]
 		}
 	}
 
