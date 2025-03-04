@@ -30,39 +30,20 @@ func removeDuplicatesForce(nums []int) int {
 	return index + 1
 }
 
-// 双指针
+// 快慢指针
 func removeDuplicates(nums []int) int {
 	if len(nums) == 0 {
 		return 0
 	}
 
-	last, finder := 0, 0     // last：不重复数字数组最后一个元素的下标，finder：遍历中的有序数组的下标
-	for last < len(nums)-1 { // 保证last不越界
-		for nums[finder] == nums[last] { // 找到当前数字，最后一个不重复元素的下标；当相邻元素不同时，last==finder
-			finder++
-			if finder == len(nums) { // 找到有序数组的末尾，保证finder不越界
-				return last + 1
-			}
-		}
-		nums[last+1] = nums[finder] // 如果不同，两个元素间隔为1，last+1==finder；注意这里是赋值，不是交换
-		last++
-	}
-	return last + 1
-}
-
-func removeDuplicates1(nums []int) int {
-	n := len(nums)
-	if n == 0 {
-		return 0
-	}
-
-	slow := 1 // 慢指针表示下一个不同元素要填入的下标位置
-	// 当nums的长度大于0，数组中至少包含一个元素，在删除重复元素之后也至少剩下一个元素，因此nums[0]保持原状即可，从下标1开始删除重复元素
-	for fast := 1; fast < n; fast++ { // 快指针表示遍历数组到达的下标位置
-		if nums[fast] != nums[fast-1] {
-			nums[slow] = nums[fast]
+	slow := 0 // 慢指针，指向当前唯一元素的末尾位置
+	// 快指针从第2个元素开始遍历
+	for fast := 1; fast < len(nums); fast++ { // 快指针表示遍历数组到达的下标位置
+		// 当遇到不同元素时，移动慢指针并更新值
+		if nums[fast] != nums[slow] {
 			slow++
+			nums[slow] = nums[fast]
 		}
 	}
-	return slow
+	return slow + 1
 }

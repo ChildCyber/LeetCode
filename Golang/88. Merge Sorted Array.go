@@ -4,10 +4,11 @@ import "sort"
 
 // 合并两个有序数组
 // https://leetcode-cn.com/problems/merge-sorted-array/
+
 // 直接合并后排序
 // 时间复杂度：O((m+n)log(m+n))
 // 空间复杂度：O(log(m+n))
-func merge1(nums1 []int, m int, nums2 []int, _ int) {
+func mergeCopy(nums1 []int, m int, nums2 []int, _ int) {
 	copy(nums1[m:], nums2)
 	sort.Ints(nums1)
 }
@@ -15,7 +16,7 @@ func merge1(nums1 []int, m int, nums2 []int, _ int) {
 // 双指针
 // 时间复杂度：O(m+n)
 // 空间复杂度：O(m+n)
-func merge(nums1 []int, m int, nums2 []int, n int) { // 非递减顺序 排列的整数数组
+func merge1(nums1 []int, m int, nums2 []int, n int) {
 	sorted := make([]int, 0, m+m)
 	p1, p2 := 0, 0
 	for {
@@ -42,7 +43,7 @@ func merge(nums1 []int, m int, nums2 []int, n int) { // 非递减顺序 排列�
 // 逆向双指针
 // 时间复杂度：O(m+n)
 // 空间复杂度：O(1)
-func merge2(nums1 []int, m int, nums2 []int, n int) {
+func merge(nums1 []int, m int, nums2 []int, n int) {
 	for p1, p2, tail := m-1, n-1, m+n-1; p1 >= 0 || p2 >= 0; tail-- { // 从后向前遍历，每次取两者之中的较大者放进nums1的最后面
 		var cur int
 		if p1 == -1 { // nums2遍历完
