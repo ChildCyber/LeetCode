@@ -3,19 +3,24 @@ package leetcode
 // 找到字符串中所有字母异位词
 // https://leetcode-cn.com/problems/find-all-anagrams-in-a-string/
 
+// 暴力
+// 枚举s中所有长度等于len(p)的子串：对每个子串和p进行排序比较，或者用哈希表统计字符频率比较
+
 // 滑动窗口
-// 时间复杂度：O(n)，其中 n 是字符串 s 的长度
+// 时间复杂度：O(n)，其中n是字符串s的长度
 // 空间复杂度：O(1)
 func findAnagrams(s string, p string) []int {
+	// 字符串p的异位词的长度一定与字符串p的长度相同，可以在字符串s中构造一个长度为与字符串p的长度相同的滑动窗口，并在滑动中维护窗口中每种字母的数量
+	// 当窗口中每种字母的数量与字符串p中每种字母的数量相同时，则说明当前窗口为字符串p的异位词
 	if len(s) < len(p) {
 		return []int{}
 	}
 
 	ans := []int{}
-	pCount := [26]int{}
-	sCount := [26]int{}
+	pCount := [26]int{} // 记录p中每个字符的出现次数
+	sCount := [26]int{} // 记录s中每个字符的出现次数
 
-	// 统计 p 中每个字符的出现频率
+	// 统计p中每个字符的出现频率
 	for i := 0; i < len(p); i++ {
 		pCount[p[i]-'a']++
 	}
@@ -26,9 +31,9 @@ func findAnagrams(s string, p string) []int {
 		// 将右指针指向的字符加入窗口
 		sCount[s[right]-'a']++
 
-		// 当窗口大小等于 p 的长度时
+		// 当窗口大小等于p的长度时
 		if right-left+1 == len(p) {
-			// 检查当前窗口是否与 p 匹配
+			// 检查当前窗口是否与p匹配
 			if pCount == sCount {
 				ans = append(ans, left)
 			}
@@ -42,10 +47,8 @@ func findAnagrams(s string, p string) []int {
 	return ans
 }
 
-// 滑动窗口-窗口大小固定
-func findAnagrams1(s, p string) (ans []int) {
-	// 字符串 p 的异位词的长度一定与字符串 p 的长度相同，可以在字符串 s 中构造一个长度为与字符串 p 的长度相同的滑动窗口，并在滑动中维护窗口中每种字母的数量
-	// 当窗口中每种字母的数量与字符串 p 中每种字母的数量相同时，则说明当前窗口为字符串 p 的异位词
+// 滑动窗口
+func findAnagramsOptimized(s, p string) (ans []int) {
 	sLen, pLen := len(s), len(p)
 	if sLen < pLen {
 		return
@@ -64,7 +67,7 @@ func findAnagrams1(s, p string) (ans []int) {
 		ans = append(ans, 0)
 	}
 
-	// 滑动窗口遍历剩余部分
+	// 预先处理了前p个字符，滑动窗口遍历剩余部分
 	for i := 0; i < sLen-pLen; i++ {
 		// 移除左边界字符
 		sCount[s[i]-'a']--

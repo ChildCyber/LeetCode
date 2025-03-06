@@ -12,26 +12,26 @@ func search33(nums []int, target int) int {
 		return -1
 	}
 
-	low, high := 0, len(nums)-1
-	for low <= high {
-		mid := low + (high-low)/2
+	left, right := 0, len(nums)-1
+	for left <= right {
+		mid := left + (right-left)/2
 		if nums[mid] == target {
 			return mid
 		}
 
-		// 在常规二分查找的时候查看当前 mid 为分割位置分割出来的两个部分 [l, mid] 和 [mid + 1, r] 哪个部分是有序的
+		// 在常规二分查找的时候查看当前mid为分割位置分割出来的两个部分[left, mid]和[mid+1, right]哪个部分是有序的
 		// 并根据有序的那个部分确定该如何改变二分查找的上下界
-		if nums[low] <= nums[mid] { // [low, mid - 1]为升序区间
-			if nums[low] <= target && target < nums[mid] {
-				high = mid - 1 // 在 [low, mid - 1] 中寻找
+		if nums[left] <= nums[mid] { // [left, mid-1]为升序区间
+			if nums[left] <= target && target < nums[mid] { // nums[left]为这段有序区的最小值
+				right = mid - 1 // 在[left, mid-1]中寻找
 			} else {
-				low = mid + 1 // 在 [mid + 1, high] 中寻找
+				left = mid + 1 // 在[mid+1, right]中寻找
 			}
-		} else { // [mid, high]为升序区间
-			if nums[mid] < target && target <= nums[high] {
-				low = mid + 1 // 在 [mid + 1, high] 中寻找
+		} else { // [mid, right]为升序区间
+			if nums[mid] < target && target <= nums[right] { // nums[right]是这段有序区的最大值
+				left = mid + 1 // 在[mid+1, right]中寻找
 			} else {
-				high = mid - 1 // 在 [l, mid - 1] 中寻找
+				right = mid - 1 // 在[left, mid-1]中寻找
 			}
 		}
 	}

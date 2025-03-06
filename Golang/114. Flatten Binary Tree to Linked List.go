@@ -1,23 +1,24 @@
 package leetcode
 
 // 二叉树展开为链表
-// https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list
+// https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/
+
 // 先序遍历-非原地
 func flatten(root *TreeNode) {
-	list := preorderTraversal(root)
+	list := preorderTraversal114(root)
 	for i := 1; i < len(list); i++ { // 铺开二叉树
 		prev, curr := list[i-1], list[i]
 		prev.Left, prev.Right = nil, curr // 更新每个节点的左右子节点的信息，将二叉树展开为单链表
 	}
 }
 
-func preorderTraversal(root *TreeNode) []*TreeNode {
+func preorderTraversal114(root *TreeNode) []*TreeNode {
 	list := make([]*TreeNode, 0)
 	// 先序遍历
 	if root != nil {
 		list = append(list, root)
-		list = append(list, preorderTraversal(root.Left)...)
-		list = append(list, preorderTraversal(root.Right)...)
+		list = append(list, preorderTraversal114(root.Left)...)
+		list = append(list, preorderTraversal114(root.Right)...)
 	}
 	return list
 }

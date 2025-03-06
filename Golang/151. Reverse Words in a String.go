@@ -3,7 +3,7 @@ package leetcode
 import "strings"
 
 // 翻转字符串里的单词
-// https://leetcode-cn.com/problems/reverse-words-in-a-string
+// https://leetcode-cn.com/problems/reverse-words-in-a-string/
 
 // 标准库
 func reverseWords151(s string) string {
@@ -20,6 +20,8 @@ func reverse151(m *[]string, i int, j int) {
 	}
 }
 
+// 双指针
+// 先反转整个字符串，再反转每个单词
 func reverseWords(s string) string {
 	// 将字符串转换为字节数组以便修改
 	bytes := []byte(s)
@@ -50,7 +52,7 @@ func reverseWords(s string) string {
 			fast++
 			continue
 		}
-		bytes[slow] = bytes[fast]
+		bytes[slow] = bytes[fast] // fast元素复制到slow
 		slow++
 		fast++
 	}
@@ -59,6 +61,25 @@ func reverseWords(s string) string {
 	if slow > 0 && bytes[slow-1] == ' ' {
 		slow--
 	}
+
+	/*for fast < n {
+		// 跳过连续的空格
+		if bytes[fast] == ' ' {
+			fast++
+			continue
+		}
+		// 非空格字符：在单词前添加空格（非第一个单词）
+		if slow != 0 {
+			bytes[slow] = ' '
+			slow++
+		}
+		// 复制整个单词
+		for fast < n && bytes[fast] != ' ' {
+			bytes[slow] = bytes[fast]
+			slow++
+			fast++
+		}
+	}*/
 
 	// 截取有效部分
 	bytes = bytes[:slow]

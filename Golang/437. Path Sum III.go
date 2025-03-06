@@ -2,7 +2,8 @@ package leetcode
 
 // 路径总和 III
 // https://leetcode.cn/problems/path-sum-iii/
-// DFS 双重递归
+
+// DFS双重递归
 // 时间复杂度：O(n²)
 func pathSum437(root *TreeNode, targetSum int) int {
 	if root == nil {
@@ -19,7 +20,7 @@ func pathSum437(root *TreeNode, targetSum int) int {
 	return countFromRoot + countFromLeft + countFromRight
 }
 
-// 以节点 root 为起点向下且满足路径总和为 targetSum 的路径数目
+// 以节点root为起点向下且满足路径总和为targetSum的路径数目
 func rootSum(root *TreeNode, targetSum int) (ans int) {
 	if root == nil {
 		return
@@ -36,7 +37,7 @@ func rootSum(root *TreeNode, targetSum int) (ans int) {
 }
 
 // 前缀和+哈希表
-// 思路类似560题
+// 思路类似lc 560
 func pathSum437Prefix(root *TreeNode, targetSum int) int {
 	prefixSum := make(map[int]int)
 	prefixSum[0] = 1 // 空路径的前缀和为0

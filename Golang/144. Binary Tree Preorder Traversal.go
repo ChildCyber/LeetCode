@@ -4,35 +4,34 @@ package leetcode
 // https://leetcode-cn.com/problems/binary-tree-preorder-traversal/
 
 // 递归
-func preorderTraversalRec1(root *TreeNode) []int {
-	res := []int{}
+func preorderTraversal(root *TreeNode) []int {
+	ans := make([]int, 0)
+	// 根 → 左 → 右
 	if root != nil {
-		res = append(res, root.Val)
-		tmp := preorderTraversalRec1(root.Left)
-		for _, t := range tmp {
-			res = append(res, t)
-		}
-		tmp = preorderTraversalRec1(root.Right)
-		for _, t := range tmp {
-			res = append(res, t)
-		}
+		ans = append(ans, root.Val)
+		ans = append(ans, preorderTraversal(root.Left)...)
+		ans = append(ans, preorderTraversal(root.Right)...)
 	}
-	return res
+	return ans
 }
 
-// 栈
+// 迭代-栈
 func preorderTraversalStack(root *TreeNode) []int {
 	if root == nil {
 		return []int{}
 	}
-	stack, res := []*TreeNode{}, []int{}
-	stack = append(stack, root)
-	for len(stack) != 0 {
+
+	ans := []int{}
+	stack := []*TreeNode{root}
+	for len(stack) > 0 {
+		// 弹出栈顶节点
 		node := stack[len(stack)-1]
 		stack = stack[:len(stack)-1]
-		if node != nil {
-			res = append(res, node.Val)
-		}
+
+		// 访问当前节点
+		ans = append(ans, node.Val)
+
+		// 先右后左入栈（保证出栈时先左后右）
 		if node.Right != nil {
 			stack = append(stack, node.Right)
 		}
@@ -40,5 +39,6 @@ func preorderTraversalStack(root *TreeNode) []int {
 			stack = append(stack, node.Left)
 		}
 	}
-	return res
+
+	return ans
 }

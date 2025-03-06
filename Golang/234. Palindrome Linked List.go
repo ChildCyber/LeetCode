@@ -2,6 +2,7 @@ package leetcode
 
 // 回文链表
 // https://leetcode-cn.com/problems/palindrome-linked-list/
+
 // 将值复制到数组中后用双指针法
 func isPalindromeL(head *ListNode) bool {
 	// 链表复制到数组
@@ -55,12 +56,12 @@ func isPalindromeFastSlowP(head *ListNode) bool {
 
 	// 2. 反转后半部分链表
 	var prev *ListNode
-	current := slow
-	for current != nil {
-		next := current.Next
-		current.Next = prev
-		prev = current
-		current = next
+	cur := slow
+	for cur != nil {
+		next := cur.Next
+		cur.Next = prev
+		prev = cur
+		cur = next
 	}
 
 	// 3. 比较前半部分和反转后的后半部分

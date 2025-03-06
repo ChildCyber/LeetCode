@@ -2,6 +2,7 @@ package leetcode
 
 // 两数相加
 // https://leetcode-cn.com/problems/add-two-numbers/
+
 // 模拟
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode { // 两个链表都是逆序存储数字
 	dummy := &ListNode{} // 虚拟头结点

@@ -1,34 +1,40 @@
 package leetcode
 
-import "strconv"
+import (
+	"strconv"
+	"strings"
+)
 
 // 二叉树的所有路径
 // https://leetcode-cn.com/problems/binary-tree-paths/
-// 递归
+
+// 递归+回溯
 func binaryTreePaths(root *TreeNode) []string {
-	if root == nil {
-		return []string{}
+	ans := []string{}
+	path := []string{}
+
+	var dfs func(*TreeNode)
+	dfs = func(node *TreeNode) {
+		if node == nil {
+			return
+		}
+
+		// 添加当前节点到路径
+		path = append(path, strconv.Itoa(node.Val))
+
+		// 叶子节点，构建路径字符串
+		if node.Left == nil && node.Right == nil {
+			ans = append(ans, strings.Join(path, "->"))
+		} else {
+			// 递归遍历左右子树
+			dfs(node.Left)
+			dfs(node.Right)
+		}
+
+		// 回溯
+		path = path[:len(path)-1]
 	}
 
-	// 叶子节点
-	if root.Left == nil && root.Right == nil {
-		return []string{strconv.Itoa(root.Val)}
-	}
-
-	res := []string{}
-	// 非叶子节点
-	// 左子树
-	tmpLeft := binaryTreePaths(root.Left)
-	for i := 0; i < len(tmpLeft); i++ {
-		// 当前节点加上递归返回的左子树
-		res = append(res, strconv.Itoa(root.Val)+"->"+tmpLeft[i])
-	}
-	// 右子树
-	tmpRight := binaryTreePaths(root.Right)
-	for i := 0; i < len(tmpRight); i++ {
-		// 当前节点加上递归返回的右子树
-		res = append(res, strconv.Itoa(root.Val)+"->"+tmpRight[i])
-	}
-
-	return res
+	dfs(root)
+	return ans
 }

@@ -6,22 +6,24 @@ package leetcode
 // 合并两个有序链表
 func merge148(head1, head2 *ListNode) *ListNode { // 合并两个排序后的子链表
 	dummy := &ListNode{}
-	current, temp1, temp2 := dummy, head1, head2
+	cur, temp1, temp2 := dummy, head1, head2
 	for temp1 != nil && temp2 != nil {
 		if temp1.Val <= temp2.Val {
-			current.Next = temp1
+			cur.Next = temp1
 			temp1 = temp1.Next
 		} else {
-			current.Next = temp2
+			cur.Next = temp2
 			temp2 = temp2.Next
 		}
-		current = current.Next
+		cur = cur.Next
 	}
+
 	if temp1 != nil {
-		current.Next = temp1
+		cur.Next = temp1
 	} else if temp2 != nil {
-		current.Next = temp2
+		cur.Next = temp2
 	}
+
 	return dummy.Next
 }
 
@@ -35,8 +37,7 @@ func findMiddle(head *ListNode) *ListNode {
 	return slow
 }
 
-// 自顶向下归并排序
-// 递归
+// 递归（自顶向下归并排序）
 // 时间复杂度：O(n log n)
 // 空间复杂度：O(log n)
 func sortListTopDown(head *ListNode) *ListNode {
@@ -60,8 +61,7 @@ func sortListTopDown(head *ListNode) *ListNode {
 	return merge148(left, right)
 }
 
-// 自底向上归并排序
-// 迭代
+// 迭代（自底向上归并排序）
 // 时间复杂度：O(n log n)
 // 空间复杂度：O(1)
 func sortListBottomUp(head *ListNode) *ListNode {

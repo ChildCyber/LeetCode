@@ -2,9 +2,9 @@ package leetcode
 
 // 路径总和 II
 // https://leetcode-cn.com/problems/path-sum-ii/
-// 第 257 题和第 112 题的组合增强版
+// lc 257和lc 112的组合增强版
 
-// DFS，回溯
+// DFS+回溯
 func pathSum(root *TreeNode, targetSum int) (ans [][]int) {
 	path := []int{}
 
@@ -27,14 +27,18 @@ func pathSum(root *TreeNode, targetSum int) (ans [][]int) {
 
 		leftNum -= node.Val
 		path = append(path, node.Val) // 当前节点入队
-		//defer func() { path = path[:len(path)-1] }() // 回溯，当前节点出队
-		if node.Left == nil && node.Right == nil && leftNum == 0 { // 当前节点为叶子节点，且路径和等于目标路径
-			ans = append(ans, append([]int(nil), path...)) // 该路径为答案之一
-			return
+
+		// 叶子节点检查
+		if node.Left == nil && node.Right == nil {
+			if leftNum == 0 { // 当前节点为叶子节点，且路径和等于targetSum
+				ans = append(ans, append([]int(nil), path...)) // 该路径为答案之一
+			}
+		} else {
+			// 非叶子节点，继续递归
+			dfs(node.Left, leftNum)
+			dfs(node.Right, leftNum)
 		}
 
-		dfs(node.Left, leftNum)
-		dfs(node.Right, leftNum)
 		path = path[:len(path)-1] // 回溯，当前节点出队
 	}
 

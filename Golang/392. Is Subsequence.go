@@ -74,11 +74,14 @@ func isSubsequence(s string, t string) bool {
 
 	i, j := 0, 0
 	for i < len(s) && j < len(t) {
+		// 匹配上了，i和j都前进
 		if s[i] == t[j] {
 			i++
 		}
+		// 不匹配，只移动j（去t中继续找匹配）
 		j++
 	}
 
+	// s全部匹配完
 	return i == len(s)
 }

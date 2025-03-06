@@ -46,10 +46,10 @@ func reverseListRec(head *ListNode) *ListNode {
 	return newHead
 }
 
-// 双指针迭代
+// 头插法-迭代（原地反转）
 // 空间复杂度：O(1)
 func reverseList(head *ListNode) *ListNode {
-	// 原地反转思路：将原链表拆分为 已反转链表 部分和 未反转链表 部分
+	// 思路：将原链表拆分为 已反转链表 部分和 未反转链表 部分
 	// 定义两个指针变量 prev、cur 来记录反转的过程中需要的变量：
 	//   prev：指向已反转链表的第一个节点。初始为空，因为最开始没翻转任何节点
 	//   cur：指向未反转链表的第一个节点。初始为head

@@ -2,6 +2,7 @@ package leetcode
 
 // 颠倒二进制位
 // https://leetcode.cn/problems/reverse-bits/
+
 // 逐位颠倒
 func reverseBits(num uint32) uint32 {
 	// 把num往右移动，不断的消除右边最低位的1，将这个1给ans，ans不断的左移即可

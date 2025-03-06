@@ -1,17 +1,18 @@
 package leetcode
 
 // 最长公共子序列
-// https://leetcode-cn.com/problems/longest-common-subsequence
+// https://leetcode-cn.com/problems/longest-common-subsequence/
+
 // 暴力
 // 时间复杂度：O(2^(m+n))
 // 空间复杂度：O(m+n)
 func longestCommonSubsequenceBrute(text1, text2 string) int {
 	// 思路：穷举所有可能的匹配选择
 	// 对于两个字符串的每个位置，只有两种选择：
-	// 如果当前字符匹配：必须选择匹配，然后继续处理后面的字符
-	// 如果当前字符不匹配：有两种选择：
-	//   跳过text1的当前字符，继续匹配
-	//   跳过text2的当前字符，继续匹配
+	//   如果当前字符匹配：必须选择匹配，然后继续处理后面的字符
+	//   如果当前字符不匹配：有两种选择：
+	//     跳过text1的当前字符，继续匹配
+	//     跳过text2的当前字符，继续匹配
 	var dfs func(i, j int) int
 	dfs = func(i, j int) int {
 		// 基准情况：任一字符串遍历完成

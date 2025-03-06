@@ -5,31 +5,35 @@ package leetcode
 
 // 递归
 func reverseKGroupRecursive(head *ListNode, k int) *ListNode {
-	// 检查剩余长度是否 >= k
-	node := head
+	// 1. 检查剩余长度是否 >= k
+	// endTail将会指向当前组的最后一个节点（原 tail）
+	endTail := head
 	for i := 0; i < k; i++ {
-		if node == nil {
+		if endTail == nil {
 			return head
 		}
-		node = node.Next
+		endTail = endTail.Next
+	}
+	// 循环结束后，endTail指向的是下一组的头部
+
+	// 2. 递归下一组
+	// nextHead是下一组的头部，即当前组反转后的新尾巴应该指向的位置
+	nextHead := reverseKGroupRecursive(endTail, k)
+
+	// 3. 原地反转当前k个节点 [head, endTail)
+	// prev: 新链表头部 (即当前组反转后的新尾巴)
+	prev := nextHead // 注意：prev直接指向下一组反转后的新头部，完成连接
+	curr := head     // curr: 当前处理的节点
+
+	// 只需要反转k次
+	for i := 0; i < k; i++ {
+		next := curr.Next
+		curr.Next = prev
+		prev = curr
+		curr = next
 	}
 
-	// 翻转前 k 个
-	newHead := reverse25(head, node)
-	// head 变成尾，接上递归处理的后续
-	head.Next = reverseKGroupRecursive(node, k)
-	return newHead
-}
-
-// 翻转 [head, tail)，返回新的头
-func reverse25(head *ListNode, tail *ListNode) *ListNode {
-	prev := tail
-	for head != tail {
-		next := head.Next
-		head.Next = prev
-		prev = head
-		head = next
-	}
+	// 此时prev已经指向了当前组反转后的新头部（原tail）
 	return prev
 }
 

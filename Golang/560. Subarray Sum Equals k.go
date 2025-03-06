@@ -40,7 +40,7 @@ func subarraySumForce1(nums []int, k int) int {
 	return count
 }
 
-// 前缀和+哈希表优化
+// 前缀和+哈希表
 // 时间复杂度：O(n)
 // 空间复杂度：O(n)
 func subarraySum(nums []int, k int) int {

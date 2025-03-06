@@ -2,13 +2,14 @@ package leetcode
 
 // 环形链表
 // https://leetcode-cn.com/problems/linked-list-cycle/
+
 // 快慢指针
 func hasCycle(head *ListNode) bool {
 	// 从同一起点出发
-	fast, slow := head, head
+	slow, fast := head, head
 	for fast != nil && fast.Next != nil { // 头节点不为空或只有一个节点
-		fast = fast.Next.Next // 移动指针
-		slow = slow.Next
+		slow = slow.Next // 移动指针
+		fast = fast.Next.Next
 		if fast == slow {
 			return true
 		}

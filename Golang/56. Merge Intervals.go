@@ -31,18 +31,16 @@ func merge56_1(intervals [][]int) [][]int {
 		return intervals[i][0] < intervals[j][0]
 	})
 
-	ans := [][]int{}
-	cur := intervals[0]
-	for i := 1; i < len(intervals); i++ { // 从1开始
-		if cur[1] >= intervals[i][0] { // 等于也要处理
-			if intervals[i][1] > cur[1] { // 处理当前区间部分重叠且延伸更远
-				cur[1] = intervals[i][1]
+	ans := [][]int{intervals[0]}
+	for _, cur := range intervals[1:] { // 从索引1开始
+		last := ans[len(ans)-1]
+		if cur[0] <= last[1] { // 判断重叠
+			if cur[1] > last[1] { // 合并区间：处理当前区间部分重叠且延伸更远
+				ans[len(ans)-1][1] = cur[1]
 			}
 		} else {
 			ans = append(ans, cur)
-			cur = intervals[i]
 		}
 	}
-	ans = append(ans, cur)
 	return ans
 }

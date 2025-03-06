@@ -5,13 +5,13 @@ import "sort"
 // 无重叠区间
 // https://leetcode.cn/problems/non-overlapping-intervals/
 
-// 排序+双指针
+// 排序+双指针+贪心选择
 func eraseOverlapIntervals(intervals [][]int) int {
 	if len(intervals) == 0 {
 		return 0
 	}
 
-	// 按区间结束时间排序
+	// 按区间结束时间排序（升序）
 	sort.Slice(intervals, func(i, j int) bool {
 		return intervals[i][1] < intervals[j][1]
 	})
@@ -22,8 +22,7 @@ func eraseOverlapIntervals(intervals [][]int) int {
 
 	// 遍历所有区间
 	for i := 1; i < len(intervals); i++ {
-		// 如果当前区间的开始时间 >= 前一个保留区间的结束时间
-		// 说明不重叠，可以保留
+		// 如果当前区间的开始时间 >= 前一个保留区间的结束时间，说明不重叠，可以保留
 		if intervals[i][0] >= end {
 			count++
 			end = intervals[i][1] // 更新结束时间

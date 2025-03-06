@@ -2,6 +2,7 @@ package leetcode
 
 // 最长回文子串
 // https://leetcode-cn.com/problems/longest-palindromic-substring/
+
 // 暴力
 // 穷举出所有子字符串；从字符串首字符比较到末尾，记录最长回文长度
 func longestPalindromeBrute(s string) string {
@@ -53,9 +54,9 @@ func longestPalindromeCenter(s string) string {
 		maxLen := max(len1, len2)
 
 		// 如果找到更长的回文子串，更新起始和结束位置
-		if maxLen > end-start {
-			start = i - (maxLen-1)/2
-			end = i + maxLen/2
+		if maxLen > end-start { // 同时适用于奇数和偶数情况
+			start = i - (maxLen-1)/2 // 左边界
+			end = i + maxLen/2       // 右边界
 		}
 	}
 
@@ -63,7 +64,7 @@ func longestPalindromeCenter(s string) string {
 }
 
 // 从中心向两边扩展，返回回文串的长度
-func expandAroundCenter(s string, left int, right int) int {
+func expandAroundCenter(s string, left, right int) int {
 	for left >= 0 && right < len(s) && s[left] == s[right] {
 		left--
 		right++
