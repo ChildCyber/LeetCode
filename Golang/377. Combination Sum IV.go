@@ -1,30 +1,38 @@
 package leetcode
 
+import "sort"
+
 // 组合总和 Ⅳ
 // https://leetcode.cn/problems/combination-sum-iv/
 
-// 暴力
+// 回溯（暴力）
 func combinationSum4Brute(nums []int, target int) int {
 	if len(nums) == 0 {
 		return 0
 	}
-	c, ans := []int{}, 0
-	findCombinationSum4(nums, target, 0, c, &ans)
-	return ans
-}
 
-func findCombinationSum4(nums []int, target, index int, c []int, ans *int) {
-	if target <= 0 {
-		if target == 0 {
-			*ans++
+	sort.Ints(nums)
+	ans := 0
+
+	var backtrack func(int)
+	backtrack = func( /*path []int,*/ currentSum int) {
+		if currentSum == target {
+			ans++
+			return
 		}
-		return
+
+		for i := 0; i < len(nums); i++ {
+			if currentSum+nums[i] > target {
+				break
+			}
+
+			// path = append(path, nums[i])
+			backtrack( /*path,*/ currentSum + nums[i])
+			// path = path[:len(path)-1]
+		}
 	}
-	for i := 0; i < len(nums); i++ {
-		c = append(c, nums[i])
-		findCombinationSum4(nums, target-nums[i], i, c, ans)
-		c = c[:len(c)-1]
-	}
+
+	return ans
 }
 
 // 动态规划

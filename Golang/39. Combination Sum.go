@@ -5,7 +5,7 @@ import "sort"
 // 组合总和
 // https://leetcode-cn.com/problems/combination-sum/
 
-// 回溯
+// 回溯+排序
 func combinationSum(candidates []int, target int) [][]int {
 	// 先排序，方便剪枝
 	sort.Ints(candidates)
@@ -13,9 +13,9 @@ func combinationSum(candidates []int, target int) [][]int {
 	var res [][]int
 	var path []int
 
-	var dfs func(start, sum int)
-	dfs = func(start, sum int) {
-		// 如果刚好等于 target，保存一份
+	var backtrack func(start, sum int)
+	backtrack = func(start, sum int) {
+		// 找到满足条件的组合
 		if sum == target {
 			tmp := make([]int, len(path))
 			copy(tmp, path)
@@ -32,14 +32,17 @@ func combinationSum(candidates []int, target int) [][]int {
 			if sum+candidates[i] > target {
 				break
 			}
+
+			// 做选择
 			path = append(path, candidates[i])
-			// 这里传 i 而不是 i+1，因为数字可重复使用
-			dfs(i, sum+candidates[i])
-			path = path[:len(path)-1] // 撤销选择
+			// 递归：这里传 i 而不是 i+1，因为数字可重复使用
+			backtrack(i, sum+candidates[i])
+			// 撤销选择（回溯）
+			path = path[:len(path)-1]
 		}
 	}
 
-	dfs(0, 0)
+	backtrack(0, 0)
 	return res
 }
 
@@ -47,8 +50,8 @@ func combinationSum(candidates []int, target int) [][]int {
 func combinationSum1(candidates []int, target int) (ans [][]int) {
 	path := []int{}
 
-	var dfs func(target, idx int)
-	dfs = func(target, idx int) { // 参数：目标和，candidates数组的第 idx 位
+	var backtrack func(target, idx int)
+	backtrack = func(target, idx int) { // 参数：目标和，candidates数组的第 idx 位
 		if idx == len(candidates) { // 所有数字都已经全部选完
 			return
 		}
@@ -59,16 +62,18 @@ func combinationSum1(candidates []int, target int) (ans [][]int) {
 		}
 
 		// 直接跳过，不选择当前数
-		dfs(target, idx+1)
+		backtrack(target, idx+1)
 		// 选择当前数
-		if target-candidates[idx] >= 0 { // 能够选择
+		if target-candidates[idx] >= 0 {
+			// 做选择
 			path = append(path, candidates[idx])
-			dfs(target-candidates[idx], idx)
+			// 递归
+			backtrack(target-candidates[idx], idx)
 			// 回溯
 			path = path[:len(path)-1]
 		}
 	}
 
-	dfs(target, 0)
+	backtrack(target, 0)
 	return
 }

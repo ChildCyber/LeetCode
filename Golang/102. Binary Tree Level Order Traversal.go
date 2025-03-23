@@ -22,7 +22,7 @@ func levelOrder(root *TreeNode) [][]int { // 返回一个二维数组
 		for i := 0; i < levelSize; i++ { // 变量i无实际意义，只是为了循环levelSize次
 			currentLevel = append(currentLevel, q[i].Val)
 
-			// 层序遍历
+			// 将下一层的节点入队
 			if q[i].Left != nil {
 				q = append(q, q[i].Left)
 			}

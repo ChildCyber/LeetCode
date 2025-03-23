@@ -7,50 +7,14 @@ import (
 // 全排列
 // https://leetcode-cn.com/problems/permutations/
 
-// 暴力
-func permuteBrute(nums []int) [][]int {
-	n := len(nums)
-	var res [][]int
-	// idx 用来保存当前位置选择了哪一个下标
-	idx := make([]int, n)
-	used := make([]bool, n)
-
-	// 一个递归，把多层循环“自动”展开
-	var dfs func(pos int)
-	dfs = func(pos int) {
-		if pos == n {
-			// 收集当前排列
-			perm := make([]int, n)
-			for i := 0; i < n; i++ {
-				perm[i] = nums[idx[i]]
-			}
-			res = append(res, perm)
-			return
-		}
-		// 相当于在第 pos 层循环遍历
-		for i := 0; i < n; i++ {
-			if used[i] {
-				continue
-			}
-			used[i] = true
-			idx[pos] = i
-			dfs(pos + 1)
-			used[i] = false
-		}
-	}
-
-	dfs(0)
-	return res
-}
-
-// 回溯， DFS，树形结构
-// 时间复杂度：O(n×n!)，其中 n 为序列的长度
-// 空间复杂度：O(n)，其中 n 为序列的长度
+// 回溯DFS（树形结构）
+// 时间复杂度：O(n×n!)，其中n为序列的长度
+// 空间复杂度：O(n)，其中n为序列的长度
 func permute(nums []int) [][]int { // 不含重复数字的数组
-	// used：布尔数组，记录哪些数字已经被使用
+	// used记录哪些数字已经被使用
 	used, ans := make([]bool, len(nums)), [][]int{}
 
-	// path：数组，记录已经选了哪些数
+	// path记录已经选了哪些数
 	var backtrack func(path []int, used []bool)
 	backtrack = func(path []int, used []bool) {
 		// 如果当前路径长度等于原数组长度，说明找到了一个完整排列
@@ -59,10 +23,10 @@ func permute(nums []int) [][]int { // 不含重复数字的数组
 			temp := make([]int, len(path))
 			copy(temp, path)
 			ans = append(ans, temp)
-			return
+			return // 只是结束当前递归，不是提前终止搜索
 		}
 
-		// 遍历所有数字，依次挑
+		// 每次都从头开始选择（但要排除已使用的）
 		for i := 0; i < len(nums); i++ {
 			// 如果当前数字已经被使用，跳过
 			if used[i] {
@@ -87,6 +51,44 @@ func permute(nums []int) [][]int { // 不含重复数字的数组
 	return ans
 }
 
+// 回溯-下标数组（代替选择路径）
+func permuteIdx(nums []int) [][]int {
+	var ans [][]int
+
+	n := len(nums)
+	// idx用来保存当前位置选择了哪一个下标
+	idx := make([]int, n)
+	used := make([]bool, n)
+
+	var backtrack func(pos int)
+	backtrack = func(pos int) {
+		if pos == n {
+			// 收集当前排列
+			perm := make([]int, n)
+			for i := 0; i < n; i++ {
+				perm[i] = nums[idx[i]]
+			}
+			ans = append(ans, perm)
+			return
+		}
+
+		// 遍历所有数字，依次挑
+		for i := 0; i < n; i++ {
+			if used[i] {
+				continue
+			}
+
+			used[i] = true
+			idx[pos] = i
+			backtrack(pos + 1)
+			used[i] = false
+		}
+	}
+
+	backtrack(0)
+	return ans
+}
+
 // 回溯-非递归
 func permuteIter(nums []int) [][]int {
 	sort.Ints(nums) // 排序成最小字典序
@@ -104,7 +106,7 @@ func permuteIter(nums []int) [][]int {
 	return res
 }
 
-// 下一个排列算法（就地修改 nums）
+// 下一个排列算法（就地修改nums）
 func nextPermutation46(nums []int) bool {
 	// 1. 从后往前找到第一个 nums[i] < nums[i+1]
 	i := len(nums) - 2

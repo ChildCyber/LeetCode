@@ -1,41 +1,71 @@
 package leetcode
 
 // 被围绕的区域
-// https://leetcode.cn/problems/surrounded-regions
-// DFS
+// https://leetcode.cn/problems/surrounded-regions/
+
+// 问题本质：图连通性问题，考察的是在边界条件下的连通分量识别
+// board可以建模为一个图：
+//   节点：每个格子就是一个节点
+//   边：相邻（上下左右）的格子之间存在边
+//   特殊节点：边界上的 'O' 节点
+//   连通性：与边界相连的 'O' 形成一个连通分量
+
+// 递归DFS
 func solve(board [][]byte) {
-	for i := range board {
-		for j := range board[i] {
-			if i == 0 || i == len(board)-1 || j == 0 || j == len(board[i])-1 { // 边界，行为第一行或最后一行，列为第一列或最后一列
-				if board[i][j] == 'O' { // 边界上的 'O'
-					dfs130(i, j, board)
-				}
-			}
-		}
-	}
-
-	// 遍历矩阵，对于每一个字母：
-	for i := range board {
-		for j := range board[i] {
-			if board[i][j] == '*' { // 如果该字母被标记过，则该字母为没有被字母 X 包围的字母 O，将其还原为字母 O
-				board[i][j] = 'O'
-			} else if board[i][j] == 'O' { // 如果该字母没有被标记过，则该字母为被字母 X 包围的字母 O，将其修改为字母 X
-				board[i][j] = 'X'
-			}
-		}
-	}
-}
-
-func dfs130(i, j int, board [][]byte) {
-	if i < 0 || i > len(board)-1 || j < 0 || j > len(board[i])-1 { // 判断是否越界
+	// 逆向思维：与其去找“应该被翻转的”，不如先标记“安全的”
+	if len(board) == 0 || len(board[0]) == 0 {
 		return
 	}
 
-	// 将边缘上的 'O' 标记成 '*'
-	if board[i][j] == 'O' {
-		board[i][j] = '*'
-		for k := 0; k < 4; k++ { // 对于每一个边界上的 O，以它为起点，标记所有与它直接或间接相连的字母 O
-			dfs130(i+dir[k][0], j+dir[k][1], board)
+	rows, cols := len(board), len(board[0])
+
+	// 从边界开始DFS遍历，标记所有与边界相连的'O'
+	var dfs func(int, int)
+	dfs = func(r, c int) {
+		// 检查边界条件和当前字符
+		if r < 0 || r >= rows || c < 0 || c >= cols || board[r][c] != 'O' {
+			return
+		}
+		// 'O'标记为临时字符'#'，表示已访问且是安全的
+		board[r][c] = '#'
+		// 向四个方向递归搜索，遍历上下左右
+		dfs(r-1, c)
+		dfs(r+1, c)
+		dfs(r, c-1)
+		dfs(r, c+1)
+	}
+
+	// 1. 标记所有边界上的'O'及其相连区域
+	// 遍历第一列和最后一列
+	for i := 0; i < rows; i++ {
+		if board[i][0] == 'O' {
+			dfs(i, 0)
+		}
+		if board[i][cols-1] == 'O' {
+			dfs(i, cols-1)
+		}
+	}
+	// 遍历第一行和最后一行
+	for j := 0; j < cols; j++ {
+		if board[0][j] == 'O' {
+			dfs(0, j)
+		}
+		if board[rows-1][j] == 'O' {
+			dfs(rows-1, j)
+		}
+	}
+
+	// 2. 第二次遍历：处理标记
+	for i := 0; i < rows; i++ {
+		for j := 0; j < cols; j++ {
+			if board[i][j] == 'O' {
+				// 被包围的'O'，翻转为'X'
+				board[i][j] = 'X'
+			} else if board[i][j] == '#' {
+				// 安全的'O'，恢复为'O'
+				board[i][j] = 'O'
+			}
+			// 'X' 保持不变
 		}
 	}
 }

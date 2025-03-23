@@ -23,3 +23,35 @@ func treeDepth(root *TreeNode) int {
 
 	return max(treeDepth(root.Left), treeDepth(root.Right)) + 1
 }
+
+// 自底向上的递归
+func isBalanced1(root *TreeNode) bool {
+	return checkHeight(root) != -1
+}
+
+// 在计算高度的同时判断平衡性
+func checkHeight(node *TreeNode) int {
+	if node == nil {
+		return 0
+	}
+
+	// 检查左子树
+	leftHeight := checkHeight(node.Left)
+	if leftHeight == -1 {
+		return -1 // 左子树不平衡
+	}
+
+	// 检查右子树
+	rightHeight := checkHeight(node.Right)
+	if rightHeight == -1 {
+		return -1 // 右子树不平衡
+	}
+
+	// 检查当前节点是否平衡
+	if abs(leftHeight-rightHeight) > 1 {
+		return -1 // 当前节点不平衡
+	}
+
+	// 返回当前节点的高度
+	return max(leftHeight, rightHeight) + 1
+}

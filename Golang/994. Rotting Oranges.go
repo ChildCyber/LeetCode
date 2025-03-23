@@ -3,6 +3,14 @@ package leetcode
 // 腐烂的橘子
 // https://leetcode.cn/problems/rotting-oranges/
 
+// 问题本质：多源最短路径问题
+// 图的抽象：
+//   顶点：网格中的每一个单元格（0, 1, 或 2）
+//   边：相邻的单元格之间有边（上下左右）
+// 问题建模：
+//   多源：所有的初始腐烂橘子都是感染的起点，它们会同时向四周传播腐烂
+//   最短路径：从任意一个腐烂橘子到最远新鲜橘子的最小距离（也就是最小分钟数）
+
 // BFS
 func orangesRotting(grid [][]int) int {
 	if len(grid) == 0 || len(grid[0]) == 0 {
@@ -11,13 +19,13 @@ func orangesRotting(grid [][]int) int {
 
 	rows, cols := len(grid), len(grid[0])
 	queue := [][2]int{} // 存储腐烂橘子的位置
-	fresh := 0          // 新鲜橘子计数
+	freshCount := 0     // 新鲜橘子计数
 
 	// 初始化：统计新鲜橘子，将腐烂橘子加入队列
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
 			if grid[i][j] == 1 {
-				fresh++
+				freshCount++
 			} else if grid[i][j] == 2 {
 				queue = append(queue, [2]int{i, j})
 			}
@@ -25,12 +33,12 @@ func orangesRotting(grid [][]int) int {
 	}
 
 	// 如果没有新鲜橘子，直接返回0
-	if fresh == 0 {
+	if freshCount == 0 {
 		return 0
 	}
 
-	// 四个方向：上、右、下、左
-	directions := [][2]int{{-1, 0}, {0, 1}, {1, 0}, {0, -1}}
+	// 方向数组：上下左右
+	directions := [4][2]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
 	minutes := 0
 
 	// BFS开始
@@ -53,7 +61,7 @@ func orangesRotting(grid [][]int) int {
 				if newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && grid[newRow][newCol] == 1 {
 					// 感染这个新鲜橘子
 					grid[newRow][newCol] = 2
-					fresh--
+					freshCount--
 					// 新腐烂橘子加入队列
 					queue = append(queue, [2]int{newRow, newCol})
 					infected = true
@@ -68,7 +76,7 @@ func orangesRotting(grid [][]int) int {
 	}
 
 	// 检查是否所有新鲜橘子都被感染
-	if fresh == 0 {
+	if freshCount == 0 {
 		return minutes // 所有橘子都腐烂了
 	}
 	return -1 // 有橘子无法被感染

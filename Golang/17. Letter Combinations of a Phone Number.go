@@ -6,7 +6,7 @@ package leetcode
 // 回溯
 // 时间复杂度：O(4^n)，其中n是输入数字字符串的长度
 // 空间复杂度：O(n)，主要用于递归调用栈
-func letterCombinationsBT(digits string) []string {
+func letterCombinations(digits string) []string {
 	ans := []string{}
 	if digits == "" {
 		return ans
@@ -26,8 +26,8 @@ func letterCombinationsBT(digits string) []string {
 
 	var path []byte
 
-	var dfs func(pos int)
-	dfs = func(pos int) {
+	var backtrack func(pos int)
+	backtrack = func(pos int) {
 		// 如果拼完了所有数字，就加到结果里
 		if pos == len(digits) {
 			ans = append(ans, string(path))
@@ -35,13 +35,17 @@ func letterCombinationsBT(digits string) []string {
 		}
 
 		letters := digitMap[string(digits[pos])]
+		// 从letters里开始选择
 		for i := 0; i < len(letters); i++ {
+			// 做选择
 			path = append(path, letters[i])
-			dfs(pos + 1)
-			path = path[:len(path)-1] // 撤销
+			// 递归
+			backtrack(pos + 1)
+			// 撤销选择（回溯）
+			path = path[:len(path)-1]
 		}
 	}
 
-	dfs(0)
+	backtrack(0)
 	return ans
 }

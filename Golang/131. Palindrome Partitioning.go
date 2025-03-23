@@ -20,8 +20,8 @@ func partition131(s string) [][]string {
 		return true
 	}
 
-	var dfs func(int)
-	dfs = func(start int) {
+	var backtrack func(int)
+	backtrack = func(start int) {
 		if start == len(s) {
 			ans = append(ans, append([]string(nil), path...))
 			return
@@ -29,14 +29,14 @@ func partition131(s string) [][]string {
 
 		for end := start; end < len(s); end++ {
 			if isPalindrome(start, end) {
-				path = append(path, s[start:end+1])
-				dfs(end + 1)
-				path = path[:len(path)-1]
+				path = append(path, s[start:end+1]) // 选
+				backtrack(end + 1)
+				path = path[:len(path)-1] // 不选（回溯）
 			}
 		}
 	}
 
-	dfs(0)
+	backtrack(0)
 	return ans
 }
 
@@ -61,8 +61,8 @@ func partition131DP(s string) (ans [][]string) {
 
 	// 回溯枚举所有可能的分割方法并进行判断
 	path := []string{}
-	var dfs func(int)
-	dfs = func(i int) { // 当前已搜索到第i个字符
+	var backtrack func(int)
+	backtrack = func(i int) { // 当前已搜索到第i个字符
 		if i == n { // 已经到最后一个字符
 			ans = append(ans, append([]string(nil), path...))
 			return
@@ -71,12 +71,12 @@ func partition131DP(s string) (ans [][]string) {
 		for j := i; j < n; j++ {
 			if dp[i][j] { // s[i..j]为回文串
 				path = append(path, s[i:j+1]) // 选择当前字符
-				dfs(j + 1)
-				path = path[:len(path)-1] // 回溯，不选
+				backtrack(j + 1)
+				path = path[:len(path)-1] // 不选（回溯）
 			}
 		}
 	}
 
-	dfs(0)
+	backtrack(0)
 	return
 }

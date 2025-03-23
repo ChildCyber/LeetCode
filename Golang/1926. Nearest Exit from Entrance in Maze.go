@@ -3,16 +3,24 @@ package leetcode
 // 迷宫中离入口最近的出口
 // https://leetcode.cn/problems/nearest-exit-from-entrance-in-maze/
 
+// 问题本质：单源最短路径问题
+// 图的抽象：
+//   顶点：迷宫中的每个空单元格（.）
+//   边：相邻（上下左右）的空单元格之间有边，权值为 1（无权图）
+// 问题建模：
+//   单源：给定入口位置（entrance）
+//   最短路径：多个有效终点（边界上的任何 '.' 都是潜在出口），需要找到步数最少的路径
+
 // BFS
 func nearestExit(maze [][]byte, entrance []int) int {
 	rows := len(maze)
 	if rows == 0 {
 		return -1
 	}
-	cols := len(maze[0])
 
-	// 方向数组：上、右、下、左
-	directions := [][]int{{-1, 0}, {0, 1}, {1, 0}, {0, -1}}
+	cols := len(maze[0])
+	// 方向数组：上下左右
+	directions := [4][2]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
 
 	// 初始化队列和访问标记
 	queue := [][]int{entrance} // 将入口位置加入队列
@@ -22,7 +30,7 @@ func nearestExit(maze [][]byte, entrance []int) int {
 	}
 	visited[entrance[0]][entrance[1]] = true // 标记入口为已访问
 
-	steps := 0
+	steps := 0 // 记录当前正在探索的层级（即距离入口的步数）
 
 	for len(queue) > 0 {
 		// 当前层的节点数
@@ -41,14 +49,13 @@ func nearestExit(maze [][]byte, entrance []int) int {
 				return steps
 			}
 
-			// 向四个方向探索
+			// (nr,nc)不是出口，向四个方向探索
 			for _, dir := range directions {
 				nr, nc := r+dir[0], c+dir[1]
 
 				// 检查新位置是否合法
 				if nr >= 0 && nr < rows && nc >= 0 && nc < cols &&
 					maze[nr][nc] == '.' && !visited[nr][nc] {
-
 					// 标记为已访问并加入队列
 					visited[nr][nc] = true
 					queue = append(queue, []int{nr, nc})

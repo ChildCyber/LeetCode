@@ -6,55 +6,69 @@ import (
 
 // 子集 II
 // https://leetcode.cn/problems/subsets-ii/
-// 回溯
-func subsetsWithDup(nums []int) (ans [][]int) {
-	sort.Ints(nums)
 
-	t := []int{}
-	var dfs func(bool, int)
-	dfs = func(choosePre bool, cur int) {
-		if cur == len(nums) { // 已经选到nums的最后一个元素
-			ans = append(ans, append([]int(nil), t...))
+// 子集的定义： 原集合中任意元素组成的集合，包括空集。
+
+// 回溯+排序
+// 回溯-显式
+func subsetsWithDup(nums []int) [][]int {
+	sort.Ints(nums) // 关键：排序，便于同层去重
+
+	var ans [][]int
+	var path []int
+
+	var backtrack func(start int)
+	backtrack = func(start int) {
+		if start == len(nums) { // 已经选到nums中最后一个元素
+			ans = append(ans, append([]int(nil), path...))
 			return
 		}
 
-		dfs(false, cur+1)
-		if !choosePre && cur > 0 && nums[cur-1] == nums[cur] { // 未选择上一个元素，且上个元素与当前元素相同，跳过
-			return
+		// 决策一：选当前元素（和重复无关）
+		path = append(path, nums[start])
+		// 递归
+		backtrack(start + 1)
+		// 撤销选择（回溯）
+		path = path[:len(path)-1]
+
+		// 决策二：不选当前元素（必须去重）
+		for start+1 < len(nums) && nums[start+1] == nums[start] {
+			start++
 		}
-		t = append(t, nums[cur]) // 和上个元素不同，选择当前元素
-		dfs(true, cur+1)
-		t = t[:len(t)-1] // 回溯，不选择当前元素
+		backtrack(start + 1)
 	}
 
-	dfs(false, 0)
-	return
+	backtrack(0)
+	return ans
 }
 
+// 回溯-隐式（不选当前元素的决策隐藏在for循环和递归的结构里，没进循环就是不选，递归返回时天然保留了“不选”的路径）
 func subsetsWithDup1(nums []int) [][]int {
-	c, ans := []int{}, [][]int{}
-	sort.Ints(nums) // 去重的关键
+	sort.Ints(nums) // 关键：排序，便于同层去重
 
-	var generateSubsetsWithDup func(int, int)
-	generateSubsetsWithDup = func(k int, start int) {
-		if len(c) == k {
-			ans = append(ans, append([]int(nil), c...))
-			return
-		}
+	var ans [][]int
+	var path []int
 
-		for i := start; i < len(nums)-(k-len(c))+1; i++ { // i的大小不会超过nums长度
-			if i > start && nums[i] == nums[i-1] { // 这里是去重的关键逻辑，本次不取重复数字，下次循环可能会取重复数字
+	var backtrack func(start int)
+	backtrack = func(start int) {
+		// 每到一层就把当前path记录为一个子集（注意要拷贝）
+		tmp := make([]int, len(path))
+		copy(tmp, path)
+		ans = append(ans, tmp)
+
+		for i := start; i < len(nums); i++ {
+			// 核心去重：如果和前一个相同且在同一层（i > start），跳过
+			if i > start && nums[i] == nums[i-1] {
 				continue
 			}
-			c = append(c, nums[i])
-			generateSubsetsWithDup(k, i+1)
-			c = c[:len(c)-1]
+			// 选择nums[i]
+			path = append(path, nums[i])
+			backtrack(i + 1)
+			// 撤销选择（回溯）
+			path = path[:len(path)-1]
 		}
-		return
 	}
 
-	for k := 0; k <= len(nums); k++ { // 子集的长度为k
-		generateSubsetsWithDup(k, 0)
-	}
+	backtrack(0)
 	return ans
 }

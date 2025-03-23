@@ -75,8 +75,8 @@ func exist1(board [][]byte, word string) bool {
 	// c：当前访问的列号（column）
 	// index：当前要匹配 word 的第几个字符
 	// 从 board[r][c] 出发，能不能从 word[index:] 继续匹配下去
-	var dfs func(r, c, index int) bool
-	dfs = func(r, c, index int) bool {
+	var backtrack func(r, c, index int) bool
+	backtrack = func(r, c, index int) bool {
 		// 匹配完所有字符，返回 true
 		if index == len(word) {
 			return true
@@ -92,10 +92,10 @@ func exist1(board [][]byte, word string) bool {
 		// 标记当前格子
 		visited[r][c] = true
 		// 往四个方向探索
-		found := dfs(r+1, c, index+1) ||
-			dfs(r-1, c, index+1) ||
-			dfs(r, c+1, index+1) ||
-			dfs(r, c-1, index+1)
+		found := backtrack(r+1, c, index+1) ||
+			backtrack(r-1, c, index+1) ||
+			backtrack(r, c+1, index+1) ||
+			backtrack(r, c-1, index+1)
 		// 回溯：取消标记
 		visited[r][c] = false
 
@@ -104,7 +104,7 @@ func exist1(board [][]byte, word string) bool {
 
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
-			if dfs(i, j, 0) {
+			if backtrack(i, j, 0) {
 				return true
 			}
 		}

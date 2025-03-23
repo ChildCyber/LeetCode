@@ -2,6 +2,7 @@ package leetcode
 
 // 二叉树的最大深度
 // https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/
+
 // 递归
 func maxDepth(root *TreeNode) int {
 	if root == nil {
@@ -12,8 +13,8 @@ func maxDepth(root *TreeNode) int {
 }
 
 // BFS
-// 使用队列进行广度优先搜索，按层遍历节点，每遍历一层深度加1
 func maxDepthBFS(root *TreeNode) int {
+	// 思路：使用队列进行广度优先搜索，按层遍历节点，每遍历一层深度加1
 	if root == nil {
 		return 0
 	}
@@ -32,7 +33,7 @@ func maxDepthBFS(root *TreeNode) int {
 			node := queue[0]
 			queue = queue[1:]
 
-			// 将当前节点的子节点加入队列（如果存在）
+			// 将下一层的节点入队
 			if node.Left != nil {
 				queue = append(queue, node.Left)
 			}

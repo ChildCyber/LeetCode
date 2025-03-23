@@ -3,72 +3,59 @@ package leetcode
 // 合并二叉树
 // https://leetcode-cn.com/problems/merge-two-binary-trees/
 
-// DFS
-func mergeTrees(t1, t2 *TreeNode) *TreeNode {
-	if t1 == nil {
-		return t2
+// 递归DFS
+// 时间复杂度：O(min(m,n))
+// 空间复杂度：O(min(h1,h2))
+func mergeTrees(root1, root2 *TreeNode) *TreeNode {
+	if root1 == nil {
+		return root2
 	}
-	if t2 == nil {
-		return t1
+	if root2 == nil {
+		return root1
 	}
 
-	t1.Val += t2.Val
-	t1.Left = mergeTrees(t1.Left, t2.Left)
-	t1.Right = mergeTrees(t1.Right, t2.Right)
-	return t1
+	root1.Val += root2.Val
+	root1.Left = mergeTrees(root1.Left, root2.Left)
+	root1.Right = mergeTrees(root1.Right, root2.Right)
+	return root1
 }
 
-// BFS
-func mergeTreesBFS(t1, t2 *TreeNode) *TreeNode {
-	if t1 == nil {
-		return t2
+// 迭代BFS
+// 时间复杂度：O(min(m,n))
+// 空间复杂度：O(min(m,n))
+func mergeTreesBFS(root1, root2 *TreeNode) *TreeNode {
+	if root1 == nil {
+		return root2
 	}
-	if t2 == nil {
-		return t1
+	if root2 == nil {
+		return root1
 	}
 
-	merged := &TreeNode{Val: t1.Val + t2.Val} // 合并后的新节点
-	// 使用三个队列分别存储合并后的二叉树的节点以及两个原始二叉树的节点
-	queue := []*TreeNode{merged}
-	queue1 := []*TreeNode{t1}
-	queue2 := []*TreeNode{t2}
-	// 从根节点开始同时遍历每个二叉树，并将对应的节点进行合并
-	for len(queue1) > 0 && len(queue2) > 0 {
-		// 每次从每个队列中取出一个节点，判断两个原始二叉树的节点的左右子节点是否为空
-		node := queue[0]
-		queue = queue[1:] // pop
-		node1 := queue1[0]
-		queue1 = queue1[1:] // pop
-		node2 := queue2[0]
-		queue2 = queue2[1:] // pop
-		left1, right1 := node1.Left, node1.Right
-		left2, right2 := node2.Left, node2.Right
-		if left1 != nil || left2 != nil {
-			if left1 != nil && left2 != nil {
-				left := &TreeNode{Val: left1.Val + left2.Val}
-				node.Left = left
-				queue = append(queue, left)
-				queue1 = append(queue1, left1)
-				queue2 = append(queue2, left2)
-			} else if left1 != nil {
-				node.Left = left1
-			} else { // left2 != nil
-				node.Left = left2
-			}
-		}
-		if right1 != nil || right2 != nil {
-			if right1 != nil && right2 != nil {
-				right := &TreeNode{Val: right1.Val + right2.Val}
-				node.Right = right
-				queue = append(queue, right)
-				queue1 = append(queue1, right1)
-				queue2 = append(queue2, right2)
-			} else if right1 != nil {
-				node.Right = right1
-			} else {
-				node.Right = right2
-			}
-		}
+	queue := [][2]*TreeNode{{root1, root2}}
+
+	for len(queue) > 0 {
+		nodes := queue[0]
+		queue = queue[1:]
+
+		node1, node2 := nodes[0], nodes[1]
+
+		// 合并当前节点值
+		node1.Val += node2.Val
+
+		// 处理左子树
+		if node1.Left != nil && node2.Left != nil {
+			queue = append(queue, [2]*TreeNode{node1.Left, node2.Left})
+		} else if node1.Left == nil {
+			node1.Left = node2.Left
+		} // 如果node2.Left为nil，不需要做任何操作
+
+		// 处理右子树
+		if node1.Right != nil && node2.Right != nil {
+			queue = append(queue, [2]*TreeNode{node1.Right, node2.Right})
+		} else if node1.Right == nil {
+			node1.Right = node2.Right
+		} // 如果node2.Right为nil，不需要做任何操作
 	}
-	return merged
+
+	return root1
 }
