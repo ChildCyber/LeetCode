@@ -4,6 +4,7 @@ import "math"
 
 // 最小栈
 // https://leetcode-cn.com/problems/min-stack/
+
 type MinStack struct {
 	stack    []int
 	minStack []int

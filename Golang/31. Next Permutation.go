@@ -2,11 +2,14 @@ package leetcode
 
 // 下一个排列
 // https://leetcode-cn.com/problems/next-permutation/
+
+// 下一个排列就是找到可以增大的最低位，用稍大的数替换，然后把后面的部分变成最小升序
+
 // 两遍扫描
 func nextPermutation(nums []int) {
 	// 对于长度为 n 的排列 nums：
-	// 1. 寻找非降序的nums[i-1]
-	// 从后向前查找第一个顺序对 (i,i+1)，满足 a[i]<a[i+1]。这样「较小数」即为 nums[i]。此时 [i+1,n) 必然是下降序列。
+	// 1. 寻找非降序的nums[i-1]（nums[i+1:]是下降序列）
+	// 从后向前查找第一个顺序对 (i,i+1)，满足 a[i]<a[i+1]。这样「较小数」即为 nums[i]。
 	// 2. 寻找nums[j]
 	// 如果找到了顺序对，那么在区间 [i+1,n) 中从后向前查找第一个元素 j 满足 nums[i]<nums[j]。这样「较大数」即为 nums[j]。
 	// 3. 交换nums[i-1]和nums[j]
@@ -16,7 +19,7 @@ func nextPermutation(nums []int) {
 
 	// 步骤1：从右向左找到第一个下降点
 	i := n - 2                           // 从末尾向前扫描，下标从n-1开始，最后一个元素跳过，所以从n-2开始
-	for i >= 0 && nums[i] >= nums[i+1] { // 寻找非降序的nums[i-1]，从后向前，nums中[i,n)部分为降序
+	for i >= 0 && nums[i] >= nums[i+1] { // 寻找非降序的nums[i-1]，从后向前（nums[i:]为降序）
 		i--
 	}
 

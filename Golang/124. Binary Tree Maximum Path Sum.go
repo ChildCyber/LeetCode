@@ -3,7 +3,7 @@ package leetcode
 import "math"
 
 // 二叉树中的最大路径和
-// https://leetcode-cn.com/problems/binary-tree-maximum-path-sum
+// https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/
 
 // 递归
 func maxPathSum(root *TreeNode) int {
@@ -28,7 +28,7 @@ func maxPathSum(root *TreeNode) int {
 			return 0
 		}
 
-		// 递归计算左右子节点的最大贡献值，只有在最大贡献值大于 0 时，才会选取对应子节点
+		// 递归计算左右子节点的最大贡献值，只有在最大贡献值大于0时，才会选取对应子节点
 		leftGain := max(maxGain(node.Left), 0)
 		rightGain := max(maxGain(node.Right), 0)
 
@@ -39,7 +39,7 @@ func maxPathSum(root *TreeNode) int {
 		// 更新全局最大值
 		maxSum = max(maxSum, priceNewPath)
 
-		// 返回节点的最大贡献值
+		// 返回当前节点的最大贡献值（只能选择一边）
 		return node.Val + max(leftGain, rightGain)
 	}
 

@@ -3,6 +3,10 @@ package leetcode
 // 接雨水
 // https://leetcode-cn.com/problems/trapping-rain-water/
 
+// 问题本质：
+// 每个位置能接的雨水量由左右两边的最高柱子决定
+// 水量 = min(左边最高, 右边最高) - 当前高度
+
 // 找凹槽
 // 时间复杂度：O(n²)
 func trapFindGroove(height []int) int {

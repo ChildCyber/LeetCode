@@ -2,6 +2,7 @@ package leetcode
 
 // 乘积最大子数组
 // https://leetcode-cn.com/problems/maximum-product-subarray/
+
 // 暴力
 func maxProductBrute(nums []int) int {
 	if len(nums) == 0 {
@@ -25,6 +26,8 @@ func maxProductBrute(nums []int) int {
 }
 
 // 动态规划
+// 时间复杂度：O(n)
+// 空间复杂度：O(1)
 func maxProduct(nums []int) int {
 	// 维护两个变量，同时跟踪以每个位置结尾的最大乘积和最小乘积
 	// 当前的最大乘积可能来自：
@@ -47,8 +50,7 @@ func maxProduct(nums []int) int {
 }
 
 // 前后两次遍历法
-// 最大乘积子数组要么从数组开头开始，要么在数组结尾结束
-// 分别从左到右和从右到左遍历一次，计算累积乘积
+// 最大乘积子数组要么从数组开头开始，要么在数组结尾结束；分别从左到右和从右到左遍历一次，计算累积乘积
 func maxProductTwo(nums []int) int {
 	if len(nums) == 0 {
 		return 0

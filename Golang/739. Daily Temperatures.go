@@ -1,11 +1,13 @@
 package leetcode
 
 // 每日温度
-// https://leetcode-cn.com/problems/daily-temperatures
+// https://leetcode-cn.com/problems/daily-temperatures/
+
 // 暴力
-func dailyTemperatures(temperatures []int) []int {
+func dailyTemperaturesBrute(temperatures []int) []int {
 	length := len(temperatures)
-	ans := make([]int, length)    // 最后一个元素为0
+	ans := make([]int, length) // 最后一个元素为0
+
 	for i := 0; i < length; i++ { // 对每个元素temperatures[i]都向后扫描
 		for j := i + 1; j < length; j++ { // 在temperatures[i+1:]中逐个扫描
 			if temperatures[j] > temperatures[i] { // 找到第一个更大的元素
@@ -14,11 +16,12 @@ func dailyTemperatures(temperatures []int) []int {
 			}
 		}
 	}
+
 	return ans
 }
 
 // 单调栈
-func dailyTemperatures1(temperatures []int) []int {
+func dailyTemperatures(temperatures []int) []int {
 	length := len(temperatures)
 	ans := make([]int, length)
 	stack := []int{} // 单调栈：温度递减的栈，栈中存储的是索引而不是温度值
@@ -36,5 +39,6 @@ func dailyTemperatures1(temperatures []int) []int {
 		// 若栈为空或者当日温度小于等于栈顶温度则直接入栈
 		stack = append(stack, i) // 存储下标
 	}
+
 	return ans
 }

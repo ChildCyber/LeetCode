@@ -5,11 +5,14 @@ package leetcode
 
 // 贪心
 // 一个片段的结束点必须至少等于该片段内所有字母的最后出现位置的最大值。只有这样，才能确保所有字母都包含在一个片段内。
+// 时间复杂度：O(n)
+// 空间复杂度：O(1)
 func partitionLabels(S string) []int {
 	var lastIndexOf [26]int
 	for i, v := range S {
 		lastIndexOf[v-'a'] = i
 	}
+
 	var arr []int
 	for start, end := 0, 0; start < len(S); start = end + 1 {
 		end = lastIndexOf[S[start]-'a']
@@ -20,10 +23,12 @@ func partitionLabels(S string) []int {
 		}
 		arr = append(arr, end-start+1)
 	}
+
 	return arr
 }
 
-func partitionLabels1(s string) []int {
+// 使用map的版本
+func partitionLabelsMap(s string) []int {
 	// 记录每个字符的最后出现位置
 	lastOccurrence := make(map[byte]int)
 	for i := 0; i < len(s); i++ {
@@ -45,5 +50,6 @@ func partitionLabels1(s string) []int {
 			start = i + 1
 		}
 	}
+
 	return result
 }

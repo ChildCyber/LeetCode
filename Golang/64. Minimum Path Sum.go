@@ -2,7 +2,10 @@ package leetcode
 
 // 最小路径和
 // https://leetcode-cn.com/problems/minimum-path-sum/
+
 // 动态规划
+// 时间复杂度：O(m×n)
+// 空间复杂度：O(m×n)
 func minPathSum(grid [][]int) int {
 	if len(grid) == 0 || len(grid[0]) == 0 {
 		return 0
@@ -41,6 +44,8 @@ func minPathSum(grid [][]int) int {
 }
 
 // 动态规划-一维数组
+// 时间复杂度：O(m×n)
+// 空间复杂度：O(n)
 func minPathSum1(grid [][]int) int {
 	if len(grid) == 0 || len(grid[0]) == 0 {
 		return 0
@@ -66,6 +71,8 @@ func minPathSum1(grid [][]int) int {
 }
 
 // 原地DP，无辅助空间
+// 时间复杂度：O(m×n)
+// 空间复杂度：O(1)
 func minPathSumOptimized(grid [][]int) int {
 	m, n := len(grid), len(grid[0])
 	for i := 1; i < m; i++ {

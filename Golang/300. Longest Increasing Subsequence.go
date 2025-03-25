@@ -82,30 +82,9 @@ func lengthOfLISDP(nums []int) int {
 	return ans
 }
 
-// 分治 + 递归
-// https://leetcode.cn/problems/longest-increasing-subsequence/solution/300zui-chang-di-zeng-zi-xu-lie-cong-bao-bwso6/
-func lengthOfLISForce(nums []int) int {
-	ans := 0
-
-	var dfs func(int, int) int
-	dfs = func(index int, last int) int {
-		if index == len(nums) {
-			return 1
-		}
-		length := dfs(index+1, last)
-		if nums[index] > last {
-			length = max(length, dfs(index+1, nums[index])+1)
-		}
-		return length
-	}
-
-	for i := 0; i < len(nums); i++ {
-		ans = max(ans, dfs(i, nums[i]))
-	}
-	return ans
-}
-
 // 贪心+二分查找
+// 时间复杂度：O(n log n)
+// 空间复杂度：O(n)
 func lengthOfLISBS(nums []int) int {
 	// 维护一个数组 tails，其中 tails[i] 表示长度为 i+1 的所有递增子序列中，最小的末尾元素值
 	if len(nums) == 0 {
@@ -139,4 +118,27 @@ func lengthOfLISBS(nums []int) int {
 	}
 
 	return len(tails) // tails的长度就是最长递增子序列的长度
+}
+
+// 分治 + 递归
+// https://leetcode.cn/problems/longest-increasing-subsequence/solution/300zui-chang-di-zeng-zi-xu-lie-cong-bao-bwso6/
+func lengthOfLISForce(nums []int) int {
+	ans := 0
+
+	var dfs func(int, int) int
+	dfs = func(index int, last int) int {
+		if index == len(nums) {
+			return 1
+		}
+		length := dfs(index+1, last)
+		if nums[index] > last {
+			length = max(length, dfs(index+1, nums[index])+1)
+		}
+		return length
+	}
+
+	for i := 0; i < len(nums); i++ {
+		ans = max(ans, dfs(i, nums[i]))
+	}
+	return ans
 }

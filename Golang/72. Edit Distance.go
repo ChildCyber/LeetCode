@@ -2,9 +2,10 @@ package leetcode
 
 // 编辑距离
 // https://leetcode.cn/problems/edit-distance/
+
 // 暴力
+// 递归尝试所有可能的操作序列，找出操作次数最少的那一个
 func minDistanceBrute(word1, word2 string) int {
-	// 思路：递归尝试所有可能的操作序列，找出操作次数最少的那一个
 	var dfs func(i, j int) int
 	dfs = func(i, j int) int {
 		// 基准情况：任一字符串遍历完成
@@ -33,6 +34,8 @@ func minDistanceBrute(word1, word2 string) int {
 }
 
 // 动态规划
+// 时间复杂度：O(m×n)
+// 空间复杂度：O(m×n)
 func minDistance(word1, word2 string) int {
 	m, n := len(word1), len(word2)
 	// 有一个字符串为空串

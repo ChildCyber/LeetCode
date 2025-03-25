@@ -2,6 +2,7 @@ package leetcode
 
 // 相交链表
 // https://leetcode-cn.com/problems/intersection-of-two-linked-lists/
+
 // 双指针
 // 给定的 2 个链表的⻓度如果一样⻓，都从头往后扫即可。
 // 如果不一样⻓，需要先“拼成”一样⻓。把 B 拼接到 A 后面，把 A 拼接到 B 后面。这样 2 个链表的⻓度都是 A + B。
@@ -29,7 +30,7 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	return a
 }
 
-// 哈希集合
+// 哈希表
 // 集合存储链表节点：先遍历链表headA，并将链表headA中的每个节点加入集合中。
 // 遍历链表headB，判断该节点是否在集合中：不在，继续遍历下个节点；在，返回该节点。
 // headB中所有节点都不在集合中，则两链表不相交。

@@ -2,11 +2,13 @@ package leetcode
 
 // 螺旋矩阵
 // https://leetcode-cn.com/problems/spiral-matrix/
+
 // 模拟
 func spiralOrder(matrix [][]int) []int {
 	if len(matrix) == 0 || len(matrix[0]) == 0 {
 		return []int{}
 	}
+
 	rows, columns := len(matrix), len(matrix[0])
 	visited := make([][]bool, rows)
 	for i := 0; i < rows; i++ {
@@ -17,8 +19,8 @@ func spiralOrder(matrix [][]int) []int {
 		total       = rows * columns
 		order       = make([]int, total)
 		row, column = 0, 0
-		// 朝右，朝下，朝左，朝上
-		directions     = [][]int{[]int{0, 1}, []int{1, 0}, []int{0, -1}, []int{-1, 0}}
+		// 四个方向：右下左上
+		directions     = [][]int{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
 		directionIndex = 0
 	)
 
@@ -37,7 +39,9 @@ func spiralOrder(matrix [][]int) []int {
 
 // 按层模拟
 // 将矩阵看成若干层，首先输出最外层的元素，其次输出次外层的元素，直到输出最内层的元素
-func spiralOrder1(matrix [][]int) []int {
+// 时间复杂度：O(m×n)
+// 空间复杂度：O(1)
+func spiralOrderLayer(matrix [][]int) []int {
 	if len(matrix) == 0 || len(matrix[0]) == 0 { // 如果 matrix 为空，直接访问 matrix[0] 会 panic
 		return []int{}
 	}

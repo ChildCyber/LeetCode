@@ -3,6 +3,30 @@ package leetcode
 // 排序链表
 // https://leetcode-cn.com/problems/sort-list/
 
+// 递归（自顶向下归并排序）
+// 时间复杂度：O(n log n)
+// 空间复杂度：O(log n)
+func sortListTopDown(head *ListNode) *ListNode {
+	// 基线条件：空链表或单节点链表已经有序
+	if head == nil || head.Next == nil {
+		return head
+	}
+
+	// 找到链表中点
+	mid := findMiddle(head)
+
+	// 分割链表
+	rightHead := mid.Next
+	mid.Next = nil // 切断链表
+
+	// 递归排序左右两部分
+	left := sortListTopDown(head)
+	right := sortListTopDown(rightHead)
+
+	// 合并两个有序链表
+	return merge148(left, right)
+}
+
 // 合并两个有序链表
 func merge148(head1, head2 *ListNode) *ListNode { // 合并两个排序后的子链表
 	dummy := &ListNode{}
@@ -35,30 +59,6 @@ func findMiddle(head *ListNode) *ListNode {
 		fast = fast.Next.Next
 	}
 	return slow
-}
-
-// 递归（自顶向下归并排序）
-// 时间复杂度：O(n log n)
-// 空间复杂度：O(log n)
-func sortListTopDown(head *ListNode) *ListNode {
-	// 基线条件：空链表或单节点链表已经有序
-	if head == nil || head.Next == nil {
-		return head
-	}
-
-	// 找到链表中点
-	mid := findMiddle(head)
-
-	// 分割链表
-	rightHead := mid.Next
-	mid.Next = nil // 切断链表
-
-	// 递归排序左右两部分
-	left := sortListTopDown(head)
-	right := sortListTopDown(rightHead)
-
-	// 合并两个有序链表
-	return merge148(left, right)
 }
 
 // 迭代（自底向上归并排序）

@@ -46,7 +46,7 @@ func reverseListRec(head *ListNode) *ListNode {
 	return newHead
 }
 
-// 头插法-迭代（原地反转）
+// 迭代（原地反转）
 // 空间复杂度：O(1)
 func reverseList(head *ListNode) *ListNode {
 	// 思路：将原链表拆分为 已反转链表 部分和 未反转链表 部分
@@ -57,10 +57,24 @@ func reverseList(head *ListNode) *ListNode {
 	cur := head
 	for cur != nil {
 		// 局部反转
-		next := cur.Next // tmp变量，记录下一个节点
+		next := cur.Next // tmp变量，保存下一个节点
 		cur.Next = prev  // 向反转链表头部插入节点，第一次会插入nil
 		prev = cur       // prev前进
 		cur = next       // cur前进
 	}
 	return prev
+}
+
+// 迭代（头插法）
+func reverseListHeadInsertion(head *ListNode) *ListNode {
+	var newHead *ListNode
+
+	for head != nil {
+		next := head.Next   // 保存下一个节点
+		head.Next = newHead // 当前节点插入新链表头部
+		newHead = head      // 更新新链表头
+		head = next         // 移动到原链表下一个节点
+	}
+
+	return newHead
 }

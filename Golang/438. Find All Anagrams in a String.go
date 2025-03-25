@@ -47,7 +47,7 @@ func findAnagrams(s string, p string) []int {
 	return ans
 }
 
-// 滑动窗口
+// 滑动窗口优化（使用单个计数数组）
 func findAnagramsOptimized(s, p string) (ans []int) {
 	sLen, pLen := len(s), len(p)
 	if sLen < pLen {

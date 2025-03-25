@@ -4,6 +4,7 @@ package leetcode
 // https://leetcode-cn.com/problems/maximum-subarray/
 
 // 暴力
+// 枚举所有可能的起点i和终点j
 func maxSubArrayForce(nums []int) int {
 	n := len(nums)
 	ans := nums[0] // 处理数组中所有元素都为负数的情况
@@ -19,6 +20,7 @@ func maxSubArrayForce(nums []int) int {
 
 // 动态规划
 func maxSubArray(nums []int) int {
+	// 状态定义：dp[i] 表示以 nums[i] 结尾的最大子数组和
 	// 状态转移方程： dp[i] = nums[i] + dp[i-1] (dp[i-1] > 0) , dp[i] = nums[i] (dp[i-1] ≤ 0)
 	if len(nums) == 0 {
 		return 0
@@ -42,7 +44,7 @@ func maxSubArray(nums []int) int {
 }
 
 // 模拟
-// kandane算法：以每个位置为结尾的最大子数组和，要么是当前元素本身，要么是当前元素加上以 *前一个位置为结尾* 的最大子数组和
+// kadane算法：以每个位置为结尾的最大子数组和，要么是当前元素本身，要么是当前元素加上以 前一个位置为结尾 的最大子数组和
 func maxSubArrayAnalog(nums []int) int {
 	if len(nums) == 1 {
 		return nums[0]

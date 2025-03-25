@@ -2,7 +2,10 @@ package leetcode
 
 // 爬楼梯
 // https://leetcode-cn.com/problems/climbing-stairs/
+
 // 动态规划
+// 时间复杂度：O(n)
+// 空间复杂度：O(n)
 func climbStairs(n int) int {
 	// 状态转移方程 dp[i] = dp[i-2] + dp[i-1]
 	dp := make([]int, n+1)
@@ -13,8 +16,10 @@ func climbStairs(n int) int {
 	return dp[n]
 }
 
-// 只保留前两个值
-func climbStairs1(n int) int {
+// 迭代
+// 时间复杂度：O(n)
+// 空间复杂度：O(1)
+func climbStairsIter(n int) int {
 	if n <= 2 {
 		return n
 	}

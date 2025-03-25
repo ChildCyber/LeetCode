@@ -9,6 +9,8 @@ package leetcode
 // 部分压缩：abc3[cd]xyz
 
 // 栈
+// 时间复杂度：O(n)
+// 空间复杂度：O(n)
 func decodeString(s string) string {
 	// 使用两个栈：数字栈和字符串栈
 	countStack := []int{}
@@ -23,8 +25,8 @@ func decodeString(s string) string {
 			currentNum = currentNum*10 + int(char-'0')
 		} else if char == '[' {
 			// 遇到左括号，将当前状态压入栈
-			countStack = append(countStack, currentNum)
-			strStack = append(strStack, currentStr)
+			countStack = append(countStack, currentNum) // 当前数字入栈
+			strStack = append(strStack, currentStr)     // 当前字符串入栈
 
 			// 重置当前状态，准备处理括号内的内容
 			currentNum = 0
@@ -54,7 +56,8 @@ func decodeString(s string) string {
 	return currentStr
 }
 
-// 递归：遇到括号就递归，遇到字母就累积
+// 递归
+// 遇到括号就递归，遇到字母就累积
 func decodeStringRec(s string) string {
 	// 主函数调用递归辅助函数
 	ans, _ := decode(s, 0)
@@ -62,7 +65,7 @@ func decodeStringRec(s string) string {
 }
 
 // 递归辅助函数
-// 参数：s - 输入字符串，index - 当前处理位置
+// 参数：s：输入字符串，index：当前处理位置
 // 返回值：解码后的字符串，下一个要处理的位置
 func decode(s string, index int) (string, int) {
 	res := "" // 存储当前层级的解码结果

@@ -6,7 +6,8 @@ import "sort"
 // https://leetcode-cn.com/problems/majority-element/
 
 // 哈希表
-// 时间复杂度 O(n) 空间复杂度 O(n)
+// 时间复杂度：O(n)
+// 空间复杂度：O(n)
 func majorityElement(nums []int) int {
 	// 存储每个元素以及出现的次数。键表示一个元素，值表示该元素出现的次数
 	m := make(map[int]int)
@@ -29,7 +30,7 @@ func majorityElementSort(nums []int) int {
 // 摩尔投票法(Boyer-Moore)
 // 就像是多轮淘汰赛：不同的数字相互"抵消"，最后剩下的就是多数元素
 // 时间复杂度：O(n)
-// 空间复杂度: O(1)
+// 空间复杂度：O(1)
 func majorityElementMoore(nums []int) int {
 	candidate, count := nums[0], 0
 	// 遍历元素，对于数组中的每个元素：

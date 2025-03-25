@@ -4,6 +4,8 @@ package leetcode
 // https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/
 
 // 暴力
+// 枚举所有可能的子串，检查是否有重复字符
+// 时间复杂度：O(n³)
 func lengthOfLongestSubstringBrute(s string) int {
 	n := len(s)
 	ans := 0
@@ -25,7 +27,7 @@ func lengthOfLongestSubstringBrute(s string) int {
 	return ans
 }
 
-// 滑动窗口+哈希表
+// 滑动窗口
 func lengthOfLongestSubstring(s string) int {
 	if len(s) == 0 {
 		return 0
@@ -55,7 +57,8 @@ func lengthOfLongestSubstring(s string) int {
 	return ans
 }
 
-// 跳过重复字符
+// 用哈希表跳过重复字符
+// 时间复杂度：O(n)
 func lengthOfLongestSubstringOptimized(s string) int {
 	last := make(map[byte]int) // 记录字符上次出现的位置
 	ans := 0

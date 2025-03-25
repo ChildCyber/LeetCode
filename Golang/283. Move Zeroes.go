@@ -20,7 +20,7 @@ func moveZeroesBubble(nums []int) {
 	}
 }
 
-// 快慢指针
+// 快慢指针-交换法
 func moveZeroes(nums []int) {
 	// 快指针：遍历整个数组，寻找非零元素
 	// 慢指针：标记下一个非零元素应该放置的位置
@@ -36,5 +36,32 @@ func moveZeroes(nums []int) {
 		}
 		// 如果快指针指向的元素为零：不做任何操作，继续移动快指针
 		fast++
+	}
+}
+
+// 移动再补零
+func moveZeroesPadZero(nums []int) {
+	j := 0 // 下一个非零元素应该放置的位置
+
+	// 第一次遍历：将所有非零元素移到前面
+	for i := 0; i < len(nums); i++ {
+		if nums[i] != 0 {
+			nums[j] = nums[i]
+			j++
+		}
+	}
+
+	// 第二次遍历：将剩余位置补零
+	for i := j; i < len(nums); i++ {
+		nums[i] = 0
+	}
+}
+
+func moveZeroes1(nums []int) {
+	for i, j := 0, 0; i < len(nums); i++ {
+		if nums[i] != 0 {
+			nums[i], nums[j] = nums[j], nums[i]
+			j++
+		}
 	}
 }

@@ -3,6 +3,7 @@ package leetcode
 // 最长连续序列
 // https://leetcode-cn.com/problems/longest-consecutive-sequence/
 // 要求时间复杂度为 O(n)
+
 // 哈希表
 func longestConsecutive(nums []int) int {
 	longestStreak := 0 // 记录连续的最长序列的长度

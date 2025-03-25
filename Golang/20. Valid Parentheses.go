@@ -2,7 +2,8 @@ package leetcode
 
 // 有效的括号
 // https://leetcode-cn.com/problems/valid-parentheses/
-// 左括号入栈，右括号弹栈
+
+// 栈
 func isValid(s string) bool {
 	if len(s) == 0 {
 		return true

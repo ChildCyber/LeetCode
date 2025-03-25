@@ -3,6 +3,8 @@ package leetcode
 // 电话号码的字母组合
 // https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
 
+// 问题本质：组合生成问题
+
 // 回溯
 // 时间复杂度：O(4^n)，其中n是输入数字字符串的长度
 // 空间复杂度：O(n)，主要用于递归调用栈
@@ -13,15 +15,15 @@ func letterCombinations(digits string) []string {
 	}
 
 	// 存储每个数字对应的所有可能的字母
-	var digitMap = map[string]string{
-		"2": "abc",
-		"3": "def",
-		"4": "ghi",
-		"5": "jkl",
-		"6": "mno",
-		"7": "pqrs",
-		"8": "tuv",
-		"9": "wxyz",
+	var digitMap = map[byte]string{
+		'2': "abc",
+		'3': "def",
+		'4': "ghi",
+		'5': "jkl",
+		'6': "mno",
+		'7': "pqrs",
+		'8': "tuv",
+		'9': "wxyz",
 	}
 
 	var path []byte
@@ -34,7 +36,7 @@ func letterCombinations(digits string) []string {
 			return
 		}
 
-		letters := digitMap[string(digits[pos])]
+		letters := digitMap[digits[pos]]
 		// 从letters里开始选择
 		for i := 0; i < len(letters); i++ {
 			// 做选择

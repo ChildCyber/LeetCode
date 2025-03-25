@@ -2,6 +2,7 @@ package leetcode
 
 // 分割等和子集
 // https://leetcode.cn/problems/partition-equal-subset-sum/
+
 // 动态规划
 func canPartition(nums []int) bool {
 	n := len(nums)
@@ -55,6 +56,7 @@ func canPartition(nums []int) bool {
 
 // 动态规划一维数组实现（空间优化）
 func canPartitionOptimized(nums []int) bool {
+	// 状态定义：dp[i] 表示能否组成和为 i 的子集
 	n := len(nums)
 	if n == 0 {
 		return true

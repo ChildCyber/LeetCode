@@ -4,7 +4,7 @@ package leetcode
 // https://leetcode-cn.com/problems/symmetric-tree/
 
 // 递归
-func isSymetric(root *TreeNode) bool {
+func isSymmetric(root *TreeNode) bool {
 	if root == nil { // 空树
 		return true
 	}
@@ -12,7 +12,8 @@ func isSymetric(root *TreeNode) bool {
 	return isSameTree(invertTree(root.Left) /*翻转左子树*/, root.Right) // lc 226, 100
 }
 
-func isSymmetric1(root *TreeNode) bool {
+// 左子树的左子树与右子树的右子树对称，且左子树的右子树与右子树的左子树对称。
+func isSymmetricMirror(root *TreeNode) bool {
 	if root == nil {
 		return true
 	}

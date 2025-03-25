@@ -1,6 +1,6 @@
 package leetcode
 
-// 239. 滑动窗口最大值
+// 滑动窗口最大值
 // https://leetcode.cn/problems/sliding-window-maximum/
 
 // 暴力
@@ -71,8 +71,9 @@ func maxSlidingWindow(nums []int, k int) []int {
 }
 
 // 分块
-// 时间复杂度 O(n)
-// 空间复杂度 O(n)
+// 核心：预处理+快速查询
+// 时间复杂度：O(n)
+// 空间复杂度：O(n)
 func maxSlidingWindowBlock(nums []int, k int) []int {
 	n := len(nums)
 	if n == 0 || k == 0 {
@@ -82,7 +83,7 @@ func maxSlidingWindowBlock(nums []int, k int) []int {
 		return nums
 	}
 
-	// 划块：把数组按窗口大小 k 拆成一坨坨。虽然最后窗口不一定正好卡在块边界，但最多跨两个块
+	// 划块：把整个数组nums，按照窗口大小k切成若干个块。虽然最后窗口不一定正好卡在块边界，但最多跨两个块
 	left := make([]int, n)  // left[i]: 当前块从起点到 i 的最大值（从左往右扫，块头重置）
 	right := make([]int, n) // right[i]: 当前块从 i 到块末尾的最大值（从右往左扫，块尾重置）
 

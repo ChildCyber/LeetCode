@@ -2,6 +2,7 @@ package leetcode
 
 // 打家劫舍
 // https://leetcode-cn.com/problems/house-robber/
+
 // 动态规划
 func rob198(nums []int) int {
 	// dp[i]代表抢 nums[0,i] 这个区间内房子的最大值
@@ -23,7 +24,7 @@ func rob198(nums []int) int {
 }
 
 // 动态规划-空间优化
-func rob198_1(nums []int) int {
+func rob198Optimized(nums []int) int {
 	n := len(nums)
 	if n == 0 {
 		return 0
